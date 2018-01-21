@@ -1,0 +1,55 @@
+<server description="Sample Liberty server">
+
+  <featureManager>
+    <feature>jaxrs-2.0</feature>
+    <feature>jsonp-1.0</feature>
+    <feature>cdi-1.2</feature>
+    <!-- FOR SECURITY -->
+    <feature>appSecurity-2.0</feature>
+    <feature>servlet-3.1</feature>
+    <feature>mpJwt-1.0</feature>
+    <feature>jwt-1.0</feature>
+  </featureManager>
+
+  <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+
+  <keyStore id="defaultKeyStore" password="app-pass"
+  location="${server.config.dir}/key.jks" />
+
+  <basicRegistry id="basic" realm="WebRealm">
+      <user name="bob" password="{xor}Lyg7" />  <!-- pwd -->
+      <user name="alice" password="{xor}PjM2PDovKDs=" />  <!-- alicepwd -->
+      <user name="carl" password="{xor}PD4tMy8oOw==" />   <!-- carlpwd -->
+
+      <group name="myAdmins">
+        <member name="bob" />
+      </group>
+
+      <group name="myUsers">
+        <member name="bob" />
+        <member name="alice" />
+        <member name="carl" />
+      </group>
+    </basicRegistry>
+
+    <application location="io.openliberty.guides.mpjwt.war" type="war"
+    id="io.openliberty.guides.mpjwt" name="io.openliberty.guides.mpjwt"
+    context-root="/">
+    <application-bnd>
+      <security-role name="admin">
+        <group name="myAdmins" />
+      </security-role>
+      <security-role name="user">
+        <group name="myUsers" />
+      </security-role>
+    </application-bnd>
+  </application>
+
+  <jwtBuilder id="jwtBuilder"
+    jwkEnabled="false"
+    keyStoreRef="defaultKeyStore"
+    keyAlias="jwtsampleapp"
+  />
+
+
+</server>

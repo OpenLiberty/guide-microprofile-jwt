@@ -85,6 +85,12 @@
             <version>1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+    <groupId>javax.faces</groupId>
+    <artifactId>javax.faces-api</artifactId>
+    <version>2.2</version>
+    <scope>provided</scope>
+  </dependency>
         <!-- FOR SECURITY -->
 <dependency>
   <groupId>javax.servlet</groupId>
@@ -106,6 +112,14 @@
 <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
 <version>1.0.15</version>
 </dependency>
+
+<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.6.0</version>
+</dependency>
+
 
     </dependencies>
 

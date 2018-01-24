@@ -25,13 +25,24 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+import io.jsonwebtoken.*;
+import com.ibm.websphere.security.jwt.*;
 
 @RequestScoped
 @Path("hosts")
 public class InventoryResource {
 
     @Inject InventoryManager manager;
-    
+
+    @Context
+	  SecurityContext secCon;
+
+  	@Context
+  	HttpServletRequest request;
+
     @GET
     @Path("{hostname}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +53,23 @@ public class InventoryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject listContents() {
+        System.out.println(request.getHeader("user-agent"));
+        System.out.println(request.getHeader("jwt"));
+       //consumeJWT(request.getHeader("jwt"));
         return manager.list();
     }
+
+    // private void consumeJWT(String token) {
+    //
+    //    try {
+  	// 		JwtConsumer jwtConsumer = JwtConsumer.create("jwtConsumer");
+  	// 		JwtToken access_Token =  jwtConsumer.createJwt(token);
+  	// 		String name = access_Token.getClaims().getClaim("username", String.class);
+    //     System.out.println("JWT  Consumer " + name);
+  	// 	} catch (InvalidConsumerException | InvalidTokenException e1) {
+  	// 		e1.printStackTrace();
+  	// 		//e1.printStackTrace(out);
+  	// 	}
+    // }
+
 }

@@ -80,7 +80,7 @@ public class LoginBean {
     String newJwt = null;
      try {
       JwtBuilder jwtBuilder = JwtBuilder.create();
-      jwtBuilder.subject(username).claim(Claims.AUDIENCE, "http://localhost:9080/security/jwt").claim("iss","http://localhost:9080/jwtBuilder" ).claim("alg","RS256" ).claim("username", username).claim("password", password).claim("role", role);
+      jwtBuilder.subject(username).claim(Claims.AUDIENCE, "http://localhost:9080/inventory").claim("iss","http://localhost:9080/jwtBuilder" ).claim("alg","RS256" ).claim("upn", "bob@server.example.com").claim("username", username).claim("password", password).claim("role", role);
       // jwtBuilder.signWith(RS256, "secret".getBytes("UTF-8"));
       JwtToken goToken = jwtBuilder.buildJwt();
       newJwt = goToken.compact();

@@ -32,14 +32,14 @@ public class SessionUtils {
   }
 
   public static String getInventory(String newJwt) {
-    System.out.println("Get Inventory");
+    System.out.println("Get Users");
     ClientBuilder cb = ClientBuilder.newBuilder();
     Client c = cb.build();
     // c.property("com.ibm.ws.jaxrs.client.disableCNCheck", true);
     // c.property("com.ibm.ws.jaxrs.client.ssl.config", "defaultSSLConfig");
     c.property("com.ibm.ws.jaxrs.client.ltpa.handler", "true");
     String res = null;
-    res = c.target("http://localhost:" + port + "/inventory/hosts").request().header("jwt", newJwt)
+    res = c.target("http://localhost:" + port + "/users").request().header("jwt", newJwt)
            .get().readEntity(String.class);
     c.close();
     return res;

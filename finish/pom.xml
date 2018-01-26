@@ -20,6 +20,7 @@
         <testServerHttpPort>9080</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
         <!-- end::ports[] -->
+        <jwtIssuer>http://localhost:9080/jwtBuilder</jwtIssuer>
         <package.file>${project.build.directory}/${app.name}.zip</package.file>
         <packaging.type>usr</packaging.type>
     </properties>
@@ -170,6 +171,7 @@
                     <bootstrapProperties>
                         <default.http.port>${testServerHttpPort}</default.http.port>
                         <default.https.port>${testServerHttpsPort}</default.https.port>
+                        <jwt.issuer>${jwtIssuer}</jwt.issuer>
                     </bootstrapProperties>
                 </configuration>
                 <executions>

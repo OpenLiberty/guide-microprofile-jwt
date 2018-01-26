@@ -30,6 +30,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import io.jsonwebtoken.*;
 import com.ibm.websphere.security.jwt.*;
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import java.security.Principal;
 
 @RequestScoped
 @Path("hosts")
@@ -43,6 +45,8 @@ public class InventoryResource {
   	@Context
   	HttpServletRequest request;
 
+    private JsonWebToken jwtPrincipal;
+
     @GET
     @Path("{hostname}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,9 +59,17 @@ public class InventoryResource {
     public JsonObject listContents() {
         System.out.println(request.getHeader("user-agent"));
         System.out.println(request.getHeader("jwt"));
+        // System.out.println(this.jwtPrincipal.getSubject());
        //consumeJWT(request.getHeader("jwt"));
         return manager.list();
     }
+
+
+       @GET
+       @Path("/getInjectedPrincipal")
+       public String getInjectedJWT() {
+          return  this.jwtPrincipal.getSubject();
+       }
 
     // private void consumeJWT(String token) {
     //

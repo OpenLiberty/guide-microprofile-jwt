@@ -48,63 +48,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>demoData</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>compile</includeScope>
-                            <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <!-- Copy the keystore that Liberty will use -->
-                    <execution>
-                        <id>copy-keystore</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifact>
-                                    <groupId>io.openliberty.guides</groupId>
-                                    <artifactId>shared-keystore</artifactId>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/dependency-jars/truststore</outputDirectory>
-                                    <includes>keystore.jceks</includes>
-                                </artifact>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>demo.DemoData</mainClass>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>dependency-jars/</classpathPrefix>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
-
     <profiles>
         <profile>
             <id>windowsExtensions</id>
@@ -269,42 +212,5 @@
             </build>
         </profile>
 
-        <profile>
-            <id>demo</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <!-- Add demo data -->
-                            <execution>
-                                <id>add-demo-data</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <async>false</async>
-                                    <executable>java</executable>
-                                    <arguments>
-                                        <argument>-jar</argument>
-                                        <argument>./target/demoData.jar</argument>
-                                        <argument>${user.hostname}</argument>
-                                        <argument>${user.https.port}</argument>
-
-                                        <argument>${auth.hostname}</argument>
-                                        <argument>${auth.https.port}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 </project>

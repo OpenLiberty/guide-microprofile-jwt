@@ -1,0 +1,310 @@
+<!-- Copyright (c) 2017 IBM Corporation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+
+  Contributors:
+  IBM Corporation - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+      <groupId>io.openliberty.guides</groupId>
+      <artifactId>mpjwt</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>run-app</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.openliberty.guides</groupId>
+            <artifactId>shared-keystore</artifactId>
+            <version>${version.shared.keystore}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-client</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!-- The following is necessary to read CXF client configuration -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>demoData</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <!-- Copy the keystore that Liberty will use -->
+                    <execution>
+                        <id>copy-keystore</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifact>
+                                    <groupId>io.openliberty.guides</groupId>
+                                    <artifactId>shared-keystore</artifactId>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/dependency-jars/truststore</outputDirectory>
+                                    <includes>keystore.jceks</includes>
+                                </artifact>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>demo.DemoData</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>dependency-jars/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>windowsExtensions</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <mvn.extension>.cmd</mvn.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>nonWindowsExtensions</id>
+            <activation>
+                <os>
+                    <family>!Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <mvn.extension></mvn.extension>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>start-servers</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <!-- Authorization Microservice -->
+                            <execution>
+                                <id>start-auth-service</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../microservice-auth</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:start-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                            <!-- User Microservice -->
+                            <execution>
+                                <id>start-user-service</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../microservice-user</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:start-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+
+                            <!-- UI Microservice -->
+                            <execution>
+                                <id>start-ui</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../front-end-ui</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:start-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>stop-servers</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+
+
+                            <!-- UI Microservice -->
+                            <execution>
+                                <id>stop-ui</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../front-end-ui</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:stop-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+
+
+                            <!-- User Microservice -->
+                            <execution>
+                                <id>stop-user-service</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../microservice-user</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:stop-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                            <!-- Auth Microservice -->
+                            <execution>
+                                <id>stop-auth-service</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <workingDirectory>../microservice-auth</workingDirectory>
+                                    <executable>mvn${mvn.extension}</executable>
+                                    <arguments>
+                                        <argument>liberty:stop-server</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>demo</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <!-- Add demo data -->
+                            <execution>
+                                <id>add-demo-data</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <async>false</async>
+                                    <executable>java</executable>
+                                    <arguments>
+                                        <argument>-jar</argument>
+                                        <argument>./target/demoData.jar</argument>
+                                        <argument>${user.hostname}</argument>
+                                        <argument>${user.https.port}</argument>
+
+                                        <argument>${auth.hostname}</argument>
+                                        <argument>${auth.https.port}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

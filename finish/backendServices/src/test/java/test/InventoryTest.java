@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
+import test.util.TestUtils;
 
 public class InventoryTest {
 
@@ -48,14 +49,14 @@ public class InventoryTest {
     public void testEmptyInventoryWithJWT() {
       // Get system properties by using JWT token
       String invUrl = baseUrl + "/inventory/hosts";
-      Response invResponse = processRequest(invUrl, "GET", null, authHeader);
+      Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
 
       assertEquals(
           "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
           Status.OK.getStatusCode(),
           invResponse.getStatus());
 
-      JsonObject responseJson = toJsonObj(invResponse.readEntity(String.class));
+      JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
 
       assertEquals("The inventory should be empty on application start",
                    0, responseJson.getInt("total"));
@@ -67,14 +68,14 @@ public class InventoryTest {
     public void testHostRegistrationWithJWT(){
       // Get system properties by using JWT token
       String invUrl = baseUrl + "/inventory/hosts/localhost";
-      Response invResponse = processRequest(invUrl, "GET", null, authHeader);
+      Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
 
       assertEquals(
           "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
           Status.OK.getStatusCode(),
           invResponse.getStatus());
 
-      JsonObject responseJson = toJsonObj(invResponse.readEntity(String.class));
+      JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
 
       assertEquals("The inventory should get the os.name of localhost",
               System.getProperty("os.name"),
@@ -85,22 +86,5 @@ public class InventoryTest {
     }
 
 
-    public Response processRequest(String url, String method, String payload, String authHeader) {
-      Client client = ClientBuilder.newClient();
-      WebTarget target = client.target(url);
-      Builder builder = target.request();
-      builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-      if (authHeader != null) {
-        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
-      }
-      return (payload != null)
-          ? builder.build(method, Entity.json(payload)).invoke()
-          : builder.build(method).invoke();
-    }
-
-    public JsonObject toJsonObj(String json) {
-        JsonReader jReader = Json.createReader(new StringReader(json));
-          return jReader.readObject();
-    }
 
 }

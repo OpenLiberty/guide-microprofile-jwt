@@ -56,7 +56,7 @@ public class LoginBean {
     // update session
     if (remoteUser != null && remoteUser.equals(username)){
       User user = new User(username, password, role);
-      String jwt = buildJWT(username);
+      String jwt = buildJWT(username, role);
       // get the current session
       HttpSession ses = request.getSession(false);
       if (ses == null) {
@@ -74,18 +74,19 @@ public class LoginBean {
   }
 
     /**
-     * Build a JWT that will be used by an authenticated user. The JWT wil be in the 'users' group and
+     * Build a JWT that will be used by an authenticated user. The JWT wil be in the correct group and
      * should contain the username as defined by MP JWT.
      *
      * @param userName The name of the authenticated user.
      * @return A compact JWT that should be returned to the caller.
      * @throws Exception Something went wrong...?
      */
-    private String buildJWT(String userName) throws Exception {
+    private String buildJWT(String userName, String role) throws Exception {
       return JwtBuilder.create("jwtFrontEndBuilder")
           .claim(Claims.SUBJECT, userName)
           .claim("upn", userName) /* MP-JWT defined subject claim */
-          .claim("groups", "users") /* MP-JWT builds an array from this */
+          .claim("groups", role) /* MP-JWT builds an array from this */
+          .claim("machineStatus", "good")
           .buildJwt()
           .compact();
     }

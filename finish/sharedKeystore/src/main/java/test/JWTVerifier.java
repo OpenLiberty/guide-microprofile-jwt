@@ -119,7 +119,7 @@ public class JWTVerifier {
    */
   public String createJWT(String username) throws GeneralSecurityException, IOException {
     Set<String> groups = new HashSet<String>();
-    groups.add("users");
+    groups.add("user");
     return createJWT(username, groups);
   }
 

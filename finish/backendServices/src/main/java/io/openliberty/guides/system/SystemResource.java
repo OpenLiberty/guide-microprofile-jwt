@@ -26,43 +26,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 
 @RequestScoped
+@DeclareRoles({"admin", "user"})
 @Path("properties")
 public class SystemResource {
 
-  /**
-   * The JWT of the current caller. Since this is a request scoped resource, the JWT will be
-   * injected for each JAX-RS request. The injection is performed by the mpJwt-1.0 feature.
-   */
-  @Inject private JsonWebToken jwtPrincipal;
-
-    // @GET
-    // @Produces(MediaType.APPLICATION_JSON)
-    // public JsonObject getProperties() {
-    //     JsonObjectBuilder builder = Json.createObjectBuilder();
-    //
-    //     System.getProperties()
-    //           .entrySet()
-    //           .stream()
-    //           .forEach(entry -> builder.add((String)entry.getKey(),
-    //                                         (String)entry.getValue()));
-    //
-    //     return builder.build();
-    // }
-
     @GET
+    @RolesAllowed({"admin", "user"})
     @Produces("application/json")
     public Response getProperties() {
-      // Validate the JWT. The JWT must be in the 'users' group.
-      try {
-        validateJWT(new HashSet<String>(Arrays.asList("users")));
-      } catch (JWTException jwte) {
-        return Response.status(Status.UNAUTHORIZED)
-            .type(MediaType.TEXT_PLAIN)
-            .entity(jwte.getMessage())
-            .build();
-      }
 
       JsonObjectBuilder responseBuilder = Json.createObjectBuilder();
       System.getProperties()
@@ -72,42 +48,6 @@ public class SystemResource {
                                           (String)entry.getValue()));
 
       return Response.ok(responseBuilder.build(), MediaType.APPLICATION_JSON).build();
-    }
-
-
-
-    /** Do some basic checks on the JWT, until the MP-JWT annotations are ready. */
-    private void validateJWT(Set<String> validGroups) throws JWTException {
-      // Make sure the authorization header was present. This check is somewhat
-      // silly since the jwtPrincipal will never actually be null since it's a
-      // WELD proxy (injected).
-      if (jwtPrincipal == null) {
-        throw new JWTException("No authorization header or unable to inflate JWT");
-      }
-
-      // Make sure we're in one of the groups that is authorized.
-      String validatedGroupName = null;
-      Set<String> groups = jwtPrincipal.getGroups();
-      if (groups != null) {
-        for (String group : groups) {
-          if (validGroups.contains(group)) {
-            validatedGroupName = group;
-            break;
-          }
-        }
-      }
-
-      if (validatedGroupName == null) {
-        throw new JWTException("User is not in a valid group [" + groups.toString() + "]");
-      }
-    }
-
-    private static class JWTException extends Exception {
-      private static final long serialVersionUID = 423763L;
-
-      public JWTException(String message) {
-        super(message);
-      }
     }
 
 

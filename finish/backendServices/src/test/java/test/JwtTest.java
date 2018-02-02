@@ -18,40 +18,40 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Test;
 import test.util.TestUtils;
 
-public class SystemTest {
+public class JwtTest {
 
 
     @Test
-    public void testGetPropertiesWithJWT() throws Exception {
-        // tag::systemProperties[]
+    public void testJWT() throws Exception {
+      String testName = "TESTUSER";
+
         String baseUrl =
             "https://"
                 + System.getProperty("liberty.test.hostname")
                 + ":"
                 + System.getProperty("liberty.test.ssl.port");
-        // end::systemProperties[]
+        
 
       String authHeader =
           "Bearer "
               + new JWTVerifier()
-                  .createJWT("TESTUSER");
+                  .createJWT(testName);
 
-      // Get system properties by using JWT token
-      String propUrl = baseUrl + "/system/properties";
-      Response propResponse = TestUtils.processRequest(propUrl, "GET", null, authHeader);
+      String jwtUrl = baseUrl + "/inventory/jwt/username";
+      Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 
       assertEquals(
           "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
           Status.OK.getStatusCode(),
-          propResponse.getStatus());
+          jwtResponse.getStatus());
 
-      JsonObject responseJson = TestUtils.toJsonObj(propResponse.readEntity(String.class));
+      String responseName = jwtResponse.readEntity(String.class);
 
-      assertEquals("The system property for the local and remote JVM should match",
-                   System.getProperty("os.name"),
-                   responseJson.getString("os.name"));
-      System.out.println(responseJson.getString("os.name"));
-      System.out.println(propUrl);
+      assertEquals("The test name and jwt token name should match",
+                   testName,
+                   responseName);
+      System.out.println(responseName);
+      System.out.println(jwtUrl);
 
 
     }

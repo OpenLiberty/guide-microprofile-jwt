@@ -71,17 +71,16 @@ public class JwtResource {
 
      @GET
      @RolesAllowed({"admin", "user"})
-     @Path("/machineStatus")
+     @Path("/customClaim")
      public Response getStatus(@Context SecurityContext securityContext) {
-         String machineStatus;
+         String customClaim;
          if(securityContext.isUserInRole("admin")) {
              // Validate the machine status from the token claim
-             machineStatus = jwtPrincipal.getClaim("machineStatus");
+             customClaim = jwtPrincipal.getClaim("customClaim");
          } else {
              return Response.status(Response.Status.FORBIDDEN).build();
          }
-
-         return Response.ok(machineStatus).build();
+         return Response.ok(customClaim).build();
      }
 
 

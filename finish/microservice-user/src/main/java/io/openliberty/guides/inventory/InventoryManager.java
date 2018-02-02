@@ -30,9 +30,9 @@ public class InventoryManager {
 
     private ConcurrentMap<String, JsonObject> inv = new ConcurrentHashMap<>();
 
-    public JsonObject get(String hostname) {
-        if (InventoryUtil.responseOk(hostname)) {
-            JsonObject properties = InventoryUtil.getProperties(hostname);
+    public JsonObject get(String hostname, String authHeader) {
+        if (InventoryUtil.responseOk(hostname, authHeader)) {
+            JsonObject properties = InventoryUtil.getProperties(hostname, authHeader);
             inv.putIfAbsent(hostname, properties);
             return properties;
         } else {

@@ -13,9 +13,6 @@
 // import static org.junit.Assert.assertEquals;
 // import static org.junit.Assert.assertTrue;
 //
-// import com.mongodb.BasicDBObject;
-// import com.mongodb.DB;
-// import com.mongodb.MongoClient;
 // import java.io.StringReader;
 // import java.util.Arrays;
 // import java.util.HashSet;
@@ -41,9 +38,6 @@
 // /** Tests the endpoints on the login service. */
 // public class LoginResourceTest {
 //
-//   private static MongoClient mongo;
-//   private static DB database;
-//
 //   /** The SSL port we'll use in our tests. This is the Liberty SSL port. */
 //   private static final String libertySslPort = System.getProperty("liberty.test.ssl.port");
 //
@@ -52,11 +46,7 @@
 //
 //   @BeforeClass
 //   public static void setup() throws Exception {
-//     // Open a connection to the Mongo database before the tests start.
-//     int mongoPort = Integer.parseInt(System.getProperty("mongo.test.port"));
-//     String mongoHostname = System.getProperty("mongo.test.hostname");
-//     mongo = new MongoClient(mongoHostname, mongoPort);
-//     database = mongo.getDB("gifts-user");
+//
 //   }
 //
 //   @AfterClass
@@ -92,7 +82,7 @@
 //
 //     JsonObject responseJson = toJsonObj(response.readEntity(String.class));
 //     String dbId = responseJson.getString(User.JSON_KEY_USER_ID);
-//     user.setId(dbId);
+//
 //
 //     // Find user in the database.
 //     BasicDBObject dbUser =
@@ -273,4 +263,5 @@
 //       return jReader.readObject();
 //     }
 //   }
+//
 // }

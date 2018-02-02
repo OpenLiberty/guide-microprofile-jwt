@@ -103,9 +103,7 @@ public class UserResource {
           JwtBuilder.create("jwtUserBuilder")
               .claim(Claims.SUBJECT, user.getUserName())
               .claim("upn", user.getUserName()) /* MP-JWT defined subject claim */
-              .claim(
-                  "groups",
-                  "users") /* MP-JWT defined group, seems Liberty makes an array from a comma separated list */
+              .claim("groups", "users") /* MP-JWT defined group, seems Liberty makes an array from a comma separated list */
               .buildJwt()
               .compact();
     } catch (Throwable t) {

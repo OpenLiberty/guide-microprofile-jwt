@@ -47,9 +47,7 @@ public class AuthResource {
           JwtBuilder.create("jwtAuthLoginBuilder")
               .claim(Claims.SUBJECT, "unauthenticated")
               .claim("upn", "unauthenticated") /* MP-JWT defined subject claim */
-              .claim(
-                  "groups",
-                  "login") /* MP-JWT defined group, seems Liberty makes an array from a comma separated list */
+              .claim("groups", "login") /* MP-JWT defined group, seems Liberty makes an array from a comma separated list */
               .buildJwt()
               .compact();
     } catch (Throwable t) {

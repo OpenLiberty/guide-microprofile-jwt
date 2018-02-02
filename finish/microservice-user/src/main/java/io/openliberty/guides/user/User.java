@@ -45,6 +45,21 @@ public class User {
   /** The generated salt that is contained in the hashed password. */
   private String passwordSalt;
 
+  public User(
+      String id,
+      String firstName,
+      String lastName,
+      String userName,
+      String wishListLink,
+      String password) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.userName = userName;
+    this.wishListLink = wishListLink;
+    this.passwordHash = password;
+  }
+
   /** Constructor for reading the user from the JSON that was a part of a JAX-RS request. */
   public User(JsonObject user) {
     if (user.containsKey(JSON_KEY_USER_ID)) {

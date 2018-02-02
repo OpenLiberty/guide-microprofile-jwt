@@ -14,9 +14,6 @@
 // import static org.junit.Assert.assertFalse;
 // import static org.junit.Assert.assertTrue;
 //
-// import com.mongodb.BasicDBObject;
-// import com.mongodb.DB;
-// import com.mongodb.MongoClient;
 // import java.io.StringReader;
 // import java.util.Arrays;
 // import java.util.HashSet;
@@ -38,6 +35,8 @@
 // import org.junit.AfterClass;
 // import org.junit.BeforeClass;
 // import org.junit.Test;
+// import io.openliberty.guides.user.UserList;
+// import io.openliberty.guides.user.UserResource;
 //
 // /** User Resource tests. */
 // public class UserResourceTest {
@@ -48,18 +47,14 @@
 //   public static final String USER_USER_NAME_KEY = "userName";
 //   public static final String USER_WISH_LIST_LINK_KEY = "wishListLink";
 //
-//   private static MongoClient mongo;
-//   private static DB database;
 //
 //   private static String baseUrl;
+//   public static UserList userList;
 //
 //   @BeforeClass
 //   public static void setup() throws Exception {
-//     // Connect to the database before starting tests.
-//     int mongoPort = Integer.parseInt(System.getProperty("mongo.test.port"));
-//     String mongoHostname = System.getProperty("mongo.test.hostname");
-//     mongo = new MongoClient(mongoHostname, mongoPort);
-//     database = mongo.getDB("gifts-user");
+//     userList = UserResource.userList;
+//
 //     baseUrl =
 //         "https://"
 //             + System.getProperty("liberty.test.hostname")
@@ -69,14 +64,13 @@
 //
 //   @AfterClass
 //   public static void cleanup() {
-//     database.dropDatabase();
-//     mongo.close();
+//     this.userList = null;
+//
 //   }
 //
 //   @After
 //   public void postTestProcessing() {
-//     // Cleanup the database after each test.
-//     database.getCollection(DB_USERS_COLLECTION_NAME).drop();
+//
 //   }
 //
 //   /** Tests the create user function. */
@@ -87,7 +81,7 @@
 //         "Bearer "
 //             + new JWTVerifier()
 //                 .createJWT("unauthenticated", new HashSet<String>(Arrays.asList("login")));
-//     User user1 = new User(null, "Isaac", "Newton", "inewton", "inewtonWishListLink",
+//     User user1 = new User("01", "Isaac", "Newton", "inewton", "inewtonWishListLink",
 // "mypassword");
 //     String url = baseUrl + "/users/";
 //     Response response = processRequest(url, "POST", user1.getJson(), loginAuthHeader);
@@ -99,14 +93,11 @@
 //     new JWTVerifier().validateJWT(authHeader);
 //
 //     JsonObject responseJson = toJsonObj(response.readEntity(String.class));
-//     String dbId = responseJson.getString(KEY_USER_ID);
-//     user1.setId(dbId);
 //
 //     // Validate user.
-//     BasicDBObject dbUser =
-//         (BasicDBObject) database.getCollection("users").findOne(new ObjectId(dbId));
-//     assertTrue("User inewton was NOT found in database.", dbUser != null);
-//     assertTrue("User inewton does not contain expected data.", user1.isEqual(dbUser));
+//     User user = userList.getUserById("01");
+//     assertTrue("User inewton was NOT found in database.", user != null);
+//     assertTrue("User inewton does not contain expected data.", user1.isEqual(user));
 //
 //     // Test2: Try adding another user with the same userName.  This should fail.
 //     User user2 =

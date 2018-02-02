@@ -3,13 +3,9 @@ package io.openliberty.guides.ui.util;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import com.ibm.websphere.security.jwt.JwtToken;
 import io.openliberty.guides.ui.User;
 
 public class SessionUtils {
-  private static String port = System.getProperty("default.http.port");
 
   /**
    * Gets the current session for a logged in user.

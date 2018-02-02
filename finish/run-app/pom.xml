@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
       <groupId>io.openliberty.guides</groupId>
-      <artifactId>mpjwt</artifactId>
+      <artifactId>mp-jwt-app</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>run-app</artifactId>

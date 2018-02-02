@@ -1,7 +1,5 @@
 package io.openliberty.guides.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class User {
   private String name;

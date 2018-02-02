@@ -12,16 +12,8 @@
  // end::copyright[]
 package io.openliberty.guides.inventory.util;
 
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-
-
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashSet;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.ws.rs.client.Client;
@@ -33,13 +25,11 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 
 public class InventoryUtil {
 
     // Constants for building URI to the system service.
     private static final int DEFAULT_PORT = 5051;
-    private static final String PROTOCOL = "https";
     private static final String SYSTEM_PROPERTIES = "/system/properties";
 
     public static Response processRequest(String url, String method, String payload, String authHeader) {
@@ -158,19 +148,6 @@ public class InventoryUtil {
 
     }
 
-    /**
-     * <p>Builds the URI to the system service for a particular host. This is just a helper method.</p>
-     *
-     * @param hostname - name of host.
-     * @return URI object representation of the URI to the system properties service.
-     */
-    private static URI buildUri(String hostname, int port) {
-        return UriBuilder.fromUri(SYSTEM_PROPERTIES)
-                         .host(hostname)
-                         .port(port)
-                         .scheme(PROTOCOL)
-                         .build();
-    }
 
 
 

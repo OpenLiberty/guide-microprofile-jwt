@@ -4,9 +4,9 @@ mvn package -P stop-servers -pl run-app
 
 localhost:9091 for front end
 
-<user.hostname>localhost</user.hostname>
-<user.http.port>5050</user.http.port>
-<user.https.port>5051</user.https.port>
+<backend.hostname>localhost</backend.hostname>
+<backend.http.port>5050</backend.http.port>
+<backend.https.port>5051</backend.https.port>
 
 <frontend.http.port>9090</frontend.http.port>
 <frontend.https.port>9091</frontend.https.port>

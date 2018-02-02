@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
       <groupId>io.openliberty.guides</groupId>
-      <artifactId>mpjwt</artifactId>
+      <artifactId>mp-jwt-app</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>back-end</artifactId>
@@ -223,8 +223,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <summaryFile>${project.build.directory}/test-reports/mpjwt/failsafe-summary.xml</summaryFile>
-                    <reportsDirectory>${project.build.directory}/test-reports/mpjwt</reportsDirectory>
+                    <summaryFile>${project.build.directory}/test-reports/mp-jwt-app/failsafe-summary.xml</summaryFile>
+                    <reportsDirectory>${project.build.directory}/test-reports/mp-jwt-app</reportsDirectory>
                 </configuration>
             </plugin>
 

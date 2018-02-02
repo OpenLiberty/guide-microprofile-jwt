@@ -3,10 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashSet;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.ws.rs.client.Client;
@@ -18,10 +15,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class InventoryTest {

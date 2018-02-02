@@ -1,11 +1,8 @@
 package io.openliberty.guides.ui;
 
-import java.io.*;
-import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import com.ibm.websphere.security.jwt.*;

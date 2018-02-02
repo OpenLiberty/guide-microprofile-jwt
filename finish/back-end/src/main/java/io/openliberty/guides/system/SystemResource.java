@@ -12,25 +12,16 @@
  // end::copyright[]
 package io.openliberty.guides.system;
 
-
-
-import com.ibm.websphere.security.jwt.Claims;
-import com.ibm.websphere.security.jwt.JwtBuilder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;

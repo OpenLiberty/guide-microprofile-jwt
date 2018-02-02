@@ -12,16 +12,9 @@
  // end::copyright[]
 package io.openliberty.guides.ui.util;
 
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-
 
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashSet;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.ws.rs.client.Client;
@@ -38,7 +31,6 @@ public class ServiceUtils {
 
     // Constants for building URI to the system service.
     private static final String DEFAULT_PORT = "5051";
-    private static final String PROTOCOL = "https";
     private static final String SYSTEM_PROPERTIES = "/system/properties";
     private static final String HOSTNAME = "localhost";
 

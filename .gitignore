@@ -1,2 +1,7 @@
 target/
 temp/
+.classpath
+.project
+.settings/
+.factorypath
+.apt_generated/

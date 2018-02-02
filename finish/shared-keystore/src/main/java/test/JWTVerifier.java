@@ -59,11 +59,11 @@ public class JWTVerifier {
    */
   private static final String JWT_ISSUER = System.getProperty("jwt.issuer", "http://wasdev.net");
 
-  /** The hostname we'll use in our tests. The hostname of the user service. */
-  private static final String libertyHostname = System.getProperty("liberty.user.service.hostname");
+  /** The hostname we'll use in our tests. The hostname of the backend service. */
+  private static final String libertyHostname = System.getProperty("liberty.backend.service.hostname");
 
-  /** The SSL port we'll use in our tests. The ssl port of the user service. */
-  private static final String libertySslPort = System.getProperty("liberty.user.service.ssl.port");
+  /** The SSL port we'll use in our tests. The ssl port of the backend service. */
+  private static final String libertySslPort = System.getProperty("liberty.backend.service.ssl.port");
 
   /**
    * Validate that the response contains an authorization header, and that the JWT inside can be
@@ -157,7 +157,7 @@ public class JWTVerifier {
     ks.load(ksStream, password);
 
     // Get the private key to use to sign the JWT.  Normally we would not do this but
-    // we are pretending to be the user service here.
+    // we are pretending to be the backend service here.
     KeyStore.ProtectionParameter keyPassword = new KeyStore.PasswordProtection(password);
     KeyStore.PrivateKeyEntry privateKeyEntry =
         (KeyStore.PrivateKeyEntry) ks.getEntry("default", keyPassword);
@@ -193,7 +193,7 @@ public class JWTVerifier {
   }
 
   /**
-   * Get the public key that is used to verify the JWT from the user service. We assume the key is
+   * Get the public key that is used to verify the JWT from the backend service. We assume the key is
    * an RSA key.
    *
    * @throws NoSuchAlgorithmException

@@ -54,17 +54,13 @@
         <version.mockito>1.9.5</version.mockito>
 
         <!-- Optional Microservice Configuration -->
-        <user.hostname>localhost</user.hostname>
-        <user.http.port>5050</user.http.port>
-        <user.https.port>5051</user.https.port>
+        <backend.hostname>localhost</backend.hostname>
+        <backend.http.port>5050</backend.http.port>
+        <backend.https.port>5051</backend.https.port>
 
         <frontend.http.port>9090</frontend.http.port>
         <frontend.https.port>9091</frontend.https.port>
         <frontend.hostname>localhost</frontend.hostname>
-
-        <auth.http.port>5065</auth.http.port>
-        <auth.https.port>5066</auth.https.port>
-        <auth.hostname>localhost</auth.hostname>
 
 
         <!-- JSON Web Token used for microservice authorization -->
@@ -274,9 +270,8 @@
     </build>
     <modules>
         <module>shared-keystore</module>
-        <module>microservice-auth</module>
-        <module>microservice-user</module>
-        <module>front-end-ui</module>
+        <module>back-end</module>
+        <module>front-end</module>
         <module>run-app</module>
     </modules>
 </project>

@@ -83,33 +83,17 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
-                            <!-- Authorization Microservice -->
-                            <execution>
-                                <id>start-auth-service</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <async>false</async>
-                                    <workingDirectory>../microservice-auth</workingDirectory>
-                                    <executable>mvn${mvn.extension}</executable>
-                                    <arguments>
-                                        <argument>liberty:start-server</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
 
-                            <!-- User Microservice -->
+                            <!-- backend Microservice -->
                             <execution>
-                                <id>start-user-service</id>
+                                <id>start-backend-service</id>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
                                     <async>false</async>
-                                    <workingDirectory>../microservice-user</workingDirectory>
+                                    <workingDirectory>../back-end</workingDirectory>
                                     <executable>mvn${mvn.extension}</executable>
                                     <arguments>
                                         <argument>liberty:start-server</argument>
@@ -127,7 +111,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <async>false</async>
-                                    <workingDirectory>../front-end-ui</workingDirectory>
+                                    <workingDirectory>../front-end</workingDirectory>
                                     <executable>mvn${mvn.extension}</executable>
                                     <arguments>
                                         <argument>liberty:start-server</argument>
@@ -163,7 +147,7 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <async>false</async>
-                                    <workingDirectory>../front-end-ui</workingDirectory>
+                                    <workingDirectory>../front-end</workingDirectory>
                                     <executable>mvn${mvn.extension}</executable>
                                     <arguments>
                                         <argument>liberty:stop-server</argument>
@@ -173,16 +157,16 @@
 
 
 
-                            <!-- User Microservice -->
+                            <!-- backend Microservice -->
                             <execution>
-                                <id>stop-user-service</id>
+                                <id>stop-backend-service</id>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
                                     <async>false</async>
-                                    <workingDirectory>../microservice-user</workingDirectory>
+                                    <workingDirectory>../back-end</workingDirectory>
                                     <executable>mvn${mvn.extension}</executable>
                                     <arguments>
                                         <argument>liberty:stop-server</argument>
@@ -190,22 +174,6 @@
                                 </configuration>
                             </execution>
 
-                            <!-- Auth Microservice -->
-                            <execution>
-                                <id>stop-auth-service</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <async>false</async>
-                                    <workingDirectory>../microservice-auth</workingDirectory>
-                                    <executable>mvn${mvn.extension}</executable>
-                                    <arguments>
-                                        <argument>liberty:stop-server</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
                         </executions>
                     </plugin>
                 </plugins>

@@ -32,6 +32,7 @@ public class ServiceUtils {
     // Constants for building URI to the system service.
     private static final String DEFAULT_PORT = "5051";
     private static final String SYSTEM_PROPERTIES = "/system/properties";
+    private static final String INVENTORY_HOSTS = "/inventory/hosts";
     private static final String HOSTNAME = "localhost";
 
     public static Response processRequest(String url, String method, String payload, String authHeader) {
@@ -66,7 +67,21 @@ public class ServiceUtils {
         Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
         JsonObject responseJson = toJsonObj(propResponse.readEntity(String.class));
-        System.out.println(responseJson.getString("os.name"));
+        // System.out.println(responseJson.getString("os.name"));
+        return responseJson;
+    }
+
+    public static JsonObject getInventoryHelper(String authHeader) {
+
+        // Get system properties by using JWT token
+        String invUrl = "https://"
+            + HOSTNAME
+            + ":"
+            + DEFAULT_PORT + INVENTORY_HOSTS;
+        Response invResponse = processRequest(invUrl, "GET", null, authHeader);
+
+        JsonObject responseJson = toJsonObj(invResponse.readEntity(String.class));
+        // System.out.println(responseJson.getString("os.name"));
         return responseJson;
     }
 
@@ -86,6 +101,19 @@ public class ServiceUtils {
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
 
     }
+
+    public static boolean invOkHelper(String authHeader) {
+          // Get system properties by using JWT token
+          String propUrl = "https://"
+              + HOSTNAME
+              + ":"
+              + DEFAULT_PORT + INVENTORY_HOSTS;
+          Response propResponse = processRequest(propUrl, "GET", null, authHeader);
+
+          return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
+
+    }
+
 
 
 

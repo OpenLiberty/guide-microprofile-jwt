@@ -15,7 +15,7 @@
       <artifactId>mp-jwt-app</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shared-keystore</artifactId>
+    <artifactId>sharedKeystore</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

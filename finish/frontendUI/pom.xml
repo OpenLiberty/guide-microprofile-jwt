@@ -15,7 +15,7 @@
     <artifactId>mp-jwt-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>front-end</artifactId>
+  <artifactId>frontendUI</artifactId>
   <packaging>war</packaging>
 
   <properties>
@@ -29,7 +29,7 @@
   <dependencies>
     <dependency>
       <groupId>io.openliberty.guides</groupId>
-      <artifactId>shared-keystore</artifactId>
+      <artifactId>sharedKeystore</artifactId>
       <version>${version.shared.keystore}</version>
       <scope>provided</scope>
     </dependency>
@@ -144,7 +144,7 @@
               <artifactItems>
                 <artifact>
                   <groupId>io.openliberty.guides</groupId>
-                  <artifactId>shared-keystore</artifactId>
+                  <artifactId>sharedKeystore</artifactId>
                   <type>jar</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</outputDirectory>

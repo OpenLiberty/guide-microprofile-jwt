@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:jsf="http://xmlns.jcp.org/jsf"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<title> System Properties </title>
+<body>
+
+  <h:outputText class="DetailsHeaders" value=" Hello! " />
+    <h:outputText class="Details"
+      value="#{systemBean.userName}" />
+    <br /> <br />
+
+  <h:outputText class="DetailsHeaders" value=" Your role is: " />
+    <h:outputText class="Details"
+      value="#{systemBean.userRole}" />
+      <br /> <br />
+
+    <h:outputText class="DetailsHeaders" value=" Current OS is: " />
+      <br />
+      <h:outputText class="Details"
+        value="#{systemBean.os}" />
+      <br /> <br />
+
+      <h:outputText class="DetailsHeaders" value=" Current inventory size is: " />
+        <br />
+        <h:outputText class="Details"
+          value="#{systemBean.invSize}" />
+        <br /> <br />
+
+
+      <h:outputText class="DetailsHeaders" value=" JWT Token string: " />
+        <br />
+        <h:outputText class="Details"
+          value="#{systemBean.jwt}" />
+        <br /> <br />
+
+
+</body>
+</html>

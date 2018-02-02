@@ -1,13 +1,16 @@
 mvn clean install
-mvn package -P start-servers -pl run-app
-mvn package -P stop-servers -pl run-app
 
-localhost:9091 for front end
+mvn package -P start-servers -pl runAPP
 
-<backend.hostname>localhost</backend.hostname>
-<backend.http.port>5050</backend.http.port>
-<backend.https.port>5051</backend.https.port>
+mvn package -P stop-servers -pl runAPP
 
-<frontend.http.port>9090</frontend.http.port>
-<frontend.https.port>9091</frontend.https.port>
-<frontend.hostname>localhost</frontend.hostname>
+front end
+https://localhost:9091/system.jsf
+
+back end:
+https://localhost:5051/inventory/hosts
+
+https://localhost:5051/system/properties
+
+
+username: bob   password: pwd

@@ -7,7 +7,7 @@ import javax.faces.bean.ViewScoped;
 
 import com.ibm.websphere.security.jwt.*;
 import io.openliberty.guides.ui.util.SessionUtils;
-
+import io.openliberty.guides.ui.User;
 
 @ManagedBean
 @ViewScoped
@@ -52,9 +52,10 @@ public class LoginBean {
     String role = getRole(request);
     System.out.println("AFTER LOGIN, REMOTE USER: " + remoteUser + " " + role);
 
+
     // update session
     if (remoteUser != null && remoteUser.equals(username)){
-      // User user = new User(username, password, role);
+      User user = new User(username, password, role);
       String jwt = buildJWT(username);
       // get the current session
       HttpSession ses = request.getSession(false);
@@ -62,6 +63,7 @@ public class LoginBean {
         System.out.println("Session is timeout.");
       } else {
         ses.setAttribute("jwt", jwt); // important to set it here!
+        ses.setAttribute("user", user);
       }
 
     } else {

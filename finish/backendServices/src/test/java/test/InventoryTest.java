@@ -33,7 +33,7 @@ public class InventoryTest {
       public void setup() throws Exception {
           authHeader = "Bearer "
               + new JWTVerifier()
-                  .createJWT("TESTUSER");
+                  .createUserJWT("TESTUSER");
       }
 
 
@@ -41,8 +41,6 @@ public class InventoryTest {
     public void testSuite() {
         this.testEmptyInventoryWithJWT();
         this.testHostRegistrationWithJWT();
-        // this.testSystemPropertiesMatch();
-        // this.testUnknownHost();
     }
 
 

@@ -117,9 +117,20 @@ public class JWTVerifier {
    *
    * @return A base 64 encoded JWT.
    */
-  public String createJWT(String username) throws GeneralSecurityException, IOException {
+  public String createUserJWT(String username) throws GeneralSecurityException, IOException {
     Set<String> groups = new HashSet<String>();
     groups.add("user");
+    return createJWT(username, groups);
+  }
+
+  /**
+   * Make a microprofile-compliant JWT with the correct secret key.
+   *
+   * @return A base 64 encoded JWT.
+   */
+  public String createAdminJWT(String username) throws GeneralSecurityException, IOException {
+    Set<String> groups = new HashSet<String>();
+    groups.add("admin");
     return createJWT(username, groups);
   }
 

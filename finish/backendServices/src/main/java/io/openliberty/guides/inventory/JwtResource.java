@@ -75,14 +75,11 @@ public class JwtResource {
      public Response getStatus(@Context SecurityContext securityContext) {
          String customClaim;
          if(securityContext.isUserInRole("admin")) {
-             // Validate the machine status from the token claim
              customClaim = jwtPrincipal.getClaim("customClaim");
          } else {
              return Response.status(Response.Status.FORBIDDEN).build();
          }
          return Response.ok(customClaim).build();
      }
-
-
 
 }

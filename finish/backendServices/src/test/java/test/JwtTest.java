@@ -17,25 +17,36 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Test;
 import test.util.TestUtils;
+import org.junit.Before;
 
 public class JwtTest {
 
+  String baseUrl =
+      "https://"
+          + System.getProperty("liberty.test.hostname")
+          + ":"
+          + System.getProperty("liberty.test.ssl.port");
+  String testName = "TESTUSER";
 
-    @Test
-    public void testJWT() throws Exception {
-      String testName = "TESTUSER";
+  String authHeader;
 
-        String baseUrl =
-            "https://"
-                + System.getProperty("liberty.test.hostname")
-                + ":"
-                + System.getProperty("liberty.test.ssl.port");
-        
+    @Before
+    public void setup() throws Exception {
+        authHeader = "Bearer "
+            + new JWTVerifier()
+                .createUserJWT(testName);
+    }
 
-      String authHeader =
-          "Bearer "
-              + new JWTVerifier()
-                  .createJWT(testName);
+
+  @Test
+  public void testSuite() {
+      this.testJWTGetName();
+      this.testJWTGetCustomClaim();
+  }
+
+
+
+    public void testJWTGetName() {
 
       String jwtUrl = baseUrl + "/inventory/jwt/username";
       Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
@@ -53,6 +64,19 @@ public class JwtTest {
       System.out.println(responseName);
       System.out.println(jwtUrl);
 
+    }
+
+    public void testJWTGetCustomClaim() {
+
+      String jwtUrl = baseUrl + "/inventory/jwt/customClaim";
+      Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
+
+      assertEquals(
+          "HTTP response code should have been " + Status.FORBIDDEN.getStatusCode() + ".",
+          Status.FORBIDDEN.getStatusCode(),
+          jwtResponse.getStatus());
+
+      System.out.println(jwtUrl);
 
     }
 

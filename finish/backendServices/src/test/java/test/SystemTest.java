@@ -34,7 +34,7 @@ public class SystemTest {
       String authHeader =
           "Bearer "
               + new JWTVerifier()
-                  .createJWT("TESTUSER");
+                  .createUserJWT("TESTUSER");
 
       // Get system properties by using JWT token
       String propUrl = baseUrl + "/system/properties";

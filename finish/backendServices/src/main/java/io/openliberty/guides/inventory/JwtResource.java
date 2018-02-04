@@ -12,23 +12,17 @@
  // end::copyright[]
 package io.openliberty.guides.inventory;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Context;
+
+//JWT Imports
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
@@ -83,7 +77,4 @@ public class JwtResource {
 
          return Response.ok(machineStatus).build();
      }
-
-
-
 }

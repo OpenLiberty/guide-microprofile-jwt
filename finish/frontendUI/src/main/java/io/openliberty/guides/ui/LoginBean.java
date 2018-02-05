@@ -16,7 +16,6 @@ public class LoginBean {
   private String username;
   private String password;
 
-
   public void setUsername(String username) {
     this.username = username;
   }
@@ -32,7 +31,6 @@ public class LoginBean {
   public String getPassword() {
     return password;
   }
-
 
   public String doLogIn() throws Exception {
 
@@ -52,7 +50,6 @@ public class LoginBean {
     String role = getRole(request);
     System.out.println("AFTER LOGIN, REMOTE USER: " + remoteUser + " " + role);
 
-
     // update session
     if (remoteUser != null && remoteUser.equals(username)){
       User user = new User(username, password, role);
@@ -69,7 +66,6 @@ public class LoginBean {
     } else {
       System.out.println("Update Sessional JWT Failed.");
     }
-
     return "system.jsf";
   }
 
@@ -91,7 +87,6 @@ public class LoginBean {
           .compact();
     }
 
-
   private String getRole(HttpServletRequest request) {
     // to check if remote user is granted admin role
     boolean isAdmin = request.isUserInRole("admin");
@@ -100,6 +95,4 @@ public class LoginBean {
     }
     return "user";
   }
-
-
 }

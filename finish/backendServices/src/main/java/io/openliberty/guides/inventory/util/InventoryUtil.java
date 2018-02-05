@@ -147,8 +147,4 @@ public class InventoryUtil {
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
 
     }
-
-
-
-
 }

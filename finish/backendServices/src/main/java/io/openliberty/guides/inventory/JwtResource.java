@@ -28,10 +28,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 
 
-// tag::RequestScoped[]
 @RequestScoped
-// end::RequestScoped[]
-@DeclareRoles({"admin", "user"})
 @Path("jwt")
 public class JwtResource {
 

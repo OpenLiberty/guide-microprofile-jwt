@@ -33,7 +33,7 @@ public class InventoryTest {
       @Before
       public void setup() throws Exception {
           authHeader = "Bearer "
-              + new JWTVerifier().createUserJWT("TESTUSER");
+              + new JWTVerifier().createAdminJWT("TESTUSER");
       }
 
 

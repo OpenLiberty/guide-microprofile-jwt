@@ -26,10 +26,7 @@ import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 
 
-// tag::RequestScoped[]
 @RequestScoped
-// end::RequestScoped[]
-@DeclareRoles({"admin", "user"})
 @Path("hosts")
 public class InventoryResource {
 
@@ -49,7 +46,7 @@ public class InventoryResource {
     }
 
     @GET
-    @RolesAllowed({"admin", "user"})
+    @RolesAllowed({"admin"})
     @Produces("application/json")
     public Response listContents() {
 

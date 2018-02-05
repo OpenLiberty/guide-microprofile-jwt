@@ -37,6 +37,7 @@
 
         <!-- Dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.shared.keystore>0.0.1-SNAPSHOT</version.shared.keystore>
         <version.javaee>7.0</version.javaee>
         <version.glassfish.json>1.0.4</version.glassfish.json>

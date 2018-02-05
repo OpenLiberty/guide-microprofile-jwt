@@ -65,41 +65,32 @@
         <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>javax.inject</groupId>
-        <artifactId>javax.inject</artifactId>
-        <version>1</version>
-        <scope>provided</scope>
+      <groupId>javax.faces</groupId>
+      <artifactId>javax.faces-api</artifactId>
+      <version>2.2</version>
+      <scope>provided</scope>
     </dependency>
+
     <dependency>
-<groupId>javax.faces</groupId>
-<artifactId>javax.faces-api</artifactId>
-<version>2.2</version>
-<scope>provided</scope>
-</dependency>
-    <!-- FOR SECURITY -->
-<dependency>
-<groupId>javax.servlet</groupId>
-<artifactId>javax.servlet-api</artifactId>
-<version>3.1.0</version>
-<scope>provided</scope>
-</dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
-<dependency>
-<groupId>org.eclipse.microprofile.jwt</groupId>
-<artifactId>microprofile-jwt-auth-api</artifactId>
-<version>1.0</version>
-</dependency>
+    <dependency>
+      <groupId>org.eclipse.microprofile.jwt</groupId>
+      <artifactId>microprofile-jwt-auth-api</artifactId>
+      <version>1.0</version>
+    </dependency>
 
-<!-- https://mvnrepository.com/artifact/com.ibm.websphere.appserver.api/com.ibm.websphere.appserver.api.jwt -->
-<dependency>
-<groupId>com.ibm.websphere.appserver.api</groupId>
-<artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
-<version>1.0.15</version>
-</dependency>
+    <dependency>
+      <groupId>com.ibm.websphere.appserver.api</groupId>
+      <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
+      <version>1.0.15</version>
+    </dependency>
 
   </dependencies>
-
 
   <build>
     <plugins>

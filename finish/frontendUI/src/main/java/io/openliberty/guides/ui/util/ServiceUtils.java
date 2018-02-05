@@ -99,7 +99,6 @@ public class ServiceUtils {
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
-
     }
 
     public static boolean invOkHelper(String authHeader) {
@@ -111,10 +110,5 @@ public class ServiceUtils {
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
-
     }
-
-
-
-
 }

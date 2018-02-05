@@ -263,9 +263,9 @@
         </pluginManagement>
     </build>
     <modules>
-        <module>sharedKeystore</module>
+        <module>resources</module>
         <module>backendServices</module>
         <module>frontendUI</module>
-        <module>runAPP</module>
+        <module>runApp</module>
     </modules>
 </project>

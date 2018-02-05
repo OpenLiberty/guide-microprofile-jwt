@@ -1,4 +1,4 @@
-package it.io.openlibery.guides;
+package it.io.openliberty.guides;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +17,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
-import it.io.openlibery.guides.util.TestUtils;
+import it.io.openliberty.guides.util.TestUtils;
+import test.JWTVerifier;
 
 public class InventoryTest {
 
@@ -32,8 +33,7 @@ public class InventoryTest {
       @Before
       public void setup() throws Exception {
           authHeader = "Bearer "
-              + new JWTVerifier()
-                  .createUserJWT("TESTUSER");
+              + new JWTVerifier().createUserJWT("TESTUSER");
       }
 
 

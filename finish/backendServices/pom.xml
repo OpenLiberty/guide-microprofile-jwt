@@ -26,7 +26,7 @@
     <dependencies>
         <dependency>
             <groupId>io.openliberty.guides</groupId>
-            <artifactId>sharedKeystore</artifactId>
+            <artifactId>resources</artifactId>
             <version>${version.shared.keystore}</version>
             <scope>test</scope>
         </dependency>
@@ -136,7 +136,7 @@
                           <artifactItems>
                             <artifact>
                               <groupId>io.openliberty.guides</groupId>
-                              <artifactId>sharedKeystore</artifactId>
+                              <artifactId>resources</artifactId>
                               <type>jar</type>
                               <overWrite>false</overWrite>
                               <outputDirectory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</outputDirectory>
@@ -211,7 +211,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>**/test/**</include>
+                                <include>**/it/**</include>
                             </includes>
                             <systemPropertyVariables>
 		                        <liberty.test.hostname>${backend.hostname}</liberty.test.hostname>
@@ -246,7 +246,7 @@
                         <id>default-test</id>
                         <configuration>
                             <excludes>
-                                <exclude>**/test/**</exclude>
+                                <exclude>**/it/**</exclude>
                             </excludes>
                             <reportsDirectory>${project.build.directory}/test-reports/unit</reportsDirectory>
                         </configuration>

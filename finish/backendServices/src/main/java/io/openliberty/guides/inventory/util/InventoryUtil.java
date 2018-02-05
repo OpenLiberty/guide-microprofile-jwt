@@ -86,14 +86,11 @@ public class InventoryUtil {
         // URI propURI = InventoryUtil.buildUri(hostname, port);
         // return client.target(propURI).request().get(JsonObject.class);
 
-        // String authHeader =  "Bearer "  + new JWTVerifier().createJWT("TESTUSER");
-
         // Get system properties by using JWT token
         String propUrl = "https://" + hostname + ":" + port + SYSTEM_PROPERTIES;
         Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
         JsonObject responseJson = toJsonObj(propResponse.readEntity(String.class));
-        System.out.println(responseJson.getString("os.name"));
         return responseJson;
     }
 

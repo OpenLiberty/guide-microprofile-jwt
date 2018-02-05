@@ -1,4 +1,4 @@
-package it.io.openlibery.guides;
+package it.io.openliberty.guides;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,8 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Test;
-import it.io.openlibery.guides.util.TestUtils;
+import it.io.openliberty.guides.util.TestUtils;
 import org.junit.Before;
+import test.JWTVerifier;
 
 public class JwtTest {
 
@@ -33,8 +34,7 @@ public class JwtTest {
     @Before
     public void setup() throws Exception {
         authHeader = "Bearer "
-            + new JWTVerifier()
-                .createUserJWT(testName);
+            + new JWTVerifier().createUserJWT(testName);
     }
 
 

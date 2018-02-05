@@ -65,6 +65,9 @@ public class JWTVerifier {
   /** The SSL port we'll use in our tests. The ssl port of the backend service. */
   private static final String libertySslPort = System.getProperty("liberty.backend.service.ssl.port");
 
+  // private static final String keystorePath = System.getProperty("keystore.path");
+  private static final String keystorePath = "/keystore.jceks";
+
   /**
    * Validate that the response contains an authorization header, and that the JWT inside can be
    * decoded using the public key of the server.
@@ -136,6 +139,8 @@ public class JWTVerifier {
 
   public String createJWT(String username, Set<String> groups)
       throws GeneralSecurityException, IOException {
+
+
     // Create and Base64 encode the header portion of the JWT
     JsonObject headerObj =
         Json.createObjectBuilder()
@@ -163,9 +168,11 @@ public class JWTVerifier {
 
     // Open the keystore that the server will use to validate the JWT
     KeyStore ks = KeyStore.getInstance("JCEKS");
-    InputStream ksStream = this.getClass().getResourceAsStream("/keystore.jceks");
+    InputStream ksStream = this.getClass().getResourceAsStream(this.keystorePath);
     char[] password = new String("secret").toCharArray();
     ks.load(ksStream, password);
+    // System.out.println(this.keystorePath);
+    // System.out.println(headerClaimsEnc);
 
     // Get the private key to use to sign the JWT.  Normally we would not do this but
     // we are pretending to be the backend service here.
@@ -180,6 +187,8 @@ public class JWTVerifier {
     sig.update(headerClaimsEnc.getBytes());
     String sigEnc = Base64Utility.encode(sig.sign(), true);
 
+
+
     // Lets just check......
     String jwtEnc = headerClaimsEnc + "." + sigEnc;
     java.security.cert.Certificate cert = ks.getCertificate("default");
@@ -191,7 +200,7 @@ public class JWTVerifier {
   }
 
   /** Create a groups array to put in the JWT. */
-  private JsonArray getGroupArray(Set<String> groups) {
+  private static JsonArray getGroupArray(Set<String> groups) {
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
     if (groups != null) {

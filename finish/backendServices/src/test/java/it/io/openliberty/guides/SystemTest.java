@@ -1,4 +1,4 @@
-package it.io.openlibery.guides;
+package it.io.openliberty.guides;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Test;
-import it.io.openlibery.guides.util.TestUtils;
+import it.io.openliberty.guides.util.TestUtils;
+import test.JWTVerifier;
 
 public class SystemTest {
 
@@ -33,8 +34,7 @@ public class SystemTest {
 
       String authHeader =
           "Bearer "
-              + new JWTVerifier()
-                  .createUserJWT("TESTUSER");
+              + new JWTVerifier().createUserJWT("TESTUSER");
 
       // Get system properties by using JWT token
       String propUrl = baseUrl + "/system/properties";

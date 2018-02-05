@@ -1,8 +1,8 @@
 mvn clean install
 
-mvn package -P start-servers -pl runAPP
+mvn package -P start-servers -pl runApp
 
-mvn package -P stop-servers -pl runAPP
+mvn package -P stop-servers -pl runApp
 
 front end
 https://localhost:9091/system.jsf

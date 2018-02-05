@@ -63,7 +63,7 @@ Maven goals to build the application and run it inside Open Liberty:
 
 ```
 mvn clean install
-mvn package -P start-servers -pl runAPP
+mvn package -P start-servers -pl runApp
 
 ```
 
@@ -72,7 +72,7 @@ Point your browser to Front-end web application endpoint: `\front end https://lo
 Once you are done checking out the application, stop the Open Liberty server:
 
 ```
-mvn package -P stop-servers -pl runAPP
+mvn package -P stop-servers -pl runApp
 ```
 
 Now, navigate back to the `start` directory to begin.
@@ -249,7 +249,7 @@ configures and installs Open Liberty into the target/liberty/wlp directory.
 
 Next, run the Maven liberty:start-server goal:
 
-  mvn package -P start-servers -pl runAPP
+  mvn package -P start-servers -pl runApp
 
 This goal starts an Open Liberty server instance. Your Maven pom.xml is already configured to
 start the application in this server instance.

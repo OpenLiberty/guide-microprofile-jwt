@@ -15,7 +15,7 @@
       <artifactId>mp-jwt-app</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>runAPP</artifactId>
+    <artifactId>runApp</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>io.openliberty.guides</groupId>
-            <artifactId>sharedKeystore</artifactId>
+            <artifactId>resources</artifactId>
             <version>${version.shared.keystore}</version>
             <scope>compile</scope>
         </dependency>

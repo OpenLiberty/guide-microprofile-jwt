@@ -113,8 +113,6 @@ The `org.eclipse.microprofile.jwt,JsonWebToken` contians the classes required to
 
 The `@RequestScoped` annotation is required because the JWT service needs to only be activated when a login request is made.
 
-The `@DeclareRoles({"admin", "user"})` annotation is responsible for allowing certain roles (user) access to this class.
-
 The `@Path("jwt")` annotation is used to state the REST request path to access this class which in this case is jwt.
 
 The `@GET` annotation states that it is a HTTP GET request that will be used to access a method.
@@ -138,8 +136,7 @@ Open the class `InventoryResource.java` in `/start/backendServices/src/main/java
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=!copyright]
 ----
 
-The `import javax.annotation.security.DeclareRoles;`
-, `import javax.annotation.security.DenyAll;`
+The `import javax.annotation.security.DenyAll;`
 , `import javax.annotation.security.RolesAllowed;` imports contain the classes required to hande access to the code from different roles.
 
 The `@RolesAllowed({"admin", "user"})` annotation sets what roles are allowed to access the class/method which in this case is `admin` or `user`.
@@ -176,10 +173,7 @@ Edit the class `SystemResource.java` in `finish/backendServices/src/main/java/io
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=!copyright]
 ----
 
-The `import javax.annotation.security.DeclareRoles;`
-, `import javax.annotation.security.RolesAllowed;` imports allow you to declare roles for the class and allow roles access to methods respectively.
-
-Add the `@DeclareRoles({"admin", "user"})` code to declare the roles allowed to access this class.
+The `import javax.annotation.security.RolesAllowed;` import allows roles access to methods.
 
 Add the `@RolesAllowed({"admin", "user"})` code to allow certain roles to access the metod.
 

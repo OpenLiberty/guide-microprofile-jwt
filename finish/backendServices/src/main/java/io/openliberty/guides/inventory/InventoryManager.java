@@ -19,7 +19,6 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import io.openliberty.guides.common.JsonMessages;
 import io.openliberty.guides.inventory.client.SystemClient;
-
 // CDI
 import javax.enterprise.context.ApplicationScoped;
 

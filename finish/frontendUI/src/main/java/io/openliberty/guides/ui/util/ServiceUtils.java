@@ -12,7 +12,6 @@
  // end::copyright[]
 package io.openliberty.guides.ui.util;
 
-
 import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonObject;

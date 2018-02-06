@@ -47,5 +47,4 @@ public class SystemBean {
   public String getUserRole() {
     return SessionUtils.getUserObj().getRole();
   }
-
 }

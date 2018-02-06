@@ -18,7 +18,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import io.openliberty.guides.common.JsonMessages;
-import io.openliberty.guides.inventory.util.InventoryUtil;
+import io.openliberty.guides.inventory.client.SystemClient;
 
 // CDI
 import javax.enterprise.context.ApplicationScoped;
@@ -31,8 +31,8 @@ public class InventoryManager {
     private ConcurrentMap<String, JsonObject> inv = new ConcurrentHashMap<>();
 
     public JsonObject get(String hostname, String authHeader) {
-        if (InventoryUtil.responseOk(hostname, authHeader)) {
-            JsonObject properties = InventoryUtil.getProperties(hostname, authHeader);
+        if (SystemClient.responseOk(hostname, authHeader)) {
+            JsonObject properties = SystemClient.getProperties(hostname, authHeader);
             inv.putIfAbsent(hostname, properties);
             return properties;
         } else {

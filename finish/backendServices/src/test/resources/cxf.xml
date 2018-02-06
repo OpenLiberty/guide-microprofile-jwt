@@ -3,7 +3,7 @@
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
- 
+
   Contributors:
   IBM Corporation - initial API and implementation
 -->
@@ -21,7 +21,7 @@
       http://cxf.apache.org/schemas/configuration/http-conf.xsd
       http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
- 
+
   <!-- We want to affect all HTTP traffic from this client. -->
   <http:conduit name="*.http-conduit">
     <http:tlsClientParameters>

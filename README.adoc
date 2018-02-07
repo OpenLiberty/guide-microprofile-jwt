@@ -124,12 +124,12 @@ The `getGroups(@Context SecurityContext securityContext)` method gets the groups
 The `getStatus(@Context SecurityContext securityContext)` method is used to get the status of the machine from the provided SecurityContext if the request is in the group admin.
 
 // =================================================================================================
-// Edit the InventoryResource class
+// Add the InventoryResource class
 // =================================================================================================
 
-=== Editing the InventoryResource class
+=== Add the InventoryResource class
 
-Open the class `InventoryResource.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/` to add code to return the JWT token with all HTTP requests.
+Create the class `InventoryResource.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/` to add code to return the JWT token with all HTTP requests.
 
 [source, java, indent=0]
 ----
@@ -146,27 +146,27 @@ The following code `String authHeader = httpHeaders.getRequestHeaders().getFirst
 The final addition of code is `return Response.ok(manager.get(hostname, authHeader), MediaType.APPLICATION_JSON).build();` that adds the authHeader String created above to the HTTP GET response.
 
 // =================================================================================================
-// Edit the InventoryUlti class
+// Add the ClientCore class
 // =================================================================================================
 
-=== Edit the InventoryUlti class
+=== Add the ClientCore class
 
-Edit the class `InventoryUlti.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/util/InventoryUtil.java` to add code to return the auth header in the GET requests.
+Add the class `ClientCore.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/client/ClientCore.java` to add code to return the auth header in the GET requests.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/util/InventoryUtil.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/ClientCore.java[tags=!copyright,!doc]
 ----
 
 Not sure why required changes have been made... Need to talk to developer on Monday.
 
 // =================================================================================================
-// Edit the SystemResource class
+// Add the SystemResource class
 // =================================================================================================
 
-=== Edit the SystemResource class
+=== Add the SystemResource class
 
-Edit the class `SystemResource.java` in `finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` to add code to return the auth header in the GET requests.
+Add the `SystemResource.java` class in `finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` to add code to return the auth header in the GET requests.
 
 [source, java, indent=0]
 ----

@@ -19,11 +19,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Context;
+
 //JWT Imports
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
+
 
 @RequestScoped
 @Path("jwt")

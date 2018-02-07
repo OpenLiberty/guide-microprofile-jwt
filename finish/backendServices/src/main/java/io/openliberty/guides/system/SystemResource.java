@@ -20,9 +20,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 
 @RequestScoped
+@DeclareRoles({"admin", "user"})
 @Path("properties")
 public class SystemResource {
 

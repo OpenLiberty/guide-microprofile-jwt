@@ -12,6 +12,7 @@
  // end::copyright[]
 package io.openliberty.guides.ui.util;
 
+
 import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -98,6 +99,7 @@ public class ServiceUtils {
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
+
     }
 
     public static boolean invOkHelper(String authHeader) {
@@ -109,5 +111,10 @@ public class ServiceUtils {
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
+
     }
+
+
+
+
 }

@@ -22,7 +22,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Context;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
+
 
 @RequestScoped
 @Path("hosts")

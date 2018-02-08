@@ -171,8 +171,6 @@ public class JWTVerifier {
     InputStream ksStream = this.getClass().getResourceAsStream(this.keystorePath);
     char[] password = new String("secret").toCharArray();
     ks.load(ksStream, password);
-    // System.out.println(this.keystorePath);
-    // System.out.println(headerClaimsEnc);
 
     // Get the private key to use to sign the JWT.  Normally we would not do this but
     // we are pretending to be the backend service here.
@@ -186,8 +184,6 @@ public class JWTVerifier {
     sig.initSign(privateKey);
     sig.update(headerClaimsEnc.getBytes());
     String sigEnc = Base64Utility.encode(sig.sign(), true);
-
-
 
     // Lets just check......
     String jwtEnc = headerClaimsEnc + "." + sigEnc;
@@ -239,10 +235,9 @@ public class JWTVerifier {
         .generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
   }
 
-  public JsonObject toJsonObj(String json) {
-    try (JsonReader jReader = Json.createReader(new StringReader(json))) {
-      return jReader.readObject();
-    }
+  public static JsonObject toJsonObj(String json) {
+      JsonReader jReader = Json.createReader(new StringReader(json));
+        return jReader.readObject();
   }
 
   private Response processRequest(String url, String method, String payload, String authHeader) {

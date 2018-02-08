@@ -1,4 +1,4 @@
-package it.io.openliberty.guides.util;
+package it.io.openliberty.guides.jwt.util;
 
 import java.io.StringReader;
 import javax.json.Json;

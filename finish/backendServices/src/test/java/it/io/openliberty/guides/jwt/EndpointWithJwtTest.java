@@ -1,4 +1,17 @@
-package it.io.openliberty.guides;
+// tag::copyright[]
+/*******************************************************************************
+ * Copyright (c) 2017, 2018 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Initial implementation
+ *******************************************************************************/
+// end::copyright[]
+// tag::test[]
+package it.io.openliberty.guides.jwt;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,7 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
-import it.io.openliberty.guides.util.TestUtils;
+import it.io.openliberty.guides.jwt.util.TestUtils;
 import test.JWTVerifier;
 
 public class EndpointWithJwtTest {
@@ -48,8 +61,8 @@ public class EndpointWithJwtTest {
 
     assertEquals("The system property for the local and remote JVM should match",
         System.getProperty("os.name"), responseJson.getString("os.name"));
-    System.out.println(responseJson.getString("os.name"));
-    System.out.println(propUrl);
+    // System.out.println(responseJson.getString("os.name"));
+    // System.out.println(propUrl);
 
   }
 
@@ -66,15 +79,14 @@ public class EndpointWithJwtTest {
 
     assertEquals("The inventory should be empty on application start", 0,
         responseJson.getInt("total"));
-    System.out.println(responseJson.getInt("total"));
-    System.out.println(invUrl);
+    // System.out.println(responseJson.getInt("total"));
+    // System.out.println(invUrl);
 
   }
 
   public void testHostRegistrationWithJWT() {
     String invUrl = baseUrl + INVENTORY_HOSTS + "/localhost";
     Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
-    System.out.println(invUrl);
 
     assertEquals(
         "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
@@ -85,9 +97,10 @@ public class EndpointWithJwtTest {
 
     assertEquals("The inventory should get the os.name of localhost",
         System.getProperty("os.name"), responseJson.getString("os.name"));
-    System.out.println(responseJson.getString("os.name"));
-    System.out.println(invUrl);
+    // System.out.println(responseJson.getString("os.name"));
+    // System.out.println(invUrl);
 
   }
 
 }
+// end::test[]

@@ -26,32 +26,17 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.net.URI;
 
 public class ServiceUtils {
 
     // Constants for building URI to the system service.
-    private static final String DEFAULT_PORT = "5051";
+    private static final int DEFAULT_PORT = Integer.valueOf(System.getProperty("backend.https.port"));
+    private static final String HOSTNAME = System.getProperty("backend.hostname");
+    private static final String SECURED_PROTOCOL = "https";
     private static final String SYSTEM_PROPERTIES = "/system/properties";
-    private static final String INVENTORY_HOSTS = "/inventory/hosts";
-    private static final String HOSTNAME = "localhost";
+    private static final String INVENTORY_HOSTS = "/inventory/systems";
 
-    public static Response processRequest(String url, String method, String payload, String authHeader) {
-      Client client = ClientBuilder.newClient();
-      WebTarget target = client.target(url);
-      Builder builder = target.request();
-      builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-      if (authHeader != null) {
-        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
-      }
-      return (payload != null)
-          ? builder.build(method, Entity.json(payload)).invoke()
-          : builder.build(method).invoke();
-    }
-
-    public static JsonObject toJsonObj(String json) {
-        JsonReader jReader = Json.createReader(new StringReader(json));
-          return jReader.readObject();
-    }
 
     /**
      * <p>Creates a JAX-RS client that retrieves the JVM system properties for the particular host
@@ -60,10 +45,7 @@ public class ServiceUtils {
     public static JsonObject getPropertiesHelper(String authHeader) {
 
         // Get system properties by using JWT token
-        String propUrl = "https://"
-            + HOSTNAME
-            + ":"
-            + DEFAULT_PORT + SYSTEM_PROPERTIES;
+        String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
         Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
         JsonObject responseJson = toJsonObj(propResponse.readEntity(String.class));
@@ -74,10 +56,7 @@ public class ServiceUtils {
     public static JsonObject getInventoryHelper(String authHeader) {
 
         // Get system properties by using JWT token
-        String invUrl = "https://"
-            + HOSTNAME
-            + ":"
-            + DEFAULT_PORT + INVENTORY_HOSTS;
+        String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
         Response invResponse = processRequest(invUrl, "GET", null, authHeader);
 
         JsonObject responseJson = toJsonObj(invResponse.readEntity(String.class));
@@ -92,10 +71,7 @@ public class ServiceUtils {
      */
     public static boolean responseOkHelper(String authHeader) {
           // Get system properties by using JWT token
-          String propUrl = "https://"
-              + HOSTNAME
-              + ":"
-              + DEFAULT_PORT + SYSTEM_PROPERTIES;
+          String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
@@ -104,14 +80,41 @@ public class ServiceUtils {
 
     public static boolean invOkHelper(String authHeader) {
           // Get system properties by using JWT token
-          String propUrl = "https://"
-              + HOSTNAME
-              + ":"
-              + DEFAULT_PORT + INVENTORY_HOSTS;
+          String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
           Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
 
+    }
+
+
+    public static String buildUrl(String protocol, String host, int port, String path) {
+      try {
+        URI uri = new URI(protocol, null, host, port, path, null, null);
+        return uri.toString();
+      } catch (Exception e) {
+        System.out.println("URISyntaxException");
+        return null;
+      }
+    }
+
+    public static Response processRequest(String url, String method, String payload, String authHeader) {
+      Client client = ClientBuilder.newClient();
+      WebTarget target = client.target(url);
+      Builder builder = target.request();
+      builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+      if (authHeader != null) {
+        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+      }
+      return (payload != null)
+          ? builder.build(method, Entity.json(payload)).invoke()
+          : builder.build(method).invoke();
+    }
+
+
+    public static JsonObject toJsonObj(String json) {
+        JsonReader jReader = Json.createReader(new StringReader(json));
+          return jReader.readObject();
     }
 
 

@@ -1,11 +1,11 @@
 mvn clean install
 
-mvn package -P start-servers -pl runApp
+mvn liberty:start-server
 
-mvn package -P stop-servers -pl runApp
+mvn liberty:stop-server
 
 front end
-https://localhost:9091/system.jsf
+http://localhost:9090/system.jsf
 
 back end:
 https://localhost:5051/inventory/hosts

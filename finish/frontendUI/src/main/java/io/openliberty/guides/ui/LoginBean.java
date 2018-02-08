@@ -1,3 +1,15 @@
+// tag::copyright[]
+/*******************************************************************************
+ * Copyright (c) 2017 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Initial implementation
+ *******************************************************************************/
+// end::copyright[]
 package io.openliberty.guides.ui;
 
 import javax.servlet.*;
@@ -68,7 +80,7 @@ public class LoginBean {
     }
     return "system.jsf";
   }
-
+    // tag::doc[]
     /**
      * Build a JWT that will be used by an authenticated user. The JWT wil be in the correct group and
      * should contain the username as defined by MP JWT.
@@ -86,6 +98,7 @@ public class LoginBean {
           .buildJwt()
           .compact();
     }
+    //end::doc[]
 
   private String getRole(HttpServletRequest request) {
     // to check if remote user is granted admin role

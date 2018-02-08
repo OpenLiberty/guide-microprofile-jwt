@@ -36,30 +36,22 @@ public class SystemClient {
   private boolean status;
   private Properties content;
 
-  /**
-   * Used by the following guide(s): CDI, MP-METRICS
-   */
+  // Used by the following guide(s): CDI, MP-METRICS
   public SystemClient(String hostname) {
     init(PROTOCOL, hostname, DEFAULT_PORT, null);
   }
 
-  /**
-   * Used by the following guide(s): MP-CONFIG, MP-HEALTH, FAULT-TOLERANCE
-   */
+  // Used by the following guide(s): MP-CONFIG, MP-HEALTH, FAULT-TOLERANCE
   public SystemClient(String hostname, int port) {
     init(PROTOCOL, hostname, port, null);
   }
 
-  /**
-   * Used by the following guide(s): MP-JWT
-   */
+  // Used by the following guide(s): MP-JWT
   public SystemClient(String hostname, String authHeader) {
     init(SECURED_PROTOCOL, hostname, DEFAULT_PORT, authHeader);
   }
 
-  /**
-   * Helper function to set the attributes.
-   */
+  // Helper function to set the attributes.
   private void init(String protocol, String hostname, int port, String authHeader) {
     this.setUrl(protocol, hostname, port, SYSTEM_PROPERTIES);
     this.setStatus(authHeader);
@@ -68,27 +60,22 @@ public class SystemClient {
     }
   }
 
-  /**
-   * URL getter
-   */
+  // URL getter
   public String getUrl() {
     return this.url;
   }
 
-  /**
-   * Status getter
-   */
+  // Status getter
   public boolean isResponseOk() {
     return this.status;
   }
 
-  /**
-   * Content getter
-   */
+  // Content getter
   public Properties getContent() {
     return this.content;
   }
 
+  // tag::doc[]
   /**
    * <p>
    * Builds the URI string to the system service for a particular host. This is
@@ -105,6 +92,7 @@ public class SystemClient {
    *          - Note that the path needs to start with a slash!!!
    * @return String representation of the URI to the system properties service.
    */
+  // end::doc[]
   private void setUrl(String protocol, String host, int port, String path) {
     try {
       URI uri = new URI(protocol, null, host, port, path, null, null);
@@ -115,9 +103,7 @@ public class SystemClient {
     }
   }
 
-  /**
-   * Status setter
-   */
+  // Status setter
   private void setStatus(String authHeader) {
     try {
       URL target = new URL(this.url);
@@ -133,9 +119,7 @@ public class SystemClient {
     }
   }
 
-  /**
-   * Content setter
-   */
+  // Content setter
   private void setContent(String authHeader) {
     Client client = ClientBuilder.newClient();
     Builder builder = client.target(this.url).request();
@@ -146,5 +130,4 @@ public class SystemClient {
     Response response = builder.build("GET").invoke();
     this.content = response.readEntity(Properties.class);
   }
-
 }

@@ -12,7 +12,6 @@
  // end::copyright[]
 package io.openliberty.guides.ui.util;
 
-
 import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -37,11 +36,12 @@ public class ServiceUtils {
     private static final String SYSTEM_PROPERTIES = "/system/properties";
     private static final String INVENTORY_HOSTS = "/inventory/systems";
 
-
+    // tag::doc[]
     /**
      * <p>Creates a JAX-RS client that retrieves the JVM system properties for the particular host
      * on the given port number.</p>
      */
+    // end::doc[]
     public static JsonObject getPropertiesHelper(String authHeader) {
 
         // Get system properties by using JWT token
@@ -64,11 +64,12 @@ public class ServiceUtils {
         return responseJson;
     }
 
-
+    // tag::doc[]
     /**
      * <p>Returns whether or not a particular host is running the system service on the
      * given port number.</p>
      */
+    // end::doc[]
     public static boolean responseOkHelper(String authHeader) {
           // Get system properties by using JWT token
           String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
@@ -86,7 +87,6 @@ public class ServiceUtils {
           return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
 
     }
-
 
     public static String buildUrl(String protocol, String host, int port, String path) {
       try {
@@ -111,13 +111,8 @@ public class ServiceUtils {
           : builder.build(method).invoke();
     }
 
-
     public static JsonObject toJsonObj(String json) {
         JsonReader jReader = Json.createReader(new StringReader(json));
           return jReader.readObject();
     }
-
-
-
-
 }

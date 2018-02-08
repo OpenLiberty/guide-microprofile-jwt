@@ -29,12 +29,13 @@ import java.security.Principal;
 @RequestScoped
 @Path("jwt")
 public class JwtResource {
-
+  // tag::doc[]
   /**
    * The JWT of the current caller. Since this is a request scoped resource, the
    * JWT will be injected for each JAX-RS request. The injection is performed by
    * the mpJwt-1.0 feature.
    */
+  // end::doc[]
   @Inject
   private JsonWebToken jwtPrincipal;
 

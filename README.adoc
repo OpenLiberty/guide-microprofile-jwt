@@ -5,14 +5,17 @@
 //
 // Contributors:
 //   IBM Corporation
-:projectid: mp-jwt
+:projectid: microprofile-jwt
 :page-layout: guide
-:page-duration: 30 minutes
-:page-description: Learn how to use the MicroProfile JWT API in an application
-:page-tags: ['JWT' , 'MicroProfile' , 'REST']
+:page-duration: 15 minutes
+:page-releasedate: 2017-12-11
+:page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
+:page-tags: ['JWT', 'MP-JWT']
 :page-permalink: /guides/{projectid}
+:page-related-guides: ['cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
+
 = Adding security using java web tokens (JWT) to your microservices
 
 Learn how to control user and role access to microservices using MicroProfile JWT
@@ -29,7 +32,7 @@ One of the main strategies to propagate the security state from clients to servi
 For RESTful based microservices, security tokens offer a very lightweight and interoperable way to propagate identities across different services.
 
 You will add JWT security and authentication to the microservices provided: `PropertiesResource` and `InventoryResource` while we provide you with a simple front end to handle the authentification.
-If you want to learn how to create a RESTful application, see 
+If you want to learn how to create a RESTful application, see
 https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service].
 
 // =================================================================================================
@@ -55,7 +58,7 @@ cd guide-mp-jwt/start
 
 === Try what you'll build
 
-The `finish` directory in the root of this guide contains the finished 
+The `finish` directory in the root of this guide contains the finished
 JWT security implementation for the services in the application. Feel free to give it a try before you proceed with building your own.
 
 To try out the application, first navigate to the `finish` directory and then execute the following
@@ -63,16 +66,16 @@ Maven goals to build the application and run it inside Open Liberty:
 
 ```
 mvn clean install
-mvn package -P start-servers -pl runApp
+mvn liberty:start-server
 
 ```
 
-Point your browser to Front-end web application endpoint: `\front end https://localhost:9091/system.jsf`. From here you have the ability to log into the system using the form based login provided. Use the admin username and password `Username: bob` `Password: pwd` then click the log in button. You should now be redirected to a another page with that will display the logged in User, the current OS of that user and the web toekn that is being used by the front-end to access the data.
+Point your browser to Front-end web application endpoint: `http://localhost:9090/system.jsf`. From here you have the ability to log into the system using the form based login provided. Use the admin username and password `Username: bob` `Password: pwd` then click the log in button. You should now be redirected to a another page with that will display the logged in User, the current OS of that user and the web token that is being used by the front-end to access the data.
 
 Once you are done checking out the application, stop the Open Liberty server:
 
 ```
-mvn package -P stop-servers -pl runApp
+mvn liberty:stop-server
 ```
 
 Now, navigate back to the `start` directory to begin.
@@ -203,7 +206,7 @@ This class contains two constuctors:
 
 `PasswordUtility(String userPassword)` takes a clear text password and generates a salt and the hashed password for storing in the database.
 
-`PasswordUtility(String userPassword, String saltString)` takes the password and a pre generated salt to create a hashed password. 
+`PasswordUtility(String userPassword, String saltString)` takes the password and a pre generated salt to create a hashed password.
 Plus two methods:
 
 `public String getSalt()` gets the salt as a string.
@@ -234,24 +237,12 @@ The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to
 
 == Building and running the application
 
-To build the application, run the Maven install goal from the command line:
-
-  mvn clean install
-
-This goal builds the application and creates a .war file in the target directory. The goal also
-configures and installs Open Liberty into the target/liberty/wlp directory.
-
-Next, run the Maven liberty:start-server goal:
-
-  mvn package -P start-servers -pl runApp
-
-This goal starts an Open Liberty server instance. Your Maven pom.xml is already configured to
-start the application in this server instance.
+include::{common-includes}/mvnbuild.adoc[]
 
 Once the server is running, you can find the health endpoint
 reporting the state of the two services at the following URL:
 
-* `\http://localhost:9080/health`
+* `http://localhost:9090/system.jsf`
 
 Now, try to turn the `InventoryResource` service down (i.e. in maintenance) by changing the
 property `io_openliberty_guides_inventory_inMaintenance` value to `true`. This property is found in
@@ -260,14 +251,7 @@ property `io_openliberty_guides_inventory_inMaintenance` value to `true`. This p
 verify that by pointing your browser to the inventory service endpoint. As you can see, the service is responding
 with a message telling you that it is in maintenance.
 
-If you make changes to the code, use the Maven package goal to rebuild the application and have
-the running Open Liberty server pick them up automatically:
-
-  mvn package
-
-To stop the Open Liberty server, run the Maven liberty:stop-server goal:
-
-  mvn liberty:stop-server
+include::{common-includes}/mvnpackage.adoc[]
 
 --------------------Not yet finished-----------------------
 // =================================================================================================
@@ -277,7 +261,7 @@ To stop the Open Liberty server, run the Maven liberty:stop-server goal:
 == Testing Services States
 
 You will write two test methods `testIfApplicationIsUp()` and `testIfInventoryServiceIsDown()` to
-validate the state of the Inventory Manager Application among with the `PropertiesResource` and `InventoryResource` services. 
+validate the state of the Inventory Manager Application among with the `PropertiesResource` and `InventoryResource` services.
 
 Begin by creating a test class src/test/java/it/io/openliberty/guides/health/HealthTest.java:
 
@@ -300,11 +284,11 @@ application after adding health checks.
 
     *** `connectToHealthEndpoint()` method sends a request to `\http://localhost:9080/health` then
     verifies the `200` response code is returned. This method also reads the response as `JsonArray` which contains the states
-    of the two services. The `JsonArray` is used to compare with the expected service states. 
+    of the two services. The `JsonArray` is used to compare with the expected service states.
 
     *** `getActualState()` method returns the state (`UP` or `DOWN`) of a specific service
     from the `JsonArray` object that is passed as an argument to it.
-    
+
     *** `checkServicesStates()` method verifies and asserts the actual states of both services.
 
 * The `testIfInventoryServiceIsDown()` method follows the similar procedure as in the previous test

@@ -92,12 +92,17 @@ use the MicroProfile JWT API to provide token based authentication to your RESTf
 Navigate to the start/pom.xml file and add the required dependency:
 
 [source, xml, indent=0]
-----
-include::finish/pom.xml[tags=jwt]
-----
+```
+            <dependency>
+                <groupId>org.eclipse.microprofile.jwt</groupId>
+                <artifactId>microprofile-jwt-auth-api</artifactId>
+                <version>${version.microprofile.api.jwt}</version>
+                <scope>provided</scope>
+            </dependency>
+```
 
-Proceed with the two sections below to add JWT authentication to the `PropertiesResource` and
-`InventoryResource` services.
+Proceed with the two sections below to add JWT authentication to the back-end and
+front-end services.
 
 // =================================================================================================
 // Adding the JWT Resource class
@@ -109,7 +114,7 @@ Create `JwtResource.java` class in `/start/backendServices/src/main/java/io/open
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=!copyright;!doc]
 ----
 
 The `org.eclipse.microprofile.jwt,JsonWebToken` contians the classes required to create and use the Java Web Token.
@@ -136,7 +141,7 @@ Create the class `InventoryResource.java` in `/start/backendServices/src/main/ja
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=!copyright;!doc]
 ----
 
 The `import javax.annotation.security.DenyAll;`
@@ -149,19 +154,19 @@ The following code `String authHeader = httpHeaders.getRequestHeaders().getFirst
 The final addition of code is `return Response.ok(manager.get(hostname, authHeader), MediaType.APPLICATION_JSON).build();` that adds the authHeader String created above to the HTTP GET response.
 
 // =================================================================================================
-// Add the ClientCore class
+// Add the SystemClient class
 // =================================================================================================
 
-=== Add the ClientCore class
+=== Add the SystemClient class
 
-Add the class `ClientCore.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/client/ClientCore.java` to add code to return the auth header in the GET requests.
+Add the class `SystemClient.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java` to add code to return the auth header in the GET requests.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/ClientCore.java[tags=!copyright,!doc]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[tags=!copyright;!doc]
 ----
 
-Not sure why required changes have been made... Need to talk to developer on Monday.
+Not sure why required changes have been made... Need to talk to developer!
 
 // =================================================================================================
 // Add the SystemResource class
@@ -173,7 +178,7 @@ Add the `SystemResource.java` class in `finish/backendServices/src/main/java/io/
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=!copyright;!doc]
 ----
 
 The `import javax.annotation.security.RolesAllowed;` import allows roles access to methods.
@@ -195,11 +200,11 @@ We have provided you with a very simple front-end web application to allow you t
 
 === Creating a User Object
 
-Create a class `User.java` in `/start/microservice-user/src/main/java/io/openliberty/guides/user/` to create a user object that can be used to authenticte against.
+Create a class `User.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to create a user object that can be used to authenticte against.
 
 [source, java, indent=0]
 ----
-include::finish\frontendUI\src\main\java\io\openliberty\guides\ui/User.java[]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/User.java[tags=!copyright;!doc]
 ----
 
 This class contains two constuctors:
@@ -219,16 +224,29 @@ Plus two methods:
 
 === Creating the login bean
 
-Create a class `LoginBean.java` in `/start/microservice-user/src/main/java/io/openliberty/guides/user/` to store information about a different users.
+Create a class `LoginBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to store information about a different users.
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=!copyright;!doc]
 ----
 
 The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to create the JWT token.
 
+// =================================================================================================
+// Creating the system bean
+// =================================================================================================
 
+=== Creating the system bean
+
+Create a class `SystemBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui` to store information about a different users.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=!copyright;!doc]
+----
+
+The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to create the JWT token.
 
 
 // =================================================================================================
@@ -255,10 +273,10 @@ include::{common-includes}/mvnpackage.adoc[]
 
 --------------------Not yet finished-----------------------
 // =================================================================================================
-// Testing Services States
+// Testing JWT Authentication
 // =================================================================================================
 
-== Testing Services States
+== Testing JWT Authentication
 
 You will write two test methods `testIfApplicationIsUp()` and `testIfInventoryServiceIsDown()` to
 validate the state of the Inventory Manager Application among with the `PropertiesResource` and `InventoryResource` services.

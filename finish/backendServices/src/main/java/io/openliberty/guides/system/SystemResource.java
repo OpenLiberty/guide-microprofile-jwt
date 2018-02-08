@@ -12,34 +12,26 @@
  // end::copyright[]
 package io.openliberty.guides.system;
 
+import java.util.Properties;
+
+// CDI
 import javax.enterprise.context.RequestScoped;
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
+// JAX-RS
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.annotation.security.DeclareRoles;
+
 import javax.annotation.security.RolesAllowed;
 
 @RequestScoped
-@DeclareRoles({"admin", "user"})
 @Path("properties")
 public class SystemResource {
 
     @GET
     @RolesAllowed({"admin", "user"})
-    @Produces("application/json")
-    public Response getProperties() {
-
-      JsonObjectBuilder responseBuilder = Json.createObjectBuilder();
-      System.getProperties()
-            .entrySet()
-            .stream()
-            .forEach(entry -> responseBuilder.add((String)entry.getKey(),
-                                          (String)entry.getValue()));
-
-      return Response.ok(responseBuilder.build(), MediaType.APPLICATION_JSON).build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Properties getProperties() {
+      return System.getProperties();
     }
 }

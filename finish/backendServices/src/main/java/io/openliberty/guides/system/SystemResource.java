@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
  // end::copyright[]
+ // tag::jwt[]
 package io.openliberty.guides.system;
 
 import java.util.Properties;
@@ -35,3 +36,4 @@ public class SystemResource {
       return System.getProperties();
     }
 }
+// end::jwt[]

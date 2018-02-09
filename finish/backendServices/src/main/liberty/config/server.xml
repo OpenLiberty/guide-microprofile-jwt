@@ -7,6 +7,7 @@
   Contributors:
   IBM Corporation - initial API and implementation
 -->
+<!-- tag::jwt[] -->
 <server description="Backend server">
     <featureManager>
         <feature>microProfile-1.0</feature>
@@ -44,3 +45,4 @@
     <mpJwt id="jwtUserConsumer" keyName="default"
            audiences="simpleapp" issuer="${jwt.issuer}"/>
 </server>
+<!-- end::jwt[] -->

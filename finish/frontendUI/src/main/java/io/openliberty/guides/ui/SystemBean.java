@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import javax.faces.bean.ManagedBean;
@@ -59,5 +60,5 @@ public class SystemBean {
   public String getUserRole() {
     return SessionUtils.getUserObj().getRole();
   }
-
 }
+// end::jwt[]

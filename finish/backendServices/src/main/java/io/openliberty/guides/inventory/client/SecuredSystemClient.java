@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.inventory.client;
 
 import javax.ws.rs.client.Invocation.Builder;
@@ -30,9 +31,9 @@ public class SecuredSystemClient extends SystemClient {
 
   // Overiding the parent method to set the attributes.
   public void init(String hostname, String authHeader) {
-    this.url = buildUrl(SECURED_PROTOCOL, hostname, DEFAULT_SEC_PORT,
+    this.url = this.buildUrl(SECURED_PROTOCOL, hostname, DEFAULT_SEC_PORT,
         SYSTEM_PROPERTIES);
-    this.clientBuilder = buildClientBuilder(authHeader);
+    this.clientBuilder = this.buildClientBuilder(authHeader);
   }
 
   public String buildUrl(String protocol, String host, int port, String path) {
@@ -48,3 +49,4 @@ public class SecuredSystemClient extends SystemClient {
     return super.getPropertiesHelper(this.clientBuilder);
   }
 }
+// end::jwt[]

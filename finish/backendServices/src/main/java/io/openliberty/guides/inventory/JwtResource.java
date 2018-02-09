@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.inventory;
 
 import java.util.Set;
@@ -62,7 +63,7 @@ public class JwtResource {
   @GET
   @RolesAllowed({ "admin", "user" })
   @Path("/customClaim")
-  public Response getStatus(@Context SecurityContext securityContext) {
+  public Response getCustomClaim(@Context SecurityContext securityContext) {
     String customClaim;
     if (securityContext.isUserInRole("admin")) {
       customClaim = jwtPrincipal.getClaim("customClaim");
@@ -72,3 +73,4 @@ public class JwtResource {
     return Response.ok(customClaim).build();
   }
 }
+// end::jwt[]

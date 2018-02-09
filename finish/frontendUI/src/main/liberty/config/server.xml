@@ -1,3 +1,4 @@
+<!-- tag::jwt[] -->
 <server description="Sample Liberty server">
 
   <featureManager>
@@ -53,3 +54,4 @@
               keyAlias="default" audiences="simpleapp" jti="true"/>
 
 </server>
+<!-- end::jwt[] -->

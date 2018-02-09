@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.ui.util;
 
 import javax.faces.context.FacesContext;
@@ -49,3 +50,4 @@ public class SessionUtils {
   }
 
 }
+// end::jwt[]

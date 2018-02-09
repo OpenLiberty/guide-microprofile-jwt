@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
@@ -61,3 +62,4 @@ public class InventoryResource {
       return manager.list();
     }
 }
+// end::jwt[]

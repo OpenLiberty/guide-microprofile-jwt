@@ -10,6 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import javax.servlet.*;
@@ -109,3 +110,4 @@ public class LoginBean {
     return "user";
   }
 }
+// end::jwt[]

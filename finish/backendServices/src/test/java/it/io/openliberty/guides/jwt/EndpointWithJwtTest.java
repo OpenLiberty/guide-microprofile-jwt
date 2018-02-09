@@ -61,8 +61,8 @@ public class EndpointWithJwtTest {
 
     assertEquals("The system property for the local and remote JVM should match",
         System.getProperty("os.name"), responseJson.getString("os.name"));
-    // System.out.println(responseJson.getString("os.name"));
-    // System.out.println(propUrl);
+    System.out.println(responseJson.getString("os.name"));
+    System.out.println(propUrl);
 
   }
 
@@ -79,8 +79,8 @@ public class EndpointWithJwtTest {
 
     assertEquals("The inventory should be empty on application start", 0,
         responseJson.getInt("total"));
-    // System.out.println(responseJson.getInt("total"));
-    // System.out.println(invUrl);
+    System.out.println(responseJson.getInt("total"));
+    System.out.println(invUrl);
 
   }
 
@@ -97,8 +97,8 @@ public class EndpointWithJwtTest {
 
     assertEquals("The inventory should get the os.name of localhost",
         System.getProperty("os.name"), responseJson.getString("os.name"));
-    // System.out.println(responseJson.getString("os.name"));
-    // System.out.println(invUrl);
+    System.out.println(responseJson.getString("os.name"));
+    System.out.println(invUrl);
 
   }
 

@@ -18,7 +18,7 @@
 
 = Adding security using java web tokens (JWT) to your microservices
 
-Learn how to control user and role access to microservices using MicroProfile JWT
+Learn how to control user and role access to microservices using MicroProfile JWT.
 
 // =================================================================================================
 //  What you'll learn
@@ -200,7 +200,7 @@ We have provided you with a very simple front-end web application to allow you t
 
 === Creating a User Object
 
-Create a class `User.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to create a user object that can be used to authenticte against.
+Create a class `User.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to create a user object that can be used to authenticate against.
 
 [source, java, indent=0]
 ----
@@ -278,52 +278,51 @@ include::{common-includes}/mvnpackage.adoc[]
 
 == Testing JWT Authentication
 
-You will write two test methods `testIfApplicationIsUp()` and `testIfInventoryServiceIsDown()` to
-validate the state of the Inventory Manager Application among with the `PropertiesResource` and `InventoryResource` services.
+You will write two test classes `EndpointWithJwtTest` and `JwtTest` to
+validate the state of each service.
 
-Begin by creating a test class src/test/java/it/io/openliberty/guides/health/HealthTest.java:
+Begin by creating a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/EndpointWithJwtTest.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/HealthTest.java[tags=HealthTest]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/EndpointWithJwtTest.java[tags=test]
 ----
 
-The @Before and @After annotations are placed on methods that execute before and after every test
-case. These methods are generally used to perform any setup and teardown tasks.
-In this case, the `setup()` method initializes the fields. They are the `JsonArray` that hold the states
-of the services, the two maps for storing the states when the services are up and when they are
-down and the constant to hold the property that will be read. `The teardown()` method simply resets
-the property's value.
+In the `setup()` before test cases, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and role as `admin`.
+Then, this authorization header is added when the test client tries to send a `get` request to a secured service to retrieve any information.
 
-There are few test case methods annotated with `@Test` to test the functionality of the inventory
-application after adding health checks.
+Each test case tries to first assert that, with a valid authorization header, it can can get a `Status.OK` code from the response.
+If the response returns a `Status.FORBIDDEN` code, which means the authorization header is invalid, the test will fail.
 
-* The `testIfApplicationIsUp()` method checks if the application outcome is currently `UP`. This means both services' healthy states are `UP`.  This test uses these helper methods:
+After assuring the response code is correct, each test tries to get the content from the designated endpoint and compares the result with its expected value.
 
-    *** `connectToHealthEndpoint()` method sends a request to `\http://localhost:9080/health` then
-    verifies the `200` response code is returned. This method also reads the response as `JsonArray` which contains the states
-    of the two services. The `JsonArray` is used to compare with the expected service states.
+Then, create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 
-    *** `getActualState()` method returns the state (`UP` or `DOWN`) of a specific service
-    from the `JsonArray` object that is passed as an argument to it.
+[source, java, indent=0]
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
+----
 
-    *** `checkServicesStates()` method verifies and asserts the actual states of both services.
+Similarly, in the `setup()` step of the `JwtTest`, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and role as `user`.
+Then, this authorization header is added when the test client tries to send a `get` request to a secured JWT service.
 
-* The `testIfInventoryServiceIsDown()` method follows the similar procedure as in the previous test
-case. It first checks if the application outcome is `UP`. Next, the `io.openliberty.guides.microprofile.inventory.inMaintenance` property value is changed from `false` to `true` in the `CustomConfigSource.json` file. With the property update, we send a request to check the health outcome again. This time the expected code should be 503. Lastly, we validate the state of the `InventoryResource` service by asserting if
-it is `DOWN` but the `ProeprtiesResource` service is `UP`.
+The `testJWTGetName()` tries to access the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token, and verify
+if the username is same as `TESTUSER`.
 
-=== Running the tests
+The `testJWTGetCustomClaim()` tries to access the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Since this service is secured, and only accessible for users who have the `admin` role,
+the test is asserting that the current test user who has a normal `user` role is forbidden from accessing it.
 
-Go to `start` directory and run `mvn clean install`. You should see two tests pass with the following
-results:
+include::{common-includes}/mvnverify.adoc[]
 
 ```
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.microprofile.HealthTest
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.912 sec - in it.io.openliberty.guides.microprofile.HealthTest
+Running it.io.openliberty.guides.jwt.EndpointWithJwtTest
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.444 sec - in it.io.openliberty.guides.jwt.EndpointWithJwtTest
+Running it.io.openliberty.guides.jwt.JwtTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.086 sec - in it.io.openliberty.guides.jwt.JwtTest
 
 Results :
 

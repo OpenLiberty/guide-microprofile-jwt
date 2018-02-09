@@ -195,28 +195,19 @@ We have provided you with a very simple front-end web application to allow you t
 
 
 // =================================================================================================
-// Creating a User Object
+// The User Object
 // =================================================================================================
 
-=== Creating a User Object
+=== The User Object
 
-Create a class `User.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to create a user object that can be used to authenticate against.
+Open the class `User.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` this is a user object that can be used to authenticate against the back end.
 
 [source, java, indent=0]
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/User.java[tags=!copyright;!doc]
 ----
 
-This class contains two constuctors:
-
-`PasswordUtility(String userPassword)` takes a clear text password and generates a salt and the hashed password for storing in the database.
-
-`PasswordUtility(String userPassword, String saltString)` takes the password and a pre generated salt to create a hashed password.
-Plus two methods:
-
-`public String getSalt()` gets the salt as a string.
-
-`public String getHashedPassword` gets the hashed password as a string.
+This is just a simple Java object that contains information regarding a user. It has `get` and `set` methods for the username, password and role.
 
 // =================================================================================================
 // Creating the login bean
@@ -224,7 +215,7 @@ Plus two methods:
 
 === Creating the login bean
 
-Create a class `LoginBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to store information about a different users.
+Create a class `LoginBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` to handle log in requests to the back-end and create the JWT token required for authentication.
 
 [source, java, indent=0]
 ----
@@ -233,21 +224,55 @@ include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java
 
 The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to create the JWT token.
 
+The `doLogIn()` method logs into the back end system by creating a user object and a JWT token. It will then create a http session used for continued access to the back end system.
+
+The `buildJWT(String userName, String role)` method is used to create a JWT token for a given user.
+
+The `getRole(HttpServletRequest request)` method returns the role for a user which is either `admin` or `user`.
+
 // =================================================================================================
 // Creating the system bean
 // =================================================================================================
 
 === Creating the system bean
 
-Create a class `SystemBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui` to store information about a different users.
+Create a class `SystemBean.java` in `/start/frontendUI/src/main/java/io/openliberty/guides/ui` to get information about the currently logged in user.
 
 [source, java, indent=0]
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=!copyright;!doc]
 ----
 
-The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to create the JWT token.
+The `getOs()` method returns a String of the operating system for the session from the back-end by doing a GET request with the auth header containing the Java web token.
 
+The `getInvSize()` method returns the size of the inventory list for a given user from the session.
+
+The `getJwt()` method returns the Java web token for the current session.
+
+The `getUserName()` method returns the username of the user currently logged in from the session.
+
+The `getUserRole()` metho returns the role of the currently logged in user.
+
+// =================================================================================================
+// Creating the Server configuration file
+// =================================================================================================
+
+=== Creating the Server Configuration File
+
+Create a class `server.xml` in `/start/frontendUI/src/main/liberty/config` to get information about the currently logged in user.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=!copyright;!doc]
+----
+
+The `<feature>jwt-1.0</feature>` adds the libaries required for JWT implementation.
+
+The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored the server rather than a database.
+
+The `<application>` section sets the applicaiton location, it's type so in this case a `.war` file, it's name and the roles allowed to access it.
+
+The `<jwtBuilder>` section is required in order to build a JWT for an authenticated user and sets the tokens expiary time to 24 hours.
 
 // =================================================================================================
 // Building and running the application
@@ -255,23 +280,25 @@ The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to
 
 == Building and running the application
 
-include::{common-includes}/mvnbuild.adoc[]
+To build the application use the following maven command:
 
-Once the server is running, you can find the health endpoint
-reporting the state of the two services at the following URL:
+`mvn clean install`
+
+Once the above build is succesfull use the following command to run the server:
+
+`mvn liberty:start-server`
+
+When the open Liberty application server has started you can log into the system using the simple front-end that has been provided. Use the credentials below to log in:
+
+Username: `bob`
+Password: `pwd`
 
 * `http://localhost:9090/system.jsf`
 
-Now, try to turn the `InventoryResource` service down (i.e. in maintenance) by changing the
-property `io_openliberty_guides_inventory_inMaintenance` value to `true`. This property is found in
-`/finish/CustomConfigSource.json`. Refresh the browser. You will see the state of the
-`InventoryResource` is currently `DOWN` and because of that the overall outcome is `DOWN`. You can
-verify that by pointing your browser to the inventory service endpoint. As you can see, the service is responding
-with a message telling you that it is in maintenance.
+Once logged in you will be able to see some basic information about your currently logged in session. The Username of the logged in user, your role which will be admin,
+the current operating system, the size of your inventory and the java web token (JWT) that is being used for authentication to the back end.
 
-include::{common-includes}/mvnpackage.adoc[]
 
---------------------Not yet finished-----------------------
 // =================================================================================================
 // Testing JWT Authentication
 // =================================================================================================
@@ -335,7 +362,6 @@ Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 
 == Great work! You're done!
 
-You have learned how to add health checks to report the states of microservices in an
-application. Then you wrote tests to validate that.
+You have learned how to add JWT Authentication to your microservices so that they are now secure.Then you wrote tests to validate that.
 
 include::{common-includes}/finish.adoc[]

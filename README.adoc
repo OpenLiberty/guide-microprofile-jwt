@@ -254,6 +254,27 @@ The `getUserName()` method returns the username of the user currently logged in 
 The `getUserRole()` metho returns the role of the currently logged in user.
 
 // =================================================================================================
+// Creating the Server configuration file
+// =================================================================================================
+
+=== Creating the Server Configuration File
+
+Create a class `server.xml` in `/start/frontendUI/src/main/liberty/config` to get information about the currently logged in user.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=!copyright;!doc]
+----
+
+The `<feature>jwt-1.0</feature>` adds the libaries required for JWT implementation.
+
+The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored the server rather than a database.
+
+The `<application>` section sets the applicaiton location, it's type so in this case a `.war` file, it's name and the roles allowed to access it.
+
+The `<jwtBuilder>` section is required in order to build a JWT for an authenticated user and sets the tokens expiary time to 24 hours.
+
+// =================================================================================================
 // Building and running the application
 // =================================================================================================
 

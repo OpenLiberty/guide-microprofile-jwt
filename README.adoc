@@ -56,7 +56,7 @@ mvn liberty:start-server
 
 ```
 
-Point your browser to front-end web application endpoint: `http://localhost:9090/system.jsf`. From here you have the ability to log into the system using the form based login provided.
+Point your browser to the front-end web application endpoint: `http://localhost:9090/system.jsf`. From here you have the ability to log into the system using the form based login provided.
 Log in with one of the following user information:
 
 |===
@@ -66,7 +66,7 @@ Log in with one of the following user information:
 | `carl` | `carlpwd` | `user`
 |===
 
-You should now be redirected to a another page with that will display the logged in user, the current OS of your localhost and the web token that is being used by the front-end to access the data.
+You should now be redirected to a another page that will display the logged in user, the current OS of your localhost and the web token that is being used by the front-end to access the data.
 In addition, if you are logged in as an `admin` user, you will see the inventory size being `0`; if you are logged in as an normal `user`, your will see `-1` instead (which means you are forbidden from accessing the inventory size data in the back end).
 
 Once you are done checking out the application, stop the Open Liberty server:
@@ -109,7 +109,7 @@ The `@Path("jwt")` annotation is used to state the REST request path to access t
 
 The `@GET` annotation states that it is a HTTP GET request that will be used to access a method.
 
-Role names used in ``@RolesAllowed` have been mapped to group names in the MP-JWT "groups" claim, result in an allowing authorization decision wherever the security constraint has been applied.
+Role names used in `@RolesAllowed` have been mapped to group names in the MP-JWT "groups" claim, which results in an allowing authorization decision wherever the security constraint has been applied.
 
 The `getJwtUserName()` method retrieves the user name from the injected `JsonWebToken jwtPrincipal`.
 
@@ -239,7 +239,7 @@ The `getUserRole()` method returns the role of the currently logged in user.
 
 === Creating the Server Configuration File
 
-Create a class `server.xml` in `/start/frontendUI/src/main/liberty/config` to pre-define users with their names, passwords and roles.
+Create a config file named `server.xml` in `/start/frontendUI/src/main/liberty/config` to pre-define users with their names, passwords and roles.
 
 [source, java, indent=0]
 ----
@@ -248,10 +248,10 @@ include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt;!copyrigh
 
 The `<feature>jwt-1.0</feature>` adds the libraries required for JWT builder implementation.
 
-The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored the server rather than a database.
+The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored on the server rather than a database.
 User names and passwords are defined here, as well as user groups, and will be used for front-end authentication.
 
-The `<application>` section sets the application location, it's type so in this case a `.war` file, it maps user groups with user security roles, which defines user accessibility for certain endpoints in this application.
+The `<application>` section sets the application location, it's type so in this case a `.war` file. It maps user groups with user security roles, which defines user accessibility for certain endpoints in this application.
 
 The `<jwtBuilder>` section is required in order to build a JWT for an authenticated user and sets the tokens expiration time to 24 hours.
 
@@ -279,6 +279,7 @@ When the open Liberty application server has started you can log into the system
 
 Once logged in you will be able to see some basic information about your currently logged in session. The Username of the logged in user, your role which will be admin,
 the current operating system, the size of your inventory and the JSON Web Token (JWT) that is being used for authorization in the back end.
+Please remember that if you log in with a user without the role of admin you will be unable to see the inventory size as you will not have the correct permissions.
 
 include::{common-includes}/mvnpackage.adoc[]
 // =================================================================================================
@@ -315,10 +316,10 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTe
 Similarly, in the `setup()` step of the `JwtTest`, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and role as `user`.
 Then, this authorization header is added when the test client tries to send a `get` request to a secured JWT service.
 
-The `testJWTGetName()` tries to access the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token, and verify
+* The `testJWTGetName()` tries to access the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token, and verify
 if the username is same as `TESTUSER`.
 
-The `testJWTGetCustomClaim()` tries to access the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Since this service is secured, and only accessible for users who have the `admin` role,
+* The `testJWTGetCustomClaim()` tries to access the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Since this service is secured, and only accessible for users who have the `admin` role,
 the test is asserting that the current test user who has a normal `user` role is forbidden from accessing it.
 
 include::{common-includes}/mvnverify.adoc[]
@@ -344,6 +345,6 @@ Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 
 == Great work! You're done!
 
-You have learned how to add JWT Authentication to your microservices so that they are now secure.Then you wrote tests to validate that.
+You have learned how to add MP-JWT authentication to your microservices so that they are now secure. Then you wrote tests to validate that.
 
 include::{common-includes}/finish.adoc[]

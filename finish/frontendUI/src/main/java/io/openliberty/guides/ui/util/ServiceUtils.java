@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response.Status;
 import java.net.URI;
 
 public class ServiceUtils {
-
+    
     // Constants for building URI to the system service.
     private static final int DEFAULT_PORT = Integer.valueOf(System.getProperty("backend.https.port"));
     private static final String HOSTNAME = System.getProperty("backend.hostname");
@@ -44,7 +44,6 @@ public class ServiceUtils {
      */
     // end::doc[]
     public static JsonObject getPropertiesHelper(String authHeader) {
-
         // Get system properties by using JWT token
         String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
         Response propResponse = processRequest(propUrl, "GET", null, authHeader);
@@ -55,7 +54,6 @@ public class ServiceUtils {
     }
 
     public static JsonObject getInventoryHelper(String authHeader) {
-
         // Get system properties by using JWT token
         String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
         Response invResponse = processRequest(invUrl, "GET", null, authHeader);
@@ -72,49 +70,47 @@ public class ServiceUtils {
      */
     // end::doc[]
     public static boolean responseOkHelper(String authHeader) {
-          // Get system properties by using JWT token
-          String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
-          Response propResponse = processRequest(propUrl, "GET", null, authHeader);
+        // Get system properties by using JWT token
+        String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
+        Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
-          return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
-
+        return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
     }
 
     public static boolean invOkHelper(String authHeader) {
-          // Get system properties by using JWT token
-          String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
-          Response propResponse = processRequest(propUrl, "GET", null, authHeader);
+        // Get system properties by using JWT token
+        String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
+        Response propResponse = processRequest(propUrl, "GET", null, authHeader);
 
-          return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
-
+        return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
     }
 
     public static String buildUrl(String protocol, String host, int port, String path) {
-      try {
-        URI uri = new URI(protocol, null, host, port, path, null, null);
-        return uri.toString();
-      } catch (Exception e) {
-        System.out.println("URISyntaxException");
-        return null;
-      }
+        try {
+            URI uri = new URI(protocol, null, host, port, path, null, null);
+            return uri.toString();
+        } catch (Exception e) {
+            System.out.println("URISyntaxException");
+            return null;
+        }
     }
 
     public static Response processRequest(String url, String method, String payload, String authHeader) {
-      Client client = ClientBuilder.newClient();
-      WebTarget target = client.target(url);
-      Builder builder = target.request();
-      builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-      if (authHeader != null) {
-        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
-      }
-      return (payload != null)
-          ? builder.build(method, Entity.json(payload)).invoke()
-          : builder.build(method).invoke();
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(url);
+        Builder builder = target.request();
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        if (authHeader != null) {
+            builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+        }
+        return (payload != null)
+            ? builder.build(method, Entity.json(payload)).invoke()
+            : builder.build(method).invoke();
     }
 
     public static JsonObject toJsonObj(String json) {
         JsonReader jReader = Json.createReader(new StringReader(json));
-          return jReader.readObject();
+            return jReader.readObject();
     }
 }
 // end::jwt[]

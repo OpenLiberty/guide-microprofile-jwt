@@ -1,11 +1,11 @@
 <!-- Copyright (c) 2017 IBM Corporation and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
 
-  Contributors:
-  IBM Corporation - initial API and implementation
+    Contributors:
+    IBM Corporation - initial API and implementation
 -->
 <!-- tag::jwt[] -->
 <server description="Backend server">
@@ -20,29 +20,19 @@
     </featureManager>
 
     <!-- This is the keystore that will be used by SSL and by JWT.
-    	 The keystore is built using the maven keytool plugin -->
-    <keyStore id="defaultKeyStore" location="keystore.jceks"
-              type="JCEKS" password="secret" />
+         The keystore is built using the maven keytool plugin -->
+    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" password="secret" />
 
     <!-- The HTTP ports that the application will use. -->
-    <httpEndpoint id="defaultHttpEndpoint" host="*"
-                  httpPort="${http.port}" httpsPort="${https.port}"/>
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="${http.port}" httpsPort="${https.port}"/>
 
+    <!-- The application containing the user and login endpoints. -->
+    <webApplication location="${app.name}" contextRoot="/" />
 
-	<!-- The application containing the user and login endpoints.
-	     -->
-    <webApplication location="${app.name}" contextRoot="/">
-    </webApplication>
+    <!-- This JWT builder is used to build a JWT for an authenticated user. -->
+    <jwtBuilder id="jwtUserBuilder" issuer="${jwt.issuer}" expiry="24h" keyAlias="default" audiences="simpleapp" jti="true"/>
 
-
-    <!-- This JWT builder is used to build a JWT for an authenticated user.
-         -->
-    <jwtBuilder id="jwtUserBuilder" issuer="${jwt.issuer}" expiry="24h"
-                keyAlias="default" audiences="simpleapp" jti="true"/>
-
-	<!-- The MP JWT configuration that injects the caller's JWT into a
-	     ResourceScoped bean for inspection. -->
-    <mpJwt id="jwtUserConsumer" keyName="default"
-           audiences="simpleapp" issuer="${jwt.issuer}"/>
+    <!-- The MP JWT configuration that injects the caller's JWT into a ResourceScoped bean for inspection. -->
+    <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp" issuer="${jwt.issuer}"/>
 </server>
 <!-- end::jwt[] -->

@@ -24,55 +24,48 @@ import test.JWTVerifier;
 
 public class JwtTest {
 
-  private final String TESTNAME = "TESTUSER";
-  private final String INV_JWT = "/inventory/jwt";
+    private final String TESTNAME = "TESTUSER";
+    private final String INV_JWT = "/inventory/jwt";
 
-  String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
-      + System.getProperty("liberty.test.ssl.port");
+    String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
+            + System.getProperty("liberty.test.ssl.port");
 
-  String authHeader;
+    String authHeader;
 
-  @Before
-  public void setup() throws Exception {
-    authHeader = "Bearer " + new JWTVerifier().createUserJWT(TESTNAME);
-  }
+    @Before
+    public void setup() throws Exception {
+        authHeader = "Bearer " + new JWTVerifier().createUserJWT(TESTNAME);
+    }
 
-  @Test
-  public void testSuite() {
-    this.testJWTGetName();
-    this.testJWTGetCustomClaim();
-  }
+    @Test
+    public void testSuite() {
+        this.testJWTGetName();
+        this.testJWTGetCustomClaim();
+    }
 
-  public void testJWTGetName() {
+    public void testJWTGetName() {
+        String jwtUrl = baseUrl + INV_JWT + "/username";
+        Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 
-    String jwtUrl = baseUrl + INV_JWT + "/username";
-    Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
+        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".", 
+                     Status.OK.getStatusCode(), 
+                     jwtResponse.getStatus());
 
-    assertEquals(
-        "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-        Status.OK.getStatusCode(), jwtResponse.getStatus());
+        String responseName = jwtResponse.readEntity(String.class);
 
-    String responseName = jwtResponse.readEntity(String.class);
+        assertEquals("The test name and jwt token name should match", 
+                     TESTNAME, 
+                     responseName);
+    }
 
-    assertEquals("The test name and jwt token name should match", TESTNAME,
-        responseName);
-    // System.out.println(responseName);
-    // System.out.println(jwtUrl);
+    public void testJWTGetCustomClaim() {
+        String jwtUrl = baseUrl + INV_JWT + "/customClaim";
+        Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 
-  }
-
-  public void testJWTGetCustomClaim() {
-
-    String jwtUrl = baseUrl + INV_JWT + "/customClaim";
-    Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
-
-    assertEquals("HTTP response code should have been "
-        + Status.FORBIDDEN.getStatusCode() + ".", Status.FORBIDDEN.getStatusCode(),
-        jwtResponse.getStatus());
-
-    // System.out.println(jwtUrl);
-
-  }
+        assertEquals("HTTP response code should have been " + Status.FORBIDDEN.getStatusCode() + ".", 
+                     Status.FORBIDDEN.getStatusCode(), 
+                     jwtResponse.getStatus());
+    }
 
 }
 // end::test[]

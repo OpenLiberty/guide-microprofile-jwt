@@ -30,47 +30,45 @@ import java.security.Principal;
 @RequestScoped
 @Path("jwt")
 public class JwtResource {
-  // tag::doc[]
-  /**
-   * The JWT of the current caller. Since this is a request scoped resource, the
-   * JWT will be injected for each JAX-RS request. The injection is performed by
-   * the mpJwt-1.0 feature.
-   */
-  // end::doc[]
-  @Inject
-  private JsonWebToken jwtPrincipal;
+    // tag::doc[]
+    /**
+     * The JWT of the current caller. Since this is a request scoped resource, the
+     * JWT will be injected for each JAX-RS request. The injection is performed by
+     * the mpJwt-1.0 feature.
+     */
+    // end::doc[]
+    @Inject
+    private JsonWebToken jwtPrincipal;
 
-  @GET
-  @RolesAllowed({ "admin", "user" })
-  @Path("/username")
-  public Response getJwtUserName() {
-    return Response.ok(this.jwtPrincipal.getName()).build();
-  }
-
-  @GET
-  @RolesAllowed({ "admin", "user" })
-  @Path("/groups")
-  public Response getGroups(@Context SecurityContext securityContext) {
-    Set<String> groups = null;
-    Principal user = securityContext.getUserPrincipal();
-    if (user instanceof JsonWebToken) {
-      JsonWebToken jwt = (JsonWebToken) user;
-      groups = jwt.getGroups();
+    @GET
+    @RolesAllowed({ "admin", "user" })
+    @Path("/username")
+    public Response getJwtUserName() {
+        return Response.ok(this.jwtPrincipal.getName()).build();
     }
-    return Response.ok(groups).build();
-  }
 
-  @GET
-  @RolesAllowed({ "admin", "user" })
-  @Path("/customClaim")
-  public Response getCustomClaim(@Context SecurityContext securityContext) {
-    String customClaim;
-    if (securityContext.isUserInRole("admin")) {
-      customClaim = jwtPrincipal.getClaim("customClaim");
-    } else {
-      return Response.status(Response.Status.FORBIDDEN).build();
+    @GET
+    @RolesAllowed({ "admin", "user" })
+    @Path("/groups")
+    public Response getGroups(@Context SecurityContext securityContext) {
+        Set<String> groups = null;
+        Principal user = securityContext.getUserPrincipal();
+        if (user instanceof JsonWebToken) {
+            JsonWebToken jwt = (JsonWebToken) user;
+            groups = jwt.getGroups();
+        }
+        return Response.ok(groups).build();
     }
-    return Response.ok(customClaim).build();
-  }
+
+    @GET
+    @RolesAllowed({ "admin", "user" })
+    @Path("/customClaim")
+    public Response getCustomClaim(@Context SecurityContext securityContext) {
+        if (securityContext.isUserInRole("admin")) {
+            String customClaim = jwtPrincipal.getClaim("customClaim");
+            return Response.ok(customClaim).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
 }
 // end::jwt[]

@@ -25,7 +25,7 @@ Learn how to control user and role access to microservices using MicroProfile JW
 
 == What you'll learn
 
-You will learn how to control user and role access to microservices using MicroProfile JWT. The great benefit from adding JWT security to your microservices is that it allows certain groups of users access to specific functions.
+You will learn how to control user and role access to microservices using MicroProfile JWT. The great benefit from adding JWT security to your microservices is that it provides certain groups of users with access to specific functions.
 
 One of the main strategies to propagate the security state from clients to services or even from services to services involves the use of security tokens. In fact, the main security protocols in use today are based on security tokens such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation and others. While some of these standards are more related with identity federation, they share a common concept regarding security tokens and token based authentication.
 For RESTful based microservices, security tokens offer a very lightweight and interoperable way to propagate identities across different services.

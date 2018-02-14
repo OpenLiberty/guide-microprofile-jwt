@@ -16,27 +16,24 @@ import java.util.Properties;
 import io.openliberty.guides.inventory.client.SecuredSystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 
-//CDI
 import javax.enterprise.context.ApplicationScoped;
 
-// tag::ApplicationScoped[]
 @ApplicationScoped
-// end::ApplicationScoped[]
 public class InventoryManager {
 
-  private InventoryList invList = new InventoryList();
-  SecuredSystemClient securedSystemClient = new SecuredSystemClient();
+    private InventoryList invList = new InventoryList();
+    SecuredSystemClient securedSystemClient = new SecuredSystemClient();
 
-  public Properties get(String hostname, String authHeader) {
-    securedSystemClient.init(hostname, authHeader);
-    Properties properties = securedSystemClient.getProperties();
-    if (properties != null) {
-      invList.addToInventoryList(hostname, properties);
+    public Properties get(String hostname, String authHeader) {
+        securedSystemClient.init(hostname, authHeader);
+        Properties properties = securedSystemClient.getProperties();
+        if (properties != null) {
+            invList.addToInventoryList(hostname, properties);
+        }
+        return properties;
     }
-    return properties;
-  }
 
-  public InventoryList list() {
-    return invList;
-  }
+    public InventoryList list() {
+        return invList;
+    }
 }

@@ -25,40 +25,38 @@ import javax.json.JsonObject;
 @ViewScoped
 public class SystemBean {
 
-  public String getOs() {
-    String jwtTokenString = SessionUtils.getJwtToken();
-    String authHeader = "Bearer " + jwtTokenString;
-    if (ServiceUtils.responseOkHelper(authHeader)) {
-      JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
-      return properties.getString("os.name");
-    } else {
-      return "wrong os";
+    public String getOs() {
+        String jwtTokenString = SessionUtils.getJwtToken();
+        String authHeader = "Bearer " + jwtTokenString;
+        if (ServiceUtils.responseOkHelper(authHeader)) {
+            JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
+            return properties.getString("os.name");
+        }
+        return "wrong os";
     }
-  }
 
-  public int getInvSize() {
-    String jwtTokenString = SessionUtils.getJwtToken();
-    String authHeader = "Bearer " + jwtTokenString;
-    if (ServiceUtils.invOkHelper(authHeader)) {
-      JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
-      return properties.getInt("total");
-    } else {
-      return -1;
+    public int getInvSize() {
+        String jwtTokenString = SessionUtils.getJwtToken();
+        String authHeader = "Bearer " + jwtTokenString;
+        if (ServiceUtils.invOkHelper(authHeader)) {
+            JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
+            return properties.getInt("total");
+        }
+        return -1;
     }
-  }
 
-  public String getJwt() {
-    String jwtTokenString = SessionUtils.getJwtToken();
-    String authHeader = "Bearer " + jwtTokenString;
-    return authHeader;
-  }
+    public String getJwt() {
+        String jwtTokenString = SessionUtils.getJwtToken();
+        String authHeader = "Bearer " + jwtTokenString;
+        return authHeader;
+    }
 
-  public String getUserName() {
-    return SessionUtils.getUserObj().getName();
-  }
+    public String getUserName() {
+        return SessionUtils.getUserObj().getName();
+    }
 
-  public String getUserRole() {
-    return SessionUtils.getUserObj().getRole();
-  }
+    public String getUserRole() {
+        return SessionUtils.getUserObj().getRole();
+    }
 }
 // end::jwt[]

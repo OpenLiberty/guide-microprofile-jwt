@@ -15,22 +15,23 @@ import javax.ws.rs.core.Response;
 
 public class TestUtils {
 
-  public static Response processRequest(String url, String method, String payload,
-      String authHeader) {
-    Client client = ClientBuilder.newClient();
-    WebTarget target = client.target(url);
-    Builder builder = target.request();
-    builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-    if (authHeader != null) {
-      builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+    public static Response processRequest(String url, String method, String payload,
+            String authHeader) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(url);
+        Builder builder = target.request();
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        if (authHeader != null) {
+            builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+        }
+        return (payload != null) 
+                ? builder.build(method, Entity.json(payload)).invoke()
+                : builder.build(method).invoke();
     }
-    return (payload != null) ? builder.build(method, Entity.json(payload)).invoke()
-        : builder.build(method).invoke();
-  }
 
-  public static JsonObject toJsonObj(String json) {
-    JsonReader jReader = Json.createReader(new StringReader(json));
-    return jReader.readObject();
-  }
+    public static JsonObject toJsonObj(String json) {
+        JsonReader jReader = Json.createReader(new StringReader(json));
+        return jReader.readObject();
+    }
 
 }

@@ -1,15 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2017 IBM Corporation and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
-
-  Contributors:
-  IBM Corporation - initial API and implementation
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>io.openliberty.guides</groupId>
     <artifactId>mp-jwt-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -30,7 +21,6 @@
         <version.keytool.plugin>1.5</version.keytool.plugin>
         <version.exec.plugin>1.5.0</version.exec.plugin>
         <version.jar.plugin>3.0.2</version.jar.plugin>
-
 
         <!-- Liberty Server -->
         <version.liberty>17.0.0.3-RC</version.liberty>
@@ -62,11 +52,9 @@
         <frontend.https.port>9091</frontend.https.port>
         <frontend.hostname>localhost</frontend.hostname>
 
-
         <!-- JSON Web Token used for microservice authorization -->
         <jwt.shared.key>secret</jwt.shared.key>
         <jwt.issuer>http://wasdev.net</jwt.issuer>
-
     </properties>
 
     <repositories>
@@ -90,13 +78,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
@@ -107,7 +93,6 @@
             <artifactId>cxf-rt-rs-client</artifactId>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <!-- Shared dependencies. -->
@@ -135,7 +120,6 @@
                 <version>${version.com.ibm.websphere.appserver.api.jwt}</version>
             </dependency>
 
-
             <!-- Test -->
             <dependency>
                 <groupId>org.glassfish</groupId>
@@ -149,13 +133,13 @@
                 <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-rs-client</artifactId>
                 <version>${version.apache.cxf}</version>
                 <scope>test</scope>
             </dependency>
+
             <!-- The following is necessary to read CXF client configuration -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -247,7 +231,6 @@
                     <version>${version.keytool.plugin}</version>
                 </plugin>
 
-
                 <!-- Integration test plugins -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -299,8 +282,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-
 
     <modules>
         <module>resources</module>

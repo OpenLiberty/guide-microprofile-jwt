@@ -25,12 +25,12 @@ Learn how to control user and role access to microservices using MicroProfile JW
 
 == What you'll learn
 
-You will learn how to control user and role access to microservices using MicroProfile JWT. The great benefit from adding JWT security to your microservices allows you to allow certain groups of users access to specific functions.
+You will learn how to control user and role access to microservices using MicroProfile JWT. The great benefit from adding JWT security to your microservices is that it allows certain groups of users access to specific functions.
 
 One of the main strategies to propagate the security state from clients to services or even from services to services involves the use of security tokens. In fact, the main security protocols in use today are based on security tokens such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation and others. While some of these standards are more related with identity federation, they share a common concept regarding security tokens and token based authentication.
 For RESTful based microservices, security tokens offer a very lightweight and interoperable way to propagate identities across different services.
 
-You will add JWT authentication and authorization to the microservices provided: `SystemResource` and `InventoryResource` while we provide you with a simple front end to handle the authentication.
+You will add JWT authentication and authorization to the microservices provided: `SystemResource` and `InventoryResource` while a simple front end to handle the authentication is also provided.
 
 // =================================================================================================
 // Getting Started
@@ -178,7 +178,7 @@ Therefore, this service is properly secured.
 
 == Adding JWT builder and form-based login to the front-End
 
-We have provided you with a very simple front-end web application to allow you to log into the application with pre defined users that have different roles such as `admin` and `user`.
+A very simple front-end web application is provided to allow you to log into the application with pre-defined users that have different roles such as `admin` and `user`
 
 
 // =================================================================================================
@@ -187,9 +187,9 @@ We have provided you with a very simple front-end web application to allow you t
 
 === The User Object
 
-An `User` class has been provided for you in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java`.
+A `User` class has been provided for you in `/start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java`.
 
-This is an user model that contains information regarding a user. It has `get` and `set` methods for the username, password and role.
+This is a user model that contains information regarding a user. It has `get` and `set` methods for the username, password and role.
 
 // =================================================================================================
 // Creating the login bean
@@ -204,7 +204,7 @@ Create a class `LoginBean.java` in `/start/frontendUI/src/main/java/io/openliber
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright;!doc]
 ----
 
-The `doLogIn()` method authenticates users who are pre-defined in the front-end `server.xml` file and creates a user object and a JWT token. It will then create a http session used for continued access to the application.
+The `doLogIn()` method authenticates users who are pre-defined in the front-end `server.xml` file and creates a user object and a JWT token. It will then create an http session used for continued access to the application.
 
 The `buildJWT(String userName, String role)` method is used to create a JWT token with provide user information.
 
@@ -223,7 +223,7 @@ Create a class `SystemBean.java` in `/start/frontendUI/src/main/java/io/openlibe
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright;!doc]
 ----
 
-The `getOs()` method returns a String of the operating system for the session from the back-end by doing a GET request with the auth header containing the JSON Web Token.
+The `getOs()` method returns a String of the operating system for a session from the back-end by doing a GET request with the auth header containing the JSON Web Token.
 
 The `getInvSize()` method returns the size of the inventory list for a given user from the session.
 
@@ -274,6 +274,7 @@ When the open Liberty application server has started you can log into the system
 | `carl` | `carlpwd` | `user`
 |===
 
+Below is the endpoint used to log into the system:
 
 * `http://localhost:9090/system.jsf`
 
@@ -301,7 +302,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Endpo
 In the `setup()` before test cases, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and role as `admin`.
 Then, this authorization header is added when the test client tries to send a `get` request to a secured service to retrieve any information.
 
-Each test case tries to first assert that, with a valid authorization header, it can can get a `Status.OK` code from the response.
+Each test case tries to first assert that with a valid authorization header, it can can get a `Status.OK` code from the response.
 If the response returns a `Status.FORBIDDEN` code, which means the authorization header is invalid, the test will fail.
 
 After assuring the response code is correct, each test tries to get the content from the designated endpoint and compares the result with its expected value.

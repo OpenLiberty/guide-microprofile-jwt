@@ -23,7 +23,7 @@
         <version.jar.plugin>3.0.2</version.jar.plugin>
 
         <!-- Liberty Server -->
-        <version.liberty>17.0.0.3-RC</version.liberty>
+        <version.liberty>LATEST</version.liberty>
 
         <!-- Dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

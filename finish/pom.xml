@@ -81,17 +81,17 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-client</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -118,6 +118,7 @@
                 <groupId>com.ibm.websphere.appserver.api</groupId>
                 <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
                 <version>${version.com.ibm.websphere.appserver.api.jwt}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- Test -->
@@ -152,6 +153,7 @@
                 <groupId>org.eclipse.microprofile.config</groupId>
                 <artifactId>microprofile-config-api</artifactId>
                 <version>${version.microprofile.config}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

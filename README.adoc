@@ -115,7 +115,7 @@ Let's break down the methods:
 - `getJwtUserName()` retrieves the user name from the injected `JsonWebToken jwtPrincipal`.
 - `getGroups()` gets the user groups information from the Json Web Token from the SecurityContext.
 `SecurityContext.getUserPrincipal()` returns an object in type `java.security.Principal`, this object is also an instance of `org.eclipse.microprofile.jwt.JsonWebToken`.
-- `getStatus()` gets the custom claim from the provided Json Web Token if the authenticated user has the role of `admin`. Otherwise, it returns `Status.FORBIDDEN`.
+- `getCustomClaim()` gets the custom claim from the provided Json Web Token if the authenticated user has the role of `admin`. Otherwise, it returns `Status.FORBIDDEN`.
 `SecurityContext.isUserInRole(String)` returns true for any name that is included in the MP-JWT "groups" claim, as well as for any role name that has been mapped to a group name in the MP-JWT "groups" claim.
 
 // =================================================================================================
@@ -135,13 +135,13 @@ The `@RolesAllowed({"admin", "user"})` annotation sets what roles are allowed to
 
 The `authHeader` retrieves the authorization header from the GET request.
 
-The final addition of code `return Response.ok(manager.get(hostname, authHeader), MediaType.APPLICATION_JSON).build();` adds the authentication header to the client that will send HTTP GET request to the other service.
+The final addition of code `return Response.ok(manager.get(props)).build();` adds the authentication header to the client that will send HTTP GET request to the other service.
 
 // =================================================================================================
 // Add the SystemClient class
 // =================================================================================================
 
-=== Add the SystemClient class
+=== Add the SecuredSystemClient class
 
 Add the `SecuredSystemClient` class in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java` file.
 

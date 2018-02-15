@@ -36,7 +36,14 @@ You will add JWT authentication and authorization to the microservices provided:
 // Getting Started
 // =================================================================================================
 
-include::{common-includes}/gitclone.adoc[]
+The fastest way to work through this guide is to clone the Git repository and use the starting project
+that is provided in the `start` directory. To do this, run the following commands:
+
+[subs="attributes"]
+----
+git clone https://github.com/OpenLiberty/draft-guide-microprofile-jwt.git
+cd draft-guide-microprofile-jwt/start
+----
 
 // =================================================================================================
 // Try what you'll build

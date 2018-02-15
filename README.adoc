@@ -7,7 +7,7 @@
 //   IBM Corporation
 :projectid: microprofile-jwt
 :page-layout: guide
-:page-duration: 15 minutes
+:page-duration: 25 minutes
 :page-releasedate: 2017-12-11
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
 :page-tags: ['JWT', 'MP-JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
@@ -27,7 +27,7 @@ Learn how to control user and role access to microservices with MicroProfile JWT
 
 You will learn how to control user and role access to microservices with MicroProfile JWT. JWT security provides certain groups of users with access to specific functions.
 
-Security tokens are a common way to propagate the security state from clients to services or from services to services. The main security protocols are based on security tokens, such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation, and others. While some of these standards are closer to identity federation, they share a common concept regarding security tokens and token-based authentication.
+Security tokens are a common way to propagate the security state from clients to services or from services to services. The main security protocols are based on security tokens, such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation, and others. While some of these standards are about identity federation, they share a common concept regarding security tokens and token-based authentication.
 For RESTful-based microservices, security tokens offer a lightweight and interoperable way to propagate identities across different services.
 
 You will add JWT authentication and authorization to the `SystemResource` and `InventoryResource` microservices, and a simple front end handles the authentication.
@@ -110,14 +110,10 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 //
 // The `@RequestScoped` annotation is required because the JWT service needs to only be activated when a login request is made.
 
-Break down the annotations:
-
-- `@Path("jwt")` states the REST request path to access this class, which in this case is JWT.
+- `@Path("jwt")` identifies the REST request path to access this resource, which is `jwt`.
 - `@GET` indicates that the method serves all GET HTTP requests at its endpoint.
 
 Role names used in `@RolesAllowed` are mapped to group names in the MP-JWT "groups" claim, which results in an authorization decision wherever the security constraint is applied.
-
-Break down the methods:
 
 - `getJwtUserName()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
 - `getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
@@ -157,7 +153,7 @@ Add the `SecuredSystemClient` class in the `start/backendServices/src/main/java/
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java[tags=jwt;!copyright;!doc]
 ----
 
-The `SecuredSystemClient` class inherits methods from the `SystemClient` class by sending the HTTP GET request to the system service to retrieve system properties.
+The `SecuredSystemClient` class inherits methods, which handle the HTTP GET request to the system service to retrieve system properties, from the `SystemClient` class.
 However, the class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
 By adding the authorization header to the client request, the `SecuredSystemClient` class can access services that are secured.
 
@@ -203,14 +199,12 @@ This user model contains information about a user. The model includes `get` and 
 
 === Creating the login bean
 
-Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end. Create the JWT token required for authentication.
+Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end and to create the JWT token required for authentication.
 
 [source, java, indent=0]
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright;!doc]
 ----
-
-Break down the methods:
 
 - `doLogIn()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
 - `buildJWT()` creates a JWT token with provided user information.
@@ -228,8 +222,6 @@ Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openl
 ----
 include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright;!doc]
 ----
-
-Break down the methods:
 
 - `getOs()` returns a string of the operating system for a session from the back end by performing a GET request with the auth header that contains the JSON Web Token.
 - `getInvSize()` returns the size of the inventory list for a given user from the session.
@@ -263,10 +255,6 @@ The `<jwtBuilder>` section is required to build a JWT for an authenticated user 
 // Building and running the application
 // =================================================================================================
 
-// =================================================================================================
-// Building and running the application
-// =================================================================================================
-
 include::{common-includes}/mvnbuild.adoc[]
 
 When the Open Liberty application server has started, you can log in to the system with the simple front end that is provided. Use one of the following credentials to log in:
@@ -286,6 +274,7 @@ Once you log in, you can see some basic information about your current session, 
 Remember that if you log in as a user without the role of admin, you will be unable to see the inventory size because you do not have the correct permissions.
 
 include::{common-includes}/mvnpackage.adoc[]
+
 // =================================================================================================
 // Testing MP-JWT authorization
 // =================================================================================================

@@ -88,6 +88,7 @@ public class LoginBean {
      * @return A compact JWT that should be returned to the caller.
      * @throws Exception Something went wrong...?
      */
+	   //end::doc[]
     private String buildJWT(String userName, String role) throws Exception {
         return JwtBuilder.create("jwtFrontEndBuilder")
                          .claim(Claims.SUBJECT, userName)
@@ -97,7 +98,6 @@ public class LoginBean {
                          .buildJwt()
                          .compact();
     }
-    //end::doc[]
 
     private String getRole(HttpServletRequest request) {
         // to check if remote user is granted admin role

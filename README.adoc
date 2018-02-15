@@ -10,7 +10,7 @@
 :page-duration: 15 minutes
 :page-releasedate: 2017-12-11
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
-:page-tags: ['JWT', 'MP-JWT', "MicroProfile"]
+:page-tags: ['JWT', 'MP-JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
@@ -98,7 +98,7 @@ use the MicroProfile JWT API to inject user authorization information into the R
 
 === Adding the JWT Resource class
 
-Create a `/start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the Json Web Token.
+Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the Json Web Token.
 
 [source, java, indent=0]
 ----
@@ -131,7 +131,7 @@ Break down the methods:
 
 === Add the InventoryResource class
 
-Create the class `InventoryResource.java` in the `/start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory to add code to return the JWT token with all HTTP requests.
+Create the class `InventoryResource.java` in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory to add code to return the JWT token with all HTTP requests.
 
 [source, java, indent=0]
 ----
@@ -150,7 +150,7 @@ The final addition of code `return Response.ok(manager.get(props)).build();` add
 
 === Add the SecuredSystemClient class
 
-Add the `SecuredSystemClient` class in the `/start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java` file.
+Add the `SecuredSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java` file.
 
 [source, java, indent=0]
 ----
@@ -168,7 +168,7 @@ By adding the authorization header to the client request, the `SecuredSystemClie
 
 === Add the SystemResource class
 
-Add the `SystemResource.java` class in the `finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` directory.
+Add the `SystemResource.java` class in the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` directory.
 
 [source, java, indent=0]
 ----
@@ -193,7 +193,7 @@ A very simple front-end web application is provided to allow you to log in to th
 
 === The User Object
 
-A `User` class is provided for you in the `/start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java` file.
+A `User` class is provided for you in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java` file.
 
 This user model contains information about a user. The model includes `get` and `set` methods for the username, password, and role.
 
@@ -203,7 +203,7 @@ This user model contains information about a user. The model includes `get` and 
 
 === Creating the login bean
 
-Create a `LoginBean.java` class in the `/start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end. Create the JWT token required for authentication.
+Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end. Create the JWT token required for authentication.
 
 [source, java, indent=0]
 ----
@@ -222,7 +222,7 @@ Break down the methods:
 
 === Creating the system bean
 
-Create a `SystemBean.java` class in the `/start/frontendUI/src/main/java/io/openliberty/guides/ui` directory to get information about the user who is currently logged in.
+Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui` directory to get information about the user who is currently logged in.
 
 [source, java, indent=0]
 ----
@@ -243,7 +243,7 @@ Break down the methods:
 
 === Creating the Server Configuration File
 
-Create a config file named `server.xml` in the `/start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
+Create a config file named `server.xml` in the `start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
 
 [source, java, indent=0]
 ----
@@ -353,4 +353,12 @@ You have learned how to add MP-JWT authentication to secure your microservices, 
 
 Next, you can try one of the related MicroProfile guides. They demonstrate new technologies that you can learn and expand on what you built here.
 
-include::{common-includes}/finish.adoc[]
+
+// include::{common-includes}/finish.adoc[]
+
+== Contribute to this guide
+
+Is something missing or broken? Raise an https://github.com/OpenLiberty/draft-guide-microprofile-jwt/issues[issue],
+or send us a https://github.com/OpenLiberty/draft-guide-microprofile-jwt/pulls[pull request].
+
+https://github.com/OpenLiberty/draft-guide-microprofile-jw[View this guide on github].

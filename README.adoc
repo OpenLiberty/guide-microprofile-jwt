@@ -5,17 +5,19 @@
 //
 // Contributors:
 //   IBM Corporation
-:projectid: mp-jwt
+:projectid: microprofile-jwt
 :page-layout: guide
-:page-duration: 30 minutes
-:page-description: Learn how to use the MicroProfile JWT API in an application
-:page-tags: ['JWT' , 'MicroProfile' , 'REST']
+:page-duration: 25 minutes
+:page-releasedate: 2017-12-11
+:page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
+:page-tags: ['JWT', 'MP-JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
 :page-permalink: /guides/{projectid}
+:page-related-guides: ['cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Adding security using java web tokens (JWT) to your microservices
+= Securing microservices with JSON Web Tokens (JWT)
 
-Learn how to control user and role access to microservices using MicroProfile JWT
+Learn how to control user and role access to microservices with MicroProfile JWT.
 
 // =================================================================================================
 //  What you'll learn
@@ -23,30 +25,24 @@ Learn how to control user and role access to microservices using MicroProfile JW
 
 == What you'll learn
 
-You will learn how to control user and role access to microservices using MicroProfile JWT. The great benefit from adding JWT security to your microservices allows you to allow certain groups of users access to specific functions.
+You will learn how to control user and role access to microservices with MicroProfile JWT. JWT security provides certain groups of users with access to specific functions.
 
-One of the main strategies to propagate the security state from clients to services or even from services to services involves the use of security tokens. In fact, the main security protocols in use today are based on security tokens such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation and others. While some of these standards are more related with identity federation, they share a common concept regarding security tokens and token based authentication.
-For RESTful based microservices, security tokens offer a very lightweight and interoperable way to propagate identities across different services.
+Security tokens are a common way to propagate the security state from clients to services or from services to services. The main security protocols are based on security tokens, such as OAuth2, OpenID Connect, SAML, WS-Trust, WS-Federation, and others. While some of these standards are about identity federation, they share a common concept regarding security tokens and token-based authentication.
+For RESTful-based microservices, security tokens offer a lightweight and interoperable way to propagate identities across different services.
 
-You will add JWT security and authentication to the microservices provided: `PropertiesResource` and `InventoryResource` while we provide you with a simple front end to handle the authentification.
-If you want to learn how to create a RESTful application, see 
-https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service].
+You will add JWT authentication and authorization to the `SystemResource` and `InventoryResource` microservices, and a simple front end handles the authentication.
 
 // =================================================================================================
 // Getting Started
 // =================================================================================================
 
-// include::{common-includes}/gitclone.adoc[]
-
-== Getting started
-
-The fastest way to work through this guide is to clone the git repository and use the starting project
-that is provided in the `start` directory. To do this, run the following commands:
+To begin, run the following commands, which clone the Git repository and access the starting project
+that is provided in the `start` directory:
 
 [subs="attributes"]
 ----
-git clone https://github.com/openliberty/guide-mp-jwt.git
-cd guide-mp-jwt/start
+git clone https://github.com/OpenLiberty/draft-guide-microprofile-jwt.git
+cd draft-guide-microprofile-jwt/start
 ----
 
 // =================================================================================================
@@ -55,46 +51,46 @@ cd guide-mp-jwt/start
 
 === Try what you'll build
 
-The `finish` directory in the root of this guide contains the finished 
-JWT security implementation for the services in the application. Feel free to give it a try before you proceed with building your own.
+The `finish` directory contains the finished
+JWT security implementation for the services in the application. Feel free to try the finished application before you proceed with building your own.
 
-To try out the application, first navigate to the `finish` directory and then execute the following
-Maven goals to build the application and run it inside Open Liberty:
-
-```
-mvn clean install
-mvn package -P start-servers -pl runApp
+To try out the application, first navigate to the `finish` directory. Next, execute the following
+Maven goals to build the application and run it inside of Open Liberty:
 
 ```
+mvn clean install liberty:start-server
+```
 
-Point your browser to Front-end web application endpoint: `\front end https://localhost:9091/system.jsf`. From here you have the ability to log into the system using the form based login provided. Use the admin username and password `Username: bob` `Password: pwd` then click the log in button. You should now be redirected to a another page with that will display the logged in User, the current OS of that user and the web toekn that is being used by the front-end to access the data.
+Point your browser to the front-end web application endpoint: `http://localhost:9090/system.jsf`. From here, you can log in to the system with the form-based login provided.
+Log in with one of the following user information examples:
 
-Once you are done checking out the application, stop the Open Liberty server:
+|===
+| *Username* | *Password* | *Role*
+| `bob` | `pwd` | `admin, user`
+| `alice` | `alicepwd` | `user`
+| `carl` | `carlpwd` | `user`
+|===
+
+You are redirected to a another page that displays the user who is logged in, the current OS of your localhost, and the web token that the front end uses to access the data.
+In addition, if you log in as an `admin` user, the inventory size is `0`. If you log in as a normal `user`, you see `-1` instead, which means you cannot access the inventory size data in the back end.
+
+When you are done with the application, stop the server:
 
 ```
-mvn package -P stop-servers -pl runApp
+mvn liberty:stop-server
 ```
 
 Now, navigate back to the `start` directory to begin.
+Complete the following sections to add MicroProfile JWT to the back end and add basic app security to the front end.
 
 // =================================================================================================
-// Adding JWT authentication to the inventory application
+// Adding Microprofile-JWT to back-end services
 // =================================================================================================
 
-== Adding JWT authentication to inventory application
+== Adding Microprofile-JWT to back-end services
 
-Begin by enabling the MicroProfile JWT feature in your `pom.xml` file. This feature allows you to
-use the MicroProfile JWT API to provide token based authentication to your RESTful services.
-
-Navigate to the start/pom.xml file and add the required dependency:
-
-[source, xml, indent=0]
-----
-include::finish/pom.xml[tags=jwt]
-----
-
-Proceed with the two sections below to add JWT authentication to the `PropertiesResource` and
-`InventoryResource` services.
+The MicroProfile JWT feature is added as a dependency in your `pom.xml` file. This feature allows you to
+use the MicroProfile JWT API to inject user authorization information into the RESTful services.
 
 // =================================================================================================
 // Adding the JWT Resource class
@@ -102,113 +98,100 @@ Proceed with the two sections below to add JWT authentication to the `Properties
 
 === Adding the JWT Resource class
 
-Create `JwtResource.java` class in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/` to privide information about a given JWT token.
+Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the Json Web Token.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright;!doc]
 ----
 
-The `org.eclipse.microprofile.jwt,JsonWebToken` contians the classes required to create and use the Java Web Token.
+// The following sentences are incorrect: the JsonWebToken does not create JSON Web Token, @RequestScoped has nothing to do with JWT, please check CDI gudie for more info about annotation
+// The `org.eclipse.microprofile.jwt,JsonWebToken` contains the classes required to create and use the JSON Web Token.
+//
+// The `@RequestScoped` annotation is required because the JWT service needs to only be activated when a login request is made.
 
-The `@RequestScoped` annotation is required because the JWT service needs to only be activated when a login request is made.
+- `@Path("jwt")` identifies the REST request path to access this resource, which is `jwt`.
+- `@GET` indicates that the method serves all GET HTTP requests at its endpoint.
 
-The `@Path("jwt")` annotation is used to state the REST request path to access this class which in this case is jwt.
+Role names used in `@RolesAllowed` are mapped to group names in the MP-JWT "groups" claim, which results in an authorization decision wherever the security constraint is applied.
 
-The `@GET` annotation states that it is a HTTP GET request that will be used to access a method.
-
-The `getJwtUserName()` method gets the user name from the provided toekn.
-
-The `getGroups(@Context SecurityContext securityContext)` method gets the groups defined for access to the backend system from the provided SecurityContext. These groups are defined in the server.xml file located in the front-end auth service `finish/frontendUI/src/main/liberty/config/server.xml`
-
-The `getStatus(@Context SecurityContext securityContext)` method is used to get the status of the machine from the provided SecurityContext if the request is in the group admin.
+- `getJwtUserName()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
+- `getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
+`SecurityContext.getUserPrincipal()` returns an object in the `java.security.Principal` type. This object is also an instance of `org.eclipse.microprofile.jwt.JsonWebToken`.
+- `getCustomClaim()` retrieves the custom claim from the Json Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
+- `SecurityContext.isUserInRole(String)` returns `true` for any name that is included in the MP-JWT "groups" claim and for any role name that is mapped to a group name in the MP-JWT "groups" claim.
 
 // =================================================================================================
-// Edit the InventoryResource class
+// Add the InventoryResource class
 // =================================================================================================
 
-=== Editing the InventoryResource class
+=== Add the InventoryResource class
 
-Open the class `InventoryResource.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/` to add code to return the JWT token with all HTTP requests.
+Create the class `InventoryResource.java` in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory to add code to return the JWT token with all HTTP requests.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright;!doc]
 ----
 
-The `import javax.annotation.security.DenyAll;`
-, `import javax.annotation.security.RolesAllowed;` imports contain the classes required to hande access to the code from different roles.
+The `@RolesAllowed({"admin", "user"})` annotation sets which roles are allowed to access the service. In this case, the roles are `admin` or `user`.
 
-The `@RolesAllowed({"admin", "user"})` annotation sets what roles are allowed to access the class/method which in this case is `admin` or `user`.
+The `authHeader` retrieves the authorization header from the GET request.
 
-The following code `String authHeader = httpHeaders.getRequestHeaders().getFirst(HttpHeaders.AUTHORIZATION);` takes the auth header from the GET request and puts it into a string.
-
-The final addition of code is `return Response.ok(manager.get(hostname, authHeader), MediaType.APPLICATION_JSON).build();` that adds the authHeader String created above to the HTTP GET response.
+The final addition of code `return Response.ok(manager.get(props)).build();` adds the authentication header to the client that sends the HTTP GET request to the other service.
 
 // =================================================================================================
-// Edit the InventoryUlti class
+// Add the SystemClient class
 // =================================================================================================
 
-=== Edit the InventoryUlti class
+=== Add the SecuredSystemClient class
 
-Edit the class `InventoryUlti.java` in `/start/backendServices/src/main/java/io/openliberty/guides/inventory/util/InventoryUtil.java` to add code to return the auth header in the GET requests.
+Add the `SecuredSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java` file.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/util/InventoryUtil.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java[tags=jwt;!copyright;!doc]
 ----
 
-Not sure why required changes have been made... Need to talk to developer on Monday.
+The `SecuredSystemClient` class inherits methods, which handle the HTTP GET request to the system service to retrieve system properties, from the `SystemClient` class.
+However, the class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
+By adding the authorization header to the client request, the `SecuredSystemClient` class can access services that are secured.
+
 
 // =================================================================================================
-// Edit the SystemResource class
+// Add the SystemResource class
 // =================================================================================================
 
-=== Edit the SystemResource class
+=== Add the SystemResource class
 
-Edit the class `SystemResource.java` in `finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` to add code to return the auth header in the GET requests.
+Add the `SystemResource.java` class in the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` directory.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright;!doc]
 ----
 
-The `import javax.annotation.security.RolesAllowed;` import allows roles access to methods.
-
-Add the `@RolesAllowed({"admin", "user"})` code to allow certain roles to access the metod.
-
-// =================================================================================================
-// Adding JWT token creation and login Service to the Front-End
-// =================================================================================================
-
-== Adding JWT token creation and login Service to the Front-End
-
-We have provided you with a very simple front-end web application to allow you to log into the back-end system with pre defined users that have different roles such as `admin` and `user` located in `finish/frontendUI/src/main/java/io/openliberty/guides/ui`
-
+The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with "admin" and "user" roles to access the `system` service.
+Therefore, this service is properly secured.
 
 // =================================================================================================
-// Creating a User Object
+// Adding JWT builder and form-based login to the front end
 // =================================================================================================
 
-=== Creating a User Object
+== Adding JWT builder and form-based login to the front end
 
-Create a class `User.java` in `/start/microservice-user/src/main/java/io/openliberty/guides/user/` to create a user object that can be used to authenticte against.
+A very simple front-end web application is provided to allow you to log in to the application with predefined users that have different roles, such as `admin` and `user`.
 
-[source, java, indent=0]
-----
-include::finish\frontendUI\src\main\java\io\openliberty\guides\ui/User.java[]
-----
 
-This class contains two constuctors:
+// =================================================================================================
+// The User Object
+// =================================================================================================
 
-`PasswordUtility(String userPassword)` takes a clear text password and generates a salt and the hashed password for storing in the database.
+=== The User Object
 
-`PasswordUtility(String userPassword, String saltString)` takes the password and a pre generated salt to create a hashed password. 
-Plus two methods:
+A `User` class is provided for you in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java` file.
 
-`public String getSalt()` gets the salt as a string.
-
-`public String getHashedPassword` gets the hashed password as a string.
+This user model contains information about a user. The model includes `get` and `set` methods for the username, password, and role.
 
 // =================================================================================================
 // Creating the login bean
@@ -216,112 +199,133 @@ Plus two methods:
 
 === Creating the login bean
 
-Create a class `LoginBean.java` in `/start/microservice-user/src/main/java/io/openliberty/guides/user/` to store information about a different users.
+Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end and to create the JWT token required for authentication.
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright;!doc]
 ----
 
-The `com.ibm.websphere.security.jwt.\*;` import contains the required classes to create the JWT token.
+- `doLogIn()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
+- `buildJWT()` creates a JWT token with provided user information.
+- `getRole()` returns either the `admin` or `user` role for a user.
 
+// =================================================================================================
+// Creating the system bean
+// =================================================================================================
 
+=== Creating the system bean
 
+Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui` directory to get information about the user who is currently logged in.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright;!doc]
+----
+
+- `getOs()` returns a string of the operating system for a session from the back end by performing a GET request with the auth header that contains the JSON Web Token.
+- `getInvSize()` returns the size of the inventory list for a given user from the session.
+- `getJwt()` returns the JSON Web Token for the current session.
+- `getUserName()` returns the user name of the user that is currently logged in from the session.
+- `getUserRole()` returns the role of the currently logged in user.
+
+// =================================================================================================
+// Creating the Server configuration file
+// =================================================================================================
+
+=== Creating the Server Configuration File
+
+Create a config file named `server.xml` in the `start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt;!copyright;!doc]
+----
+
+The `<feature>jwt-1.0</feature>` feature adds the libraries that are required for JWT builder implementation.
+
+The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored on the server rather than a database.
+User names and passwords are defined here, as well as user groups, which are used for front-end authentication.
+
+The `<application>` section sets the application location and its type. In this case, it's a `.war` file. It maps user groups with user security roles, which defines user accessibility for certain endpoints in this application.
+
+The `<jwtBuilder>` section is required to build a JWT for an authenticated user and sets the tokens expiration time to 24 hours.
 
 // =================================================================================================
 // Building and running the application
 // =================================================================================================
 
-== Building and running the application
+include::{common-includes}/mvnbuild.adoc[]
 
-To build the application, run the Maven install goal from the command line:
+When the Open Liberty application server has started, you can log in to the system with the simple front end that is provided. Use one of the following credentials to log in:
 
-  mvn clean install
+|===
+| *Username* | *Password* | *Role*
+| `bob` | `pwd` | `admin, user`
+| `alice` | `alicepwd` | `user`
+| `carl` | `carlpwd` | `user`
+|===
 
-This goal builds the application and creates a .war file in the target directory. The goal also
-configures and installs Open Liberty into the target/liberty/wlp directory.
+The following endpoint is used to log in to the system:
 
-Next, run the Maven liberty:start-server goal:
+* `http://localhost:9090/system.jsf`
 
-  mvn package -P start-servers -pl runApp
+Once you log in, you can see some basic information about your current session, including the user name of the user who is currently logged in, your role, which is admin, the current operating system, the size of your inventory, and the JSON Web Token (JWT) that is  used for authorization in the back end.
+Remember that if you log in as a user without the role of admin, you will be unable to see the inventory size because you do not have the correct permissions.
 
-This goal starts an Open Liberty server instance. Your Maven pom.xml is already configured to
-start the application in this server instance.
+include::{common-includes}/mvnpackage.adoc[]
 
-Once the server is running, you can find the health endpoint
-reporting the state of the two services at the following URL:
-
-* `\http://localhost:9080/health`
-
-Now, try to turn the `InventoryResource` service down (i.e. in maintenance) by changing the
-property `io_openliberty_guides_inventory_inMaintenance` value to `true`. This property is found in
-`/finish/CustomConfigSource.json`. Refresh the browser. You will see the state of the
-`InventoryResource` is currently `DOWN` and because of that the overall outcome is `DOWN`. You can
-verify that by pointing your browser to the inventory service endpoint. As you can see, the service is responding
-with a message telling you that it is in maintenance.
-
-If you make changes to the code, use the Maven package goal to rebuild the application and have
-the running Open Liberty server pick them up automatically:
-
-  mvn package
-
-To stop the Open Liberty server, run the Maven liberty:stop-server goal:
-
-  mvn liberty:stop-server
-
---------------------Not yet finished-----------------------
 // =================================================================================================
-// Testing Services States
+// Testing MP-JWT authorization
 // =================================================================================================
 
-== Testing Services States
+== Testing MP-JWT authorization
 
-You will write two test methods `testIfApplicationIsUp()` and `testIfInventoryServiceIsDown()` to
-validate the state of the Inventory Manager Application among with the `PropertiesResource` and `InventoryResource` services. 
+You will write `EndpointWithJwtTest` and `JwtTest` test classes to
+validate the state of each service.
 
-Begin by creating a test class src/test/java/it/io/openliberty/guides/health/HealthTest.java:
+To begin, create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/EndpointWithJwtTest.java` file:
 
 [source, java, indent=0]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/inventory/HealthTest.java[tags=HealthTest]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/EndpointWithJwtTest.java[tags=test]
 ----
 
-The @Before and @After annotations are placed on methods that execute before and after every test
-case. These methods are generally used to perform any setup and teardown tasks.
-In this case, the `setup()` method initializes the fields. They are the `JsonArray` that hold the states
-of the services, the two maps for storing the states when the services are up and when they are
-down and the constant to hold the property that will be read. `The teardown()` method simply resets
-the property's value.
+In the `setup()` before test cases, an authorization header is created with the credential of a test user who has the name `TESTUSER` and `admin` role.
+Then, this authorization header is added when the test client tries to send a `get` request to a secured service to retrieve any information.
 
-There are few test case methods annotated with `@Test` to test the functionality of the inventory
-application after adding health checks.
+Each test case tries to first assert that with a valid authorization header, it can can get a `Status.OK` code from the response.
+If the response returns a `Status.FORBIDDEN` code, which means the authorization header is invalid, the test fails.
 
-* The `testIfApplicationIsUp()` method checks if the application outcome is currently `UP`. This means both services' healthy states are `UP`.  This test uses these helper methods:
+After assuring the response code is correct, each test tries to get the content from the designated endpoint and compares the result with its expected value.
 
-    *** `connectToHealthEndpoint()` method sends a request to `\http://localhost:9080/health` then
-    verifies the `200` response code is returned. This method also reads the response as `JsonArray` which contains the states
-    of the two services. The `JsonArray` is used to compare with the expected service states. 
+Next, create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 
-    *** `getActualState()` method returns the state (`UP` or `DOWN`) of a specific service
-    from the `JsonArray` object that is passed as an argument to it.
-    
-    *** `checkServicesStates()` method verifies and asserts the actual states of both services.
+[source, java, indent=0]
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
+----
 
-* The `testIfInventoryServiceIsDown()` method follows the similar procedure as in the previous test
-case. It first checks if the application outcome is `UP`. Next, the `io.openliberty.guides.microprofile.inventory.inMaintenance` property value is changed from `false` to `true` in the `CustomConfigSource.json` file. With the property update, we send a request to check the health outcome again. This time the expected code should be 503. Lastly, we validate the state of the `InventoryResource` service by asserting if
-it is `DOWN` but the `ProeprtiesResource` service is `UP`.
+Similarly, in the `setup()` step of the `JwtTest`, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and the `user` role.
+The authorization header is added when the test client tries to send a `get` request to a secured JWT service.
 
-=== Running the tests
+* `testJWTGetName()` tries to access the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token, and verify
+if the username is same as `TESTUSER`.
 
-Go to `start` directory and run `mvn clean install`. You should see two tests pass with the following
-results:
+* `testJWTGetCustomClaim()` tries to access the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Since this service is secured and only accessible for users who have the `admin` role,
+the test is asserting that the current test user who has a normal `user` role is forbidden from accessing it.
+
+include::{common-includes}/mvnverify.adoc[]
 
 ```
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.microprofile.HealthTest
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.912 sec - in it.io.openliberty.guides.microprofile.HealthTest
+Running it.io.openliberty.guides.jwt.EndpointWithJwtTest
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.444 sec - in it.io.openliberty.guides.jwt.EndpointWithJwtTest
+Running it.io.openliberty.guides.jwt.JwtTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.086 sec - in it.io.openliberty.guides.jwt.JwtTest
 
 Results :
 
@@ -334,7 +338,16 @@ Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 
 == Great work! You're done!
 
-You have learned how to add health checks to report the states of microservices in an
-application. Then you wrote tests to validate that.
+You have learned how to add MP-JWT authentication to secure your microservices, and you wrote tests to validate them.
 
-include::{common-includes}/finish.adoc[]
+Next, you can try one of the related MicroProfile guides. They demonstrate new technologies that you can learn and expand on what you built here.
+
+
+// include::{common-includes}/finish.adoc[]
+
+== Contribute to this guide
+
+Is something missing or broken? Raise an https://github.com/OpenLiberty/draft-guide-microprofile-jwt/issues[issue],
+or send us a https://github.com/OpenLiberty/draft-guide-microprofile-jwt/pulls[pull request].
+
+https://github.com/OpenLiberty/draft-guide-microprofile-jw[View this guide on github].

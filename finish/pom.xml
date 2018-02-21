@@ -1,15 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2017 IBM Corporation and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
-
-  Contributors:
-  IBM Corporation - initial API and implementation
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>io.openliberty.guides</groupId>
     <artifactId>mp-jwt-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -31,9 +22,8 @@
         <version.exec.plugin>1.5.0</version.exec.plugin>
         <version.jar.plugin>3.0.2</version.jar.plugin>
 
-
         <!-- Liberty Server -->
-        <version.liberty>17.0.0.3-RC</version.liberty>
+        <version.liberty>LATEST</version.liberty>
 
         <!-- Dependencies -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,11 +52,9 @@
         <frontend.https.port>9091</frontend.https.port>
         <frontend.hostname>localhost</frontend.hostname>
 
-
         <!-- JSON Web Token used for microservice authorization -->
         <jwt.shared.key>secret</jwt.shared.key>
         <jwt.issuer>http://wasdev.net</jwt.issuer>
-
     </properties>
 
     <repositories>
@@ -89,6 +77,21 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-client</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -115,8 +118,8 @@
                 <groupId>com.ibm.websphere.appserver.api</groupId>
                 <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
                 <version>${version.com.ibm.websphere.appserver.api.jwt}</version>
+                <scope>provided</scope>
             </dependency>
-
 
             <!-- Test -->
             <dependency>
@@ -131,13 +134,13 @@
                 <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-rs-client</artifactId>
                 <version>${version.apache.cxf}</version>
                 <scope>test</scope>
             </dependency>
+
             <!-- The following is necessary to read CXF client configuration -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -150,6 +153,7 @@
                 <groupId>org.eclipse.microprofile.config</groupId>
                 <artifactId>microprofile-config-api</artifactId>
                 <version>${version.microprofile.config}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -229,21 +233,6 @@
                     <version>${version.keytool.plugin}</version>
                 </plugin>
 
-                <!-- Liberty server operations and management. -->
-                <plugin>
-                    <groupId>net.wasdev.wlp.maven.plugins</groupId>
-                    <artifactId>liberty-maven-plugin</artifactId>
-                    <version>${version.liberty.plugin}</version>
-                    <configuration>
-                        <assemblyArtifact>
-                            <groupId>io.openliberty</groupId>
-                            <artifactId>openliberty-runtime</artifactId>
-                            <version>${version.liberty}</version>
-                            <type>zip</type>
-                        </assemblyArtifact>
-                    </configuration>
-                </plugin>
-
                 <!-- Integration test plugins -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -260,13 +249,45 @@
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${version.jar.plugin}</version>
                 </plugin>
+
+                <!-- Liberty server operations and management. -->
+                <plugin>
+                    <groupId>net.wasdev.wlp.maven.plugins</groupId>
+                    <artifactId>liberty-maven-plugin</artifactId>
+                    <version>${version.liberty.plugin}</version>
+                    <configuration>
+                        <assemblyArtifact>
+                            <groupId>io.openliberty</groupId>
+                            <artifactId>openliberty-runtime</artifactId>
+                            <version>${version.liberty}</version>
+                            <type>zip</type>
+                        </assemblyArtifact>
+                    </configuration>
+                    <executions>
+                      <execution>
+                         <id>start-server</id>
+                         <phase>pre-integration-test</phase>
+                         <goals>
+                             <goal>test-start-server</goal>
+                         </goals>
+                     </execution>
+                     <execution>
+                         <id>stop-server</id>
+                         <phase>post-integration-test</phase>
+                         <goals>
+                             <goal>test-stop-server</goal>
+                         </goals>
+                     </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
+
     <modules>
         <module>resources</module>
         <module>backendServices</module>
         <module>frontendUI</module>
-        <module>runApp</module>
     </modules>
 </project>

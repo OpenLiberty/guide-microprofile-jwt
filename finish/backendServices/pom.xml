@@ -10,11 +10,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-      <groupId>io.openliberty.guides</groupId>
-      <artifactId>mp-jwt-app</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+        <groupId>io.openliberty.guides</groupId>
+        <artifactId>mp-jwt-app</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <artifactId>backendServices</artifactId>
     <packaging>war</packaging>
 
@@ -44,8 +46,8 @@
         </dependency>
         <!-- The following is necessary to read CXF client configuration -->
         <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ibm.websphere.appserver.api</groupId>
@@ -53,21 +55,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-          <groupId>org.eclipse.microprofile.jwt</groupId>
-          <artifactId>microprofile-jwt-auth-api</artifactId>
-          <scope>provided</scope>
+            <groupId>org.eclipse.microprofile.jwt</groupId>
+            <artifactId>microprofile-jwt-auth-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-          <groupId>org.eclipse.microprofile.config</groupId>
-          <artifactId>microprofile-config-api</artifactId>
-          <scope>provided</scope>
+            <groupId>org.eclipse.microprofile.config</groupId>
+            <artifactId>microprofile-config-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-          <groupId>javax.annotation</groupId>
-          <artifactId>javax.annotation-api</artifactId>
-          <version>1.2</version>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -75,7 +77,7 @@
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-	                  <!-- Copy the backend application to the liberty server -->
+                      <!-- Copy the backend application to the liberty server -->
                     <execution>
                         <id>copy-app-to-liberty</id>
                         <phase>package</phase>
@@ -97,23 +99,23 @@
                     </execution>
                     <!-- Copy the keystore to integration tests for HTTPS -->
                     <execution>
-                    	<id>copy-keystore-to-integration-test</id>
-                    	<phase>pre-integration-test</phase>
-                    	<goals>
-                    		<goal>copy-resources</goal>
-                    	</goals>
-                    	<configuration>
-                    		<outputDirectory>${basedir}/target/test-classes/truststore</outputDirectory>
-                    		<overwrite>true</overwrite>
-                    		<resources>
-                    			<resource>
-                    				<directory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</directory>
-                    				<includes>
-                    					<include>keystore.jceks</include>
-                    				</includes>
-                    			</resource>
-                    		</resources>
-                    	</configuration>
+                        <id>copy-keystore-to-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/test-classes/truststore</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</directory>
+                                    <includes>
+                                        <include>keystore.jceks</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -121,7 +123,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-
                     <!-- Copy the keystore that Liberty will use -->
                     <execution>
                         <id>copy-keystore-to-liberty</id>
@@ -130,55 +131,67 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                          <artifactItems>
-                            <artifact>
-                              <groupId>io.openliberty.guides</groupId>
-                              <artifactId>resources</artifactId>
-                              <type>jar</type>
-                              <overWrite>false</overWrite>
-                              <outputDirectory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</outputDirectory>
-                              <includes>keystore.jceks</includes>
-                            </artifact>
-                          </artifactItems>
+                            <artifactItems>
+                                <artifact>
+                                    <groupId>io.openliberty.guides</groupId>
+                                    <artifactId>resources</artifactId>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/liberty/wlp/usr/servers/${server.name}/resources/security</outputDirectory>
+                                    <includes>keystore.jceks</includes>
+                                </artifact>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
 
             <!-- Liberty setup. -->
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <executions>
-                    <!-- Create the liberty server. -->
                     <execution>
-                        <id>create-liberty-server</id>
+                        <id>install-liberty</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>install-server</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>create-default-server</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>create-server</goal>
                         </goals>
                     </execution>
-
-                    <!-- Start the server before running the tests. -->
+                    <execution>
+                        <id>install-app</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>install-apps</goal>
+                        </goals>
+                        <configuration>
+                            <appsDirectory>apps</appsDirectory>
+                            <stripVersion>true</stripVersion>
+                            <installAppPackages>project</installAppPackages>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>start-server</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>start-server</goal>
+                            <goal>test-start-server</goal>
                         </goals>
                     </execution>
-
-                     <!-- Stop the server after running the tests. -->
                     <execution>
                         <id>stop-server</id>
                         <phase>post-integration-test</phase>
                         <goals>
-                            <goal>stop-server</goal>
+                            <goal>test-stop-server</goal>
                         </goals>
                     </execution>
                 </executions>
-
                 <configuration>
                     <serverName>${server.name}</serverName>
                     <appArchive>${project.build.directory}/${warfile.name}.war</appArchive>
@@ -187,7 +200,6 @@
                         <app.name>${warfile.name}.war</app.name>
                         <http.port>${backend.http.port}</http.port>
                         <https.port>${backend.https.port}</https.port>
-
                         <frontend.hostname>${frontend.hostname}</frontend.hostname>
                         <frontend.port>${frontend.https.port}</frontend.port>
                         <jwt.issuer>${jwt.issuer}</jwt.issuer>
@@ -211,10 +223,9 @@
                                 <include>**/it/**</include>
                             </includes>
                             <systemPropertyVariables>
-		                        <liberty.test.hostname>${backend.hostname}</liberty.test.hostname>
+                                <liberty.test.hostname>${backend.hostname}</liberty.test.hostname>
                                 <liberty.test.port>${backend.http.port}</liberty.test.port>
                                 <liberty.test.ssl.port>${backend.https.port}</liberty.test.ssl.port>
-
                                 <liberty.backend.service.hostname>${backend.hostname}</liberty.backend.service.hostname>
                                 <liberty.backend.service.ssl.port>${backend.https.port}</liberty.backend.service.ssl.port>
                             </systemPropertyVariables>
@@ -250,33 +261,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>non-windows</id>
-            <activation>
-                <os>
-                    <family>!Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.sh</script.extension>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.bat</script.extension>
-            </properties>
-        </profile>
-    </profiles>
 </project>

@@ -87,22 +87,22 @@ Complete the following sections to add MicroProfile JWT to the back end and add 
 // Adding Microprofile-JWT to back-end services
 // =================================================================================================
 
-== Adding Microprofile-JWT to back-end services
+== Adding MicroProfile JWT to back-end services
 
 The MicroProfile JWT feature is added as a dependency in your `pom.xml` file. This feature allows you to
 use the MicroProfile JWT API to inject user authorization information into the RESTful services.
 
 // =================================================================================================
-// Adding the JWT Resource class
+// Adding the JwtResource class
 // =================================================================================================
 
-=== Adding the JWT Resource class
+=== Adding the JwtResource class
 
 Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the Json Web Token.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright;!doc]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
 // The following sentences are incorrect: the JsonWebToken does not create JSON Web Token, @RequestScoped has nothing to do with JWT, please check CDI gudie for more info about annotation
@@ -115,7 +115,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 
 Role names used in `@RolesAllowed` are mapped to group names in the MP-JWT "groups" claim, which results in an authorization decision wherever the security constraint is applied.
 
-- `getJwtUserName()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
+- `getJwtUsername()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
 - `getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
 `SecurityContext.getUserPrincipal()` returns an object in the `java.security.Principal` type. This object is also an instance of `org.eclipse.microprofile.jwt.JsonWebToken`.
 - `getCustomClaim()` retrieves the custom claim from the Json Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
@@ -131,7 +131,7 @@ Create the class `InventoryResource.java` in the `start/backendServices/src/main
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright;!doc]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
 ----
 
 The `@RolesAllowed({"admin", "user"})` annotation sets which roles are allowed to access the service. In this case, the roles are `admin` or `user`.
@@ -144,18 +144,18 @@ The final addition of code `return Response.ok(manager.get(props)).build();` add
 // Add the SystemClient class
 // =================================================================================================
 
-=== Add the SecuredSystemClient class
+=== Add the SecureSystemClient class
 
-Add the `SecuredSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java` file.
+Add the `SecureSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecuredSystemClient.java[tags=jwt;!copyright;!doc]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
 ----
 
-The `SecuredSystemClient` class inherits methods, which handle the HTTP GET request to the system service to retrieve system properties, from the `SystemClient` class.
+The `SecureSystemClient` class inherits methods, which handle the HTTP GET request to the system service to retrieve system properties, from the `SystemClient` class.
 However, the class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
-By adding the authorization header to the client request, the `SecuredSystemClient` class can access services that are secured.
+By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 
 // =================================================================================================
@@ -164,11 +164,11 @@ By adding the authorization header to the client request, the `SecuredSystemClie
 
 === Add the SystemResource class
 
-Add the `SystemResource.java` class in the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` directory.
+Create the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file as following:
 
 [source, java, indent=0]
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright;!doc]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
 The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with "admin" and "user" roles to access the `system` service.
@@ -203,12 +203,12 @@ Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openli
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright;!doc]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright]
 ----
 
-- `doLogIn()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
-- `buildJWT()` creates a JWT token with provided user information.
-- `getRole()` returns either the `admin` or `user` role for a user.
+- `doLogin()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
+- `buildJwt()` creates a JWT token that contains user information.
+- `getRole()` returns the role of a user which is either `admin` or `user`.
 
 // =================================================================================================
 // Creating the system bean
@@ -220,13 +220,13 @@ Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openl
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright;!doc]
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright]
 ----
 
 - `getOs()` returns a string of the operating system for a session from the back end by performing a GET request with the auth header that contains the JSON Web Token.
-- `getInvSize()` returns the size of the inventory list for a given user from the session.
+- `getInventorySize()` returns the size of the inventory list for a given user from the session.
 - `getJwt()` returns the JSON Web Token for the current session.
-- `getUserName()` returns the user name of the user that is currently logged in from the session.
+- `getUsername()` returns the user name of the user that is currently logged in.
 - `getUserRole()` returns the role of the currently logged in user.
 
 // =================================================================================================
@@ -239,7 +239,7 @@ Create a config file named `server.xml` in the `start/frontendUI/src/main/libert
 
 [source, java, indent=0]
 ----
-include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt;!copyright;!doc]
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt]
 ----
 
 The `<feature>jwt-1.0</feature>` feature adds the libraries that are required for JWT builder implementation.
@@ -292,7 +292,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Endpo
 ----
 
 In the `setup()` before test cases, an authorization header is created with the credential of a test user who has the name `TESTUSER` and `admin` role.
-Then, this authorization header is added when the test client tries to send a `get` request to a secured service to retrieve any information.
+Then, this authorization header is added when the test client tries to send a `get` request to a secure service to retrieve any information.
 
 Each test case tries to first assert that with a valid authorization header, it can can get a `Status.OK` code from the response.
 If the response returns a `Status.FORBIDDEN` code, which means the authorization header is invalid, the test fails.
@@ -307,7 +307,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTe
 ----
 
 Similarly, in the `setup()` step of the `JwtTest`, an authorization header is created with the credential of a test user who has the name as `TESTUSER` and the `user` role.
-The authorization header is added when the test client tries to send a `get` request to a secured JWT service.
+The authorization header is added when the test client tries to send a `get` request to a secure JWT service.
 
 * `testJWTGetName()` tries to access the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token, and verify
 if the username is same as `TESTUSER`.

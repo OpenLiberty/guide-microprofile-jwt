@@ -43,7 +43,7 @@ public class JwtResource {
     @GET
     @RolesAllowed({ "admin", "user" })
     @Path("/username")
-    public Response getJwtUserName() {
+    public Response getJwtUsername() {
         return Response.ok(this.jwtPrincipal.getName()).build();
     }
 

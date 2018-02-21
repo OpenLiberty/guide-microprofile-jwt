@@ -52,6 +52,17 @@
           value="#{systemBean.jwt}" />
         <br /> <br />
 
+    <div >
+
+      <h:panelGroup layout="block">
+      <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
+        <input type="submit" name="logout" value="Log Out" />
+        <input type="HIDDEN" name="logoutExitPage" value="/login.jsf" />
+      </FORM>
+      </h:panelGroup>
+
+    </div>
+
 
 </body>
 </html>

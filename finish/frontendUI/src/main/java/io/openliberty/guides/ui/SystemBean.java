@@ -32,7 +32,7 @@ public class SystemBean {
             JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
             return properties.getString("os.name");
         }
-        return "wrong os";
+        return "You are not authorized to access the system service.";
     }
 
     public String getInventorySize() {

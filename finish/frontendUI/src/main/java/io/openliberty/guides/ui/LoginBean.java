@@ -45,7 +45,7 @@ public class LoginBean {
         return password;
     }
 
-    public String doLogIn() throws Exception {
+    public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
 
         // do login
@@ -64,13 +64,13 @@ public class LoginBean {
         // update session
         if (remoteUser != null && remoteUser.equals(username)){
             User user = new User(username, password, role);
-            String jwt = buildJWT(username, role);
+            String jwt = buildJwt(username, role);
             // get the current session
             HttpSession ses = request.getSession(false);
             if (ses == null) {
                 System.out.println("Session is timeout.");
             } else {
-                ses.setAttribute("jwt", jwt); // important to set it here!
+                ses.setAttribute("jwt", jwt); 
                 ses.setAttribute("user", user);
             }
         } else {
@@ -89,7 +89,7 @@ public class LoginBean {
      * @throws Exception Something went wrong...?
      */
 	   //end::doc[]
-    private String buildJWT(String userName, String role) throws Exception {
+    private String buildJwt(String userName, String role) throws Exception {
         return JwtBuilder.create("jwtFrontEndBuilder")
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName) /* MP-JWT defined subject claim */

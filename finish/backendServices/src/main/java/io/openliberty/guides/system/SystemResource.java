@@ -27,13 +27,11 @@ import javax.annotation.security.RolesAllowed;
 @RequestScoped
 @Path("properties")
 public class SystemResource {
-
     @GET
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     public Properties getProperties() {
         return System.getProperties();
     }
-    
 }
 // end::jwt[]

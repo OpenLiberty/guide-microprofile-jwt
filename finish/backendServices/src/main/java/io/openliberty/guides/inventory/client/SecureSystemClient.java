@@ -18,7 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import java.util.Properties;
 import io.openliberty.guides.inventory.client.SystemClient;
 
-public class SecuredSystemClient extends SystemClient {
+public class SecureSystemClient extends SystemClient {
 
     // Constants for building URI to the system service.
     private final int DEFAULT_SEC_PORT = Integer.valueOf(System.getProperty("https.port"));

@@ -10,9 +10,7 @@
 <!-- tag::jwt[] -->
 <server description="Backend server">
     <featureManager>
-        <feature>microProfile-1.0</feature>
         <feature>mpJwt-1.0</feature>
-        <feature>mpConfig-1.1</feature>
         <feature>ssl-1.0</feature>
         <feature>jaxrs-2.0</feature>
         <feature>jsonp-1.0</feature>
@@ -28,9 +26,6 @@
 
     <!-- The application containing the user and login endpoints. -->
     <webApplication location="${app.name}" contextRoot="/" />
-
-    <!-- This JWT builder is used to build a JWT for an authenticated user. -->
-    <jwtBuilder id="jwtUserBuilder" issuer="${jwt.issuer}" expiry="24h" keyAlias="default" audiences="simpleapp" jti="true"/>
 
     <!-- The MP JWT configuration that injects the caller's JWT into a ResourceScoped bean for inspection. -->
     <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp" issuer="${jwt.issuer}"/>

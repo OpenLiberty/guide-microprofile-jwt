@@ -32,17 +32,17 @@ public class SystemBean {
             JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
             return properties.getString("os.name");
         }
-        return "wrong os";
+        return "You are not authorized to access the system service.";
     }
 
-    public int getInvSize() {
+    public String getInventorySize() {
         String jwtTokenString = SessionUtils.getJwtToken();
         String authHeader = "Bearer " + jwtTokenString;
         if (ServiceUtils.invOkHelper(authHeader)) {
             JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
-            return properties.getInt("total");
+            return String.valueOf(properties.getInt("total"));
         }
-        return -1;
+        return "You are not authorized to access the inventory service.";
     }
 
     public String getJwt() {
@@ -51,7 +51,7 @@ public class SystemBean {
         return authHeader;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return SessionUtils.getUserObj().getName();
     }
 

@@ -14,3 +14,5 @@ MANIFEST.MF
 
 # Asciidoc rendered
 README.html
+
+finish/resources/src/main/resources/keystore.jceks

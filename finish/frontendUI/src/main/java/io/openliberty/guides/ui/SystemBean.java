@@ -35,7 +35,12 @@ public class SystemBean {
     }
 
     public String getInventorySize() {
+<<<<<<< HEAD
         String authHeader = getJwt();
+=======
+        String jwtTokenString = SessionUtils.getJwtToken();
+        String authHeader = "Bearer " + jwtTokenString;
+>>>>>>> 304c014971f647d4ad23d0a1868b28bcf3799b90
         if (ServiceUtils.invOkHelper(authHeader)) {
             JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
             return String.valueOf(properties.getInt("total"));

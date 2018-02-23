@@ -26,8 +26,7 @@ import javax.json.JsonObject;
 public class SystemBean {
 
     public String getOs() {
-        String jwtTokenString = SessionUtils.getJwtToken();
-        String authHeader = "Bearer " + jwtTokenString;
+        String authHeader = getJwt();
         if (ServiceUtils.responseOkHelper(authHeader)) {
             JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
             return properties.getString("os.name");
@@ -36,8 +35,7 @@ public class SystemBean {
     }
 
     public String getInventorySize() {
-        String jwtTokenString = SessionUtils.getJwtToken();
-        String authHeader = "Bearer " + jwtTokenString;
+        String authHeader = getJwt();
         if (ServiceUtils.invOkHelper(authHeader)) {
             JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
             return String.valueOf(properties.getInt("total"));

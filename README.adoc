@@ -25,9 +25,9 @@ Learn how to control user and role access to microservices with MicroProfile JWT
 
 == What you'll learn
 
-You will learn how to control user and role access to microservices with MicroProfile JWT. JWT security provides certain groups of users with access to specific functions.
+You will learn how to control user and role access to microservices with MicroProfile JWT. You will use Token Based Authentication mechanism to authenticate, authorize and verify user identities based on a security token.
 
-You will add MP-JWT to validate security tokens in the `System` and `Inventory` microservices, and add a simple front end to handle the authentication.
+You will add MP-JWT to validate security tokens in the `System` and `Inventory` microservices. In addition, you will add a simple front end to handle user login and logout.
 
 // =================================================================================================
 // Getting Started
@@ -68,7 +68,7 @@ Log in with one of the following user information examples:
 | `carl` | `carlpwd` | `user`
 |===
 
-You are redirected to a another page that displays the user who is logged in, the current OS of your localhost, and the web token that the front end uses to access the data.
+You are redirected to a another page that displays the user who is logged in, the current OS of your localhost, and the security token that the front end uses when sending the HTTP request to access the data from the back end.
 In addition, if you log in as an `admin` user, the current inventory size should appear. If you log in as a normal `user`, you see the message `You are not authorized to access the inventory service.` instead, which means you cannot access the inventory size data in the back end.
 
 When you are done with the application, stop the server:
@@ -81,13 +81,76 @@ Now, navigate back to the `start` directory to begin.
 Complete the following sections to add MicroProfile JWT to the back end and add basic app security to the front end.
 
 // =================================================================================================
+// Adding JWT builder and form-based login to the front end
+// =================================================================================================
+
+== Adding JWT builder and form-based login to the front end
+
+A very simple front-end web application is provided to allow you to log in to the application with predefined users that have different roles, such as `admin` and `user`.
+
+// =================================================================================================
+// Creating the login bean
+// =================================================================================================
+
+=== Creating the login bean
+
+Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end and to create the JWT token required for authentication.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright]
+----
+
+- `doLogin()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
+- `buildJwt()` creates a JWT token that contains user information.
+- `getRole()` returns the role of a user which is either `admin` or `user`.
+
+// =================================================================================================
+// Creating the system bean
+// =================================================================================================
+
+=== Creating the system bean
+
+Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui` directory to get information about the user who is currently logged in.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright]
+----
+
+- `getOs()` returns a string of the operating system for a session from the back end by performing a GET request with the auth header that contains the JSON Web Token.
+- `getInventorySize()` returns the size of the inventory list for a given user from the session.
+- `getJwt()` returns the JSON Web Token for the current session.
+- `getUsername()` returns the user name of the user that is currently logged in.
+- `getUserRole()` returns the role of the currently logged in user.
+
+// =================================================================================================
+// Creating the Server configuration file
+// =================================================================================================
+
+=== Creating the Server Configuration File
+
+Create a config file named `server.xml` in the `start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
+
+[source, java, indent=0]
+----
+include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt]
+----
+
+The `<feature>jwt-1.0</feature>` feature adds the libraries that are required for JWT builder implementation.
+
+The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored on the server rather than a database.
+User names and passwords are defined here, as well as user groups, which are used for front-end authentication.
+
+The `<jwtBuilder>` section is required to build a JWT for an authenticated user and sets the tokens expiration time to 24 hours.
+
+// =================================================================================================
 // Adding Microprofile-JWT to back-end services
 // =================================================================================================
 
 == Adding MicroProfile JWT to back-end services
 
-The MicroProfile JWT feature (`microprofile-jwt-auth-api`) is added as a dependency in your `start/backendServices/pom.xml` file. This feature allows you to
-use the MicroProfile JWT API to inject user authorization information into the RESTful services.
+The MicroProfile JWT feature (`microprofile-jwt-auth-api`) is added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Adding the JwtResource class
@@ -163,82 +226,6 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/system/Syste
 The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with "admin" and "user" roles to access the `system` service.
 Therefore, this service is properly secured.
 
-// =================================================================================================
-// Adding JWT builder and form-based login to the front end
-// =================================================================================================
-
-== Adding JWT builder and form-based login to the front end
-
-A very simple front-end web application is provided to allow you to log in to the application with predefined users that have different roles, such as `admin` and `user`.
-
-
-// =================================================================================================
-// The User Object
-// =================================================================================================
-
-=== The User Object
-
-A `User` class is provided for you in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/User.java` file.
-
-This user model contains information about a user. The model includes `get` and `set` methods for the username, password, and role.
-
-// =================================================================================================
-// Creating the login bean
-// =================================================================================================
-
-=== Creating the login bean
-
-Create a `LoginBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui/` directory to handle login requests to the back end and to create the JWT token required for authentication.
-
-[source, java, indent=0]
-----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/LoginBean.java[tags=jwt;!copyright]
-----
-
-- `doLogin()` authenticates users who are predefined in the front-end `server.xml` file and creates a user object and a JWT token. It then creates an HTTP session used for continued access to the application.
-- `buildJwt()` creates a JWT token that contains user information.
-- `getRole()` returns the role of a user which is either `admin` or `user`.
-
-// =================================================================================================
-// Creating the system bean
-// =================================================================================================
-
-=== Creating the system bean
-
-Create a `SystemBean.java` class in the `start/frontendUI/src/main/java/io/openliberty/guides/ui` directory to get information about the user who is currently logged in.
-
-[source, java, indent=0]
-----
-include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.java[tags=jwt;!copyright]
-----
-
-- `getOs()` returns a string of the operating system for a session from the back end by performing a GET request with the auth header that contains the JSON Web Token.
-- `getInventorySize()` returns the size of the inventory list for a given user from the session.
-- `getJwt()` returns the JSON Web Token for the current session.
-- `getUsername()` returns the user name of the user that is currently logged in.
-- `getUserRole()` returns the role of the currently logged in user.
-
-// =================================================================================================
-// Creating the Server configuration file
-// =================================================================================================
-
-=== Creating the Server Configuration File
-
-Create a config file named `server.xml` in the `start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
-
-[source, java, indent=0]
-----
-include::finish/frontendUI/src/main/liberty/config/server.xml[tags=jwt]
-----
-
-The `<feature>jwt-1.0</feature>` feature adds the libraries that are required for JWT builder implementation.
-
-The `<basicRegistry id="basic" realm="WebRealm">` section adds users and roles to a basic registry so that they can be stored on the server rather than a database.
-User names and passwords are defined here, as well as user groups, which are used for front-end authentication.
-
-The `<application>` section sets the application location and its type. In this case, it's a `.war` file. It maps user groups with user security roles, which defines user accessibility for certain endpoints in this application.
-
-The `<jwtBuilder>` section is required to build a JWT for an authenticated user and sets the tokens expiration time to 24 hours.
 
 // =================================================================================================
 // Building and running the application

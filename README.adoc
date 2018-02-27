@@ -125,10 +125,10 @@ include::finish/frontendUI/src/main/java/io/openliberty/guides/ui/SystemBean.jav
 - `getUserRole()` returns the role of the currently logged in user.
 
 // =================================================================================================
-// Creating the Server configuration file
+// Creating the server configuration file
 // =================================================================================================
 
-=== Creating the Server Configuration File
+=== Creating the server configuration file
 
 Create a config file named `server.xml` in the `start/frontendUI/src/main/liberty/config` directory to predefine users with their names, passwords, and roles.
 

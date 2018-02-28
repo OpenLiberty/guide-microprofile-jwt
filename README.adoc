@@ -147,10 +147,10 @@ In addition, the `getPropertiesForHost()` method tries to get the HTTP Authoriza
 The final addition of code `manager.get(hostname, authHeader)` adds the authentication header to the client that sends the HTTP GET request to the `system` service.
 
 // =================================================================================================
-// Add the SystemClient class
+// Adding the SecureSystemClient class
 // =================================================================================================
 
-=== Add the SecureSystemClient class
+=== Adding the SecureSystemClient class
 
 Add the `SecureSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
 
@@ -164,23 +164,27 @@ However, the class overrides the `buildClientBuilder()` method by adding the aut
 By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
-// Adding the JwtResource class
+// Retrieving confidential information from JWT
 // =================================================================================================
 
-=== Adding the JwtResource class
+=== Retrieving confidential information from JWT
 
-Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the Json Web Token.
+To demonstrate how MP-JWT retrieves confidential information from the security token, add an additional service that uses JAX-RS security related methods which map to MP-JWT features.
+
+Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the JSON Web Token.
 
 [source, java, indent=0]
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
-- `getJwtUsername()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
-- `getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
+`getJwtUsername()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` type.
+
+`getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
 `SecurityContext.getUserPrincipal()` returns an object in the `java.security.Principal` type. This object is also an instance of `org.eclipse.microprofile.jwt.JsonWebToken`.
-- `getCustomClaim()` retrieves the custom claim from the Json Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
-- `SecurityContext.isUserInRole(String)` returns `true` for any name that is included in the MP-JWT "groups" claim and for any role name that is mapped to a group name in the MP-JWT "groups" claim.
+
+`getCustomClaim()` retrieves the custom claim from the JSON Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
+`SecurityContext.isUserInRole(String)` returns `true` for any name that is included in the MP-JWT `groups` claim and for any role name that is mapped to a group name in the MP-JWT `groups` claim.
 
 // =================================================================================================
 // Building and running the application

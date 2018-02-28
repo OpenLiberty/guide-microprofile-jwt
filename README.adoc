@@ -63,7 +63,7 @@ Log in with one of the following user information examples:
 
 |===
 | *Username* | *Password* | *Role*
-| `bob` | `pwd` | `admin, user`
+| `bob` | `bobpwd` | `admin, user`
 | `alice` | `alicepwd` | `user`
 | `carl` | `carlpwd` | `user`
 |===
@@ -152,6 +152,9 @@ The final addition of code `manager.get(hostname, authHeader)` adds the authenti
 
 === Adding the SecureSystemClient class
 
+In the beginning, the inventory service is using the normal `SystemClient` class to create a client and send HTTP GET requests to retrieve information from the system service.
+However, after the system service is properly secured by the token based authentication, you need to add security tokens while sending HTTP requests via the client.
+
 Add the `SecureSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
 
 [source, java, indent=0]
@@ -164,12 +167,12 @@ However, the class overrides the `buildClientBuilder()` method by adding the aut
 By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
-// Retrieving confidential information from JWT
+// Trying more MP-JWT features
 // =================================================================================================
 
-=== Retrieving confidential information from JWT
+=== Trying more MP-JWT features
 
-To demonstrate how MP-JWT retrieves confidential information from the security token, add an additional service that uses JAX-RS security related methods which map to MP-JWT features.
+To demonstrate how MP-JWT retrieves confidential information and validates custom claims from the security token, add an additional service that uses JAX-RS security related methods. The JWT service also illustrates how JAX-RS methods map to MP-JWT features.
 
 Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information about the JSON Web Token.
 
@@ -185,6 +188,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 
 `getCustomClaim()` retrieves the custom claim from the JSON Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
 `SecurityContext.isUserInRole(String)` returns `true` for any name that is included in the MP-JWT `groups` claim and for any role name that is mapped to a group name in the MP-JWT `groups` claim.
+`jwtPrincipal.getClaim("customClaim")` retrieves the value of the custom claim by its name; this feature is useful when you want to validate information of a custom claim from the security token.
 
 // =================================================================================================
 // Building and running the application
@@ -196,7 +200,7 @@ When the Open Liberty application server has started, you can log in to the syst
 
 |===
 | *Username* | *Password* | *Role*
-| `bob` | `pwd` | `admin, user`
+| `bob` | `bobpwd` | `admin, user`
 | `alice` | `alicepwd` | `user`
 | `carl` | `carlpwd` | `user`
 |===
@@ -262,16 +266,20 @@ include::{common-includes}/mvnverify.adoc[]
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running it.io.openliberty.guides.jwt.EndpointWithJwtTest
-
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.444 sec - in it.io.openliberty.guides.jwt.EndpointWithJwtTest
+Running it.io.openliberty.guides.jwt.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.434 sec - in it.io.openliberty.guides.jwt.InventoryEndpointTest
 Running it.io.openliberty.guides.jwt.JwtTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.086 sec - in it.io.openliberty.guides.jwt.JwtTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in it.io.openliberty.guides.jwt.JwtTest
+Running it.io.openliberty.guides.jwt.SystemEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 sec - in it.io.openliberty.guides.jwt.SystemEndpointTest
 
 Results :
 
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+
 ```
+To see whether the tests detect a failure, remove the authorization header generation in the setup() method of the InventoryEndpointTest.java file.
+Re-run the Maven build. You will see a test failure occur.
 
 // =================================================================================================
 // Great work! You're done!

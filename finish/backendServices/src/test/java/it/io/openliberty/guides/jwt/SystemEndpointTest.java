@@ -23,9 +23,8 @@ import org.junit.Test;
 import it.io.openliberty.guides.jwt.util.TestUtils;
 import test.JwtVerifier;
 
-public class EndpointWithJwtTest {
+public class SystemEndpointTest {
 
-    private final String INVENTORY_HOSTS = "/inventory/systems";
     private final String SYSTEM_PROPERTIES = "/system/properties";
     private final String TESTNAME = "TESTUSER";
 
@@ -42,8 +41,6 @@ public class EndpointWithJwtTest {
     @Test
     public void testSuite() {
         this.testGetPropertiesWithJwt();
-        this.testEmptyInventoryWithJwt();
-        this.testHostRegistrationWithJwt();
     }
 
     public void testGetPropertiesWithJwt() {
@@ -65,42 +62,5 @@ public class EndpointWithJwtTest {
         System.out.println(responseJson.getString("os.name"));
         System.out.println(propUrl);
     }
-
-    public void testEmptyInventoryWithJwt() {
-        String invUrl = baseUrl + INVENTORY_HOSTS;
-        Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
-
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     invResponse.getStatus());
-
-        JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
-
-        assertEquals("The inventory should be empty on application start",
-                     0,
-                     responseJson.getInt("total"));
-
-        System.out.println(responseJson.getInt("total"));
-        System.out.println(invUrl);
-    }
-
-    public void testHostRegistrationWithJwt() {
-        String invUrl = baseUrl + INVENTORY_HOSTS + "/localhost";
-        Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
-
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     invResponse.getStatus());
-
-        JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
-
-        assertEquals("The inventory should get the os.name of localhost",
-                     System.getProperty("os.name"),
-                     responseJson.getString("os.name"));
-
-        System.out.println(responseJson.getString("os.name"));
-        System.out.println(invUrl);
-    }
-
 }
 // end::test[]

@@ -33,14 +33,7 @@ You will add MP-JWT to validate security tokens in the `System` and `Inventory` 
 // Getting Started
 // =================================================================================================
 
-To begin, run the following commands, which clone the Git repository and access the starting project
-that is provided in the `start` directory:
-
-[subs="attributes"]
-----
-git clone https://github.com/OpenLiberty/draft-guide-microprofile-jwt.git
-cd draft-guide-microprofile-jwt/start
-----
+include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
 // Try what you'll build

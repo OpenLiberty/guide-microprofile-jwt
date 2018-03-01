@@ -58,8 +58,8 @@ public class InventoryEndpointTest {
                      0,
                      responseJson.getInt("total"));
 
-        System.out.println(responseJson.getInt("total"));
-        System.out.println(invUrl);
+        // System.out.println(responseJson.getInt("total"));
+        // System.out.println(invUrl);
     }
 
     public void testHostRegistrationWithJwt() {
@@ -76,8 +76,8 @@ public class InventoryEndpointTest {
                      System.getProperty("os.name"),
                      responseJson.getString("os.name"));
 
-        System.out.println(responseJson.getString("os.name"));
-        System.out.println(invUrl);
+        // System.out.println(responseJson.getString("os.name"));
+        // System.out.println(invUrl);
     }
 
 }

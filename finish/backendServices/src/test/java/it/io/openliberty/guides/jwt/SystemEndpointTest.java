@@ -59,8 +59,8 @@ public class SystemEndpointTest {
                      System.getProperty("os.name"),
                      responseJson.getString("os.name"));
 
-        System.out.println(responseJson.getString("os.name"));
-        System.out.println(propUrl);
+        // System.out.println(responseJson.getString("os.name"));
+        // System.out.println(propUrl);
     }
 }
 // end::test[]

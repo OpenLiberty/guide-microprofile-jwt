@@ -290,10 +290,3 @@ Next, you can try one of the related MicroProfile guides. They demonstrate new t
 
 
 include::{common-includes}/finish.adoc[]
-
-== Contribute to this guide
-
-Is something missing or broken? Raise an https://github.com/OpenLiberty/draft-guide-microprofile-jwt/issues[issue],
-or send us a https://github.com/OpenLiberty/draft-guide-microprofile-jwt/pulls[pull request].
-
-https://github.com/OpenLiberty/draft-guide-microprofile-jwt[View this guide on github].

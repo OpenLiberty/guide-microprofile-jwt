@@ -102,9 +102,9 @@ The `<feature>mpJwt-1.0</feature>` feature adds the libraries that are required 
 The `<mpJwt>` element is required to configure the injection of the caller's JWT.
 
 |===
-| `issuer` | issues security tokens, should matches the `iss` claim in the JWT
-| `audiences` | identifies the recipients, should match the `aud` claim in the JWT
-| `keyName`| specifies the JWT signature validation key, should match the key in the truststore in the SSL configuration
+| `issuer` | Issues security tokens, should match the `iss` claim in the JWT
+| `audiences` | Identifies the recipients, should match the `aud` claim in the JWT
+| `keyName`| Specifies the JWT signature validation key, should match the key in the truststore in the SSL configuration
 |===
 
 // =================================================================================================
@@ -196,8 +196,9 @@ MicroProfile JWT maps its token claims to JAX-RS security related methods, and m
 
 include::{common-includes}/mvnbuild.adoc[]
 
-When the Open Liberty application server has started, you can log in to the system with the simple front end. The entire front end code is provided for you to test if you can retrieve information from the back end services using a valid security token.
-You cannot directly visit a back end URL from a browser because you don't have a valid token in the authorication header when you try to send HTTP requests via browser. You have to use the provided front end to create a web client to send HTTP GET requests with valid security tokens.
+When the Open Liberty application server has started, you can log in to the system with the simple front end. The entire front end code is provided to test if you can retrieve information from the back end services using a valid security token.
+
+You cannot directly visit a back end URL from a browser since there is no valid tokens in the authorization header when you send HTTP requests via a browser. You have to use the provided front end to create a web client to send HTTP GET requests with valid security tokens.
 
 Use one of the following credentials to log in:
 
@@ -212,7 +213,7 @@ The following endpoint is used to log in to the application:
 
 * `http://localhost:9090/application.jsf`
 
-Once you log in, you can see some basic information about your current session, including the user name of the user who is currently logged in, your role[s], your current operating system, the size of your inventory service, and the JWT that is  used for authorization.
+Once you log in, you can see some basic information about your current session, including the name of the user who is currently logged in, the role[s] of the user, your current operating system, the size of your inventory service, and the JWT that is  used for authorization.
 Remember that if you log in as a user without the role of admin, you will be unable to see the inventory size because you do not have the correct permissions.
 
 include::{common-includes}/mvnpackage.adoc[]

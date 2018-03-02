@@ -60,11 +60,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.2</version>
@@ -263,29 +258,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>non-windows</id>
-            <activation>
-                <os>
-                    <family>!Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.sh</script.extension>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.bat</script.extension>
-            </properties>
-        </profile>
-    </profiles>
 </project>

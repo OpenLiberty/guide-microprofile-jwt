@@ -16,7 +16,6 @@ package io.openliberty.guides.ui.util;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import io.openliberty.guides.ui.User;
 
 public class SessionUtils {
 
@@ -36,13 +35,6 @@ public class SessionUtils {
         return (HttpServletRequest) FacesContext.getCurrentInstance()
                                                 .getExternalContext()
                                                 .getRequest();
-    }
-
-    /**
-     * Get the current logged in user object
-     */
-    public static User getUserObj() {
-        return (User) getSession().getAttribute("user");
     }
 
     public static String getJwtToken() {

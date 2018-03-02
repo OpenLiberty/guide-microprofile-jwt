@@ -285,7 +285,7 @@ You have learned how to use MP-JWT to validate JWT and authorize users to secure
 Next, you can try one of the related MicroProfile guides. They demonstrate new technologies that you can learn and expand on what you built here.
 
 
-// include::{common-includes}/finish.adoc[]
+include::{common-includes}/finish.adoc[]
 
 == Contribute to this guide
 

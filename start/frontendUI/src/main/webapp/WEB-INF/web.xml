@@ -50,7 +50,7 @@
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>ViewProperties</web-resource-name>
-      <url-pattern>/system.jsf</url-pattern>
+      <url-pattern>/application.jsf</url-pattern>
       <http-method>GET</http-method>
     </web-resource-collection>
     <auth-constraint>

@@ -30,25 +30,20 @@ import java.security.Principal;
 @RequestScoped
 @Path("jwt")
 public class JwtResource {
-    // tag::doc[]
-    /**
-     * The JWT of the current caller. Since this is a request scoped resource, the
-     * JWT will be injected for each JAX-RS request. The injection is performed by
-     * the mpJwt-1.0 feature.
-     */
-    // end::doc[]
+     // The JWT of the current caller. Since this is a request scoped resource, the
+     // JWT will be injected for each JAX-RS request. The injection is performed by the mpJwt-1.0 feature.
     @Inject
     private JsonWebToken jwtPrincipal;
 
     @GET
-    @RolesAllowed({ "admin", "user" })
+    @RolesAllowed({"admin", "user"})
     @Path("/username")
     public Response getJwtUsername() {
         return Response.ok(this.jwtPrincipal.getName()).build();
     }
 
     @GET
-    @RolesAllowed({ "admin", "user" })
+    @RolesAllowed({"admin", "user"})
     @Path("/groups")
     public Response getGroups(@Context SecurityContext securityContext) {
         Set<String> groups = null;
@@ -57,11 +52,11 @@ public class JwtResource {
             JsonWebToken jwt = (JsonWebToken) user;
             groups = jwt.getGroups();
         }
-        return Response.ok(groups).build();
+        return Response.ok(groups.toString()).build();
     }
 
     @GET
-    @RolesAllowed({ "admin", "user" })
+    @RolesAllowed({"admin", "user"})
     @Path("/customClaim")
     public Response getCustomClaim(@Context SecurityContext securityContext) {
         if (securityContext.isUserInRole("admin")) {

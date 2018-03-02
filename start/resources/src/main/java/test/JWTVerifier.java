@@ -48,12 +48,12 @@ import org.apache.cxf.common.util.Base64Exception;
 import org.apache.cxf.common.util.Base64Utility;
 import org.junit.Assert;
 
-public class JWTVerifier {
+public class JwtVerifier {
 
     // The algorithm used to sign the JWT.
     private static final String JWT_ALGORITHM = "SHA256withRSA";
 
-    // The issuer of the JWT. This must match the issuer that the liberty server expects, 
+    // The issuer of the JWT. This must match the issuer that the liberty server expects,
     // defined in server.xml.
     private static final String JWT_ISSUER = System.getProperty("jwt.issuer", "http://wasdev.net");
 
@@ -71,9 +71,9 @@ public class JWTVerifier {
      *
      * @param authHeader The authorization header received from the microservice.
      */
-    public void validateJWT(String authHeader) {
+    public void validateJwt(String authHeader) {
         try {
-            validateJWT(authHeader, getPublicKey());
+            validateJwt(authHeader, getPublicKey());
         } catch (Base64Exception be) {
             Assert.fail("Exception decoding JWT signature: " + be.toString());
         } catch (Throwable t) {
@@ -83,7 +83,7 @@ public class JWTVerifier {
         }
     }
 
-    public void validateJWT(String authHeader, PublicKey publicKey) {
+    public void validateJwt(String authHeader, PublicKey publicKey) {
         assertNotNull("Authorization header was not present in response", authHeader);
         assertTrue("Authorization header does not contain a bearer", authHeader.startsWith("Bearer "));
 
@@ -117,10 +117,10 @@ public class JWTVerifier {
      *
      * @return A base 64 encoded JWT.
      */
-    public String createUserJWT(String username) throws GeneralSecurityException, IOException {
+    public String createUserJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("user");
-        return createJWT(username, groups);
+        return createJwt(username, groups);
     }
 
     /**
@@ -128,13 +128,13 @@ public class JWTVerifier {
      *
      * @return A base 64 encoded JWT.
      */
-    public String createAdminJWT(String username) throws GeneralSecurityException, IOException {
+    public String createAdminJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("admin");
-        return createJWT(username, groups);
+        return createJwt(username, groups);
     }
 
-    public String createJWT(String username, Set<String> groups) throws GeneralSecurityException, IOException {
+    public String createJwt(String username, Set<String> groups) throws GeneralSecurityException, IOException {
         // Create and Base64 encode the header portion of the JWT
         JsonObject headerObj = Json.createObjectBuilder()
                         .add("alg", "RS256")  // Algorithm used
@@ -180,7 +180,7 @@ public class JWTVerifier {
         String jwtEnc = headerClaimsEnc + "." + sigEnc;
         java.security.cert.Certificate cert = ks.getCertificate("default");
         PublicKey publicKey = cert.getPublicKey();
-        validateJWT("Bearer " + jwtEnc, publicKey);
+        validateJwt("Bearer " + jwtEnc, publicKey);
 
         // Return the complete JWT (header, claims, signature).
         return jwtEnc;
@@ -208,8 +208,8 @@ public class JWTVerifier {
     private PublicKey getPublicKey() throws Base64Exception, InvalidKeySpecException, NoSuchAlgorithmException {
         String url = "https://" + libertyHostname + ":" + libertySslPort + "/jwt/ibm/api/jwtUserBuilder/jwk";
         Response response = processRequest(url, "GET", null, null);
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".", 
-                     Status.OK.getStatusCode(), 
+        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
+                     Status.OK.getStatusCode(),
                      response.getStatus());
 
         // Liberty returns the keys in an array.  We'll grab the first one (there

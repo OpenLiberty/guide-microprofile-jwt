@@ -33,14 +33,7 @@ You will add MP-JWT to validate security tokens in the `System` and `Inventory` 
 // Getting Started
 // =================================================================================================
 
-To begin, run the following commands, which clone the Git repository and access the starting project
-that is provided in the `start` directory:
-
-[subs="attributes"]
-----
-git clone https://github.com/OpenLiberty/draft-guide-microprofile-jwt.git
-cd draft-guide-microprofile-jwt/start
-----
+include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
 // Try what you'll build
@@ -58,7 +51,7 @@ Maven goals to build the application and run it inside of Open Liberty:
 mvn clean install liberty:start-server
 ```
 
-Point your browser to the front-end web application endpoint: `http://localhost:9090/system.jsf`. From here, you can log in to the system with the form-based login provided.
+Point your browser to the front-end web application endpoint: `http://localhost:9090/application.jsf`. From here, you can log in to the system with the form-based login provided.
 Log in with one of the following user information examples:
 
 |===
@@ -207,7 +200,7 @@ When the Open Liberty application server has started, you can log in to the syst
 
 The following endpoint is used to log in to the system:
 
-* `http://localhost:9090/system.jsf`
+* `http://localhost:9090/application.jsf`
 
 Once you log in, you can see some basic information about your current session, including the user name of the user who is currently logged in, your role, which is admin, the current operating system, the size of your inventory, and the JSON Web Token (JWT) that is  used for authorization in the back end.
 Remember that if you log in as a user without the role of admin, you will be unable to see the inventory size because you do not have the correct permissions.

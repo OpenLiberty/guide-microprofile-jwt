@@ -23,12 +23,18 @@ import javax.json.JsonObject;
 
 @ManagedBean
 @ViewScoped
-public class SystemBean {
+public class ApplicationBean {
+
+  public String getJwt() {
+      String jwtTokenString = SessionUtils.getJwtToken();
+      String authHeader = "Bearer " + jwtTokenString;
+      return authHeader;
+  }
 
     public String getOs() {
         String authHeader = getJwt();
-        if (ServiceUtils.responseOkHelper(authHeader)) {
-            JsonObject properties = ServiceUtils.getPropertiesHelper(authHeader);
+        if (ServiceUtils.responseOk(authHeader)) {
+            JsonObject properties = ServiceUtils.getProperties(authHeader);
             return properties.getString("os.name");
         }
         return "You are not authorized to access the system service.";
@@ -36,25 +42,22 @@ public class SystemBean {
 
     public String getInventorySize() {
         String authHeader = getJwt();
-        if (ServiceUtils.invOkHelper(authHeader)) {
-            JsonObject properties = ServiceUtils.getInventoryHelper(authHeader);
+        if (ServiceUtils.invOk(authHeader)) {
+            JsonObject properties = ServiceUtils.getInventory(authHeader);
             return String.valueOf(properties.getInt("total"));
         }
         return "You are not authorized to access the inventory service.";
     }
 
-    public String getJwt() {
-        String jwtTokenString = SessionUtils.getJwtToken();
-        String authHeader = "Bearer " + jwtTokenString;
-        return authHeader;
-    }
 
     public String getUsername() {
-        return SessionUtils.getUserObj().getName();
+      String authHeader = getJwt();
+      return ServiceUtils.getJwtUsername(authHeader);
     }
 
     public String getUserRole() {
-        return SessionUtils.getUserObj().getRole();
+      String authHeader = getJwt();
+      return ServiceUtils.getJwtRoles(authHeader);
     }
 }
 // end::jwt[]

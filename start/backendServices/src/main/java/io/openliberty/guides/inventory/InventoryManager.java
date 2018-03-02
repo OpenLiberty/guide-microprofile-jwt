@@ -13,7 +13,7 @@
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
-import io.openliberty.guides.inventory.client.SecuredSystemClient;
+import io.openliberty.guides.inventory.client.SecureSystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -22,11 +22,11 @@ import javax.enterprise.context.ApplicationScoped;
 public class InventoryManager {
 
     private InventoryList invList = new InventoryList();
-    SecuredSystemClient securedSystemClient = new SecuredSystemClient();
+    SecureSystemClient secureSystemClient = new SecureSystemClient();
 
     public Properties get(String hostname, String authHeader) {
-        securedSystemClient.init(hostname, authHeader);
-        Properties properties = securedSystemClient.getProperties();
+        secureSystemClient.init(hostname, authHeader);
+        Properties properties = secureSystemClient.getProperties();
         if (properties != null) {
             invList.addToInventoryList(hostname, properties);
         }

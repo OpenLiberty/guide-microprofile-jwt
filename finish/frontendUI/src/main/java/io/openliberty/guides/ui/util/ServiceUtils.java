@@ -29,61 +29,58 @@ import javax.ws.rs.core.Response.Status;
 import java.net.URI;
 
 public class ServiceUtils {
-    
+
     // Constants for building URI to the system service.
     private static final int DEFAULT_PORT = Integer.valueOf(System.getProperty("backend.https.port"));
     private static final String HOSTNAME = System.getProperty("backend.hostname");
     private static final String SECURED_PROTOCOL = "https";
     private static final String SYSTEM_PROPERTIES = "/system/properties";
     private static final String INVENTORY_HOSTS = "/inventory/systems";
+    private static final String INV_JWT = "/inventory/jwt";
 
-    // tag::doc[]
-    /**
-     * <p>Creates a JAX-RS client that retrieves the JVM system properties for the particular host
-     * on the given port number.</p>
-     */
-    // end::doc[]
-    public static JsonObject getPropertiesHelper(String authHeader) {
-        // Get system properties by using JWT token
+
+    public static JsonObject getProperties(String authHeader) {
         String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
-        Response propResponse = processRequest(propUrl, "GET", null, authHeader);
-
-        JsonObject responseJson = toJsonObj(propResponse.readEntity(String.class));
-        // System.out.println(responseJson.getString("os.name"));
-        return responseJson;
+        return getJsonFromUrl(propUrl, authHeader);
     }
 
-    public static JsonObject getInventoryHelper(String authHeader) {
-        // Get system properties by using JWT token
+    public static JsonObject getInventory(String authHeader) {
         String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
-        Response invResponse = processRequest(invUrl, "GET", null, authHeader);
-
-        JsonObject responseJson = toJsonObj(invResponse.readEntity(String.class));
-        // System.out.println(responseJson.getString("os.name"));
-        return responseJson;
+        return getJsonFromUrl(invUrl, authHeader);
     }
 
-    // tag::doc[]
-    /**
-     * <p>Returns whether or not a particular host is running the system service on the
-     * given port number.</p>
-     */
-    // end::doc[]
-    public static boolean responseOkHelper(String authHeader) {
-        // Get system properties by using JWT token
-        String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
-        Response propResponse = processRequest(propUrl, "GET", null, authHeader);
-
-        return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
+    public static String getJwtRoles(String authHeader) {
+      String url = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INV_JWT + "/groups");
+      return getStringFromUrl(url, authHeader);
     }
 
-    public static boolean invOkHelper(String authHeader) {
-        // Get system properties by using JWT token
+    public static String getJwtUsername(String authHeader) {
+      String url = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INV_JWT + "/username");
+      return getStringFromUrl(url, authHeader);
+    }
+
+    public static String getStringFromUrl(String url, String authHeader) {
+      Response response = processRequest(url, "GET", null, authHeader);
+      return response.readEntity(String.class);
+    }
+
+    public static JsonObject getJsonFromUrl(String url, String authHeader) {
+      return toJsonObj(getStringFromUrl(url, authHeader));
+    }
+
+
+    public static boolean responseOk(String authHeader) {
+        String url = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, SYSTEM_PROPERTIES);
+        Response response = processRequest(url, "GET", null, authHeader);
+        return (response.getStatus() != Status.OK.getStatusCode()) ? false : true;
+    }
+
+    public static boolean invOk(String authHeader) {
         String propUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS);
         Response propResponse = processRequest(propUrl, "GET", null, authHeader);
-
         return (propResponse.getStatus() != Status.OK.getStatusCode()) ? false : true;
     }
+
 
     public static String buildUrl(String protocol, String host, int port, String path) {
         try {

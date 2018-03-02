@@ -25,7 +25,7 @@ import test.JwtVerifier;
 public class JwtTest {
 
     private final String TESTNAME = "TESTUSER";
-    private final String INV_Jwt = "/inventory/jwt";
+    private final String INV_JWT = "/inventory/jwt";
 
     String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
             + System.getProperty("liberty.test.ssl.port");
@@ -44,7 +44,7 @@ public class JwtTest {
     }
 
     public void testJwtGetName() {
-        String jwtUrl = baseUrl + INV_Jwt + "/username";
+        String jwtUrl = baseUrl + INV_JWT + "/username";
         Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 
         assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
@@ -59,7 +59,7 @@ public class JwtTest {
     }
 
     public void testJwtGetCustomClaim() {
-        String jwtUrl = baseUrl + INV_Jwt + "/customClaim";
+        String jwtUrl = baseUrl + INV_JWT + "/customClaim";
         Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 
         assertEquals("HTTP response code should have been " + Status.FORBIDDEN.getStatusCode() + ".",

@@ -10,14 +10,14 @@
 :page-duration: 25 minutes
 :page-releasedate: 2017-12-11
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
-:page-tags: ['JWT', 'MP-JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
+:page-tags: ['MicroProfile JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-= Securing microservices with JSON Web Tokens (JWT)
+= Securing microservices with MicroProfile JSON Web Token
 
-Learn how to control user and role access to microservices with MicroProfile JWT.
+Learn how to control user and role access to microservices with MicroProfile JSON Web Token (MicroProfile JWT).
 
 // =================================================================================================
 //  What you'll learn
@@ -25,13 +25,13 @@ Learn how to control user and role access to microservices with MicroProfile JWT
 
 == What you'll learn
 
-For microservices, Token Based Authentication mechanism offers a very lightweight way for security controls, and security tokens propagate user identities across different services. JSON Web Token (JWT) is becoming the most common token format to protect services because it follows a well defined and known standard.
+For microservices, token based authentication mechanism offers a very lightweight way for security controls, and security tokens propagate user identities across different services. JSON Web Token (JWT) is becoming the most common token format because it follows a well defined and known standard.
 
-MicroProfile JSON Web Token (MP-JWT) standard defines the required format of JWT for authentication and authorization, maps its token claims to various Java EE container APIs, and makes the set of claims available through get style accessors.
+MicroProfile JWT standard defines the required format of JWT for authentication and authorization, maps its token claims to various Java EE container APIs, and makes the set of claims available through getters.
 
-You will add MP-JWT to validate security tokens in the `System` and `Inventory` microservices.  You will use Token Based Authentication mechanism to authenticate, authorize and verify user identities based on a security token.
+You will add MicroProfile JWT to validate security tokens in the `system` and `inventory` microservices.  You will use token based authentication mechanism to authenticate, authorize and verify user identities based on a security token.
 
-In addition, you will learn how to verify token claims through get style accessors using MicroProfile JWT.
+In addition, you will learn how to verify token claims through getters using MicroProfile JWT.
 
 // =================================================================================================
 // Getting Started
@@ -55,18 +55,18 @@ Maven goals to build the application and run it inside of Open Liberty:
 mvn clean install liberty:start-server
 ```
 
-Point your browser to the front-end web application endpoint: `http://localhost:9090/application.jsf`. From here, you can log in to the system with the form-based login provided.
-Log in with one of the following user information examples:
+Navigate your browser to the front-end web application endpoint: `http://localhost:9090/application.jsf`. From here, you can log in to the application with the form-based login.
+Log in with one of the following user information:
 
 |===
 | *Username* | *Password* | *Role*
-| `bob` | `bobpwd` | `admin, user`
-| `alice` | `alicepwd` | `user`
-| `carl` | `carlpwd` | `user`
+| bob | bobpwd | admin, user
+| alice | alicepwd | user
+| carl | carlpwd | user
 |===
 
-You are redirected to a another page that displays the user who is logged in, the current OS of your localhost, and the security token that the front end uses when sending the HTTP request to access the data from the back end.
-In addition, if you log in as an `admin` user, the current inventory size should appear. If you log in as a normal `user`, you see the message `You are not authorized to access the inventory service.` instead, which means you cannot access the inventory size data in the back end.
+You are redirected to a page that displays the user who is logged in, the current OS of your localhost, and the security token that the front end uses when sending the HTTP request to access the data from the back end.
+In addition, if you log in as an `admin` user, the current inventory size should appear. If you log in as a normal `user`, you see the message `You are not authorized to access the inventory service.` instead, which means you cannot access the inventory service in the back-end.
 
 When you are done with the application, stop the server:
 
@@ -99,13 +99,14 @@ include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 
 The `<feature>mpJwt-1.0</feature>` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The `<mpJwt>` element is required to configure the injection of the caller's JSON Web Tokens.
+The `<mpJwt>` element is required to configure the injection of the caller's JWT.
 
-The `issuer` is responsible for issuing security tokens, enter a value for this attribute that matches the `iss` claim in the Java Web Token (JWT).
+|===
+| `issuer` | issues security tokens, should matches the `iss` claim in the JWT
+| `audiences` | identifies the recipients, should match the `aud` claim in the JWT
+| `keyName`| specifies the JWT signature validation key, should match the key in the truststore in the SSL configuration
+|===
 
-The `audiences` identifies the recipients that the JWT is intended for, it should match the value of the `aud` claim in the JWT.
-
-The `keyName` attribute is required when you add the JWT signature validation key into the truststore file in the Secure Sockets Layer (SSL) configuration.
 // =================================================================================================
 // Securing the system service
 // =================================================================================================
@@ -119,7 +120,7 @@ Open the `start/backendServices/src/main/java/io/openliberty/guides/system/Syste
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
-Role names used in `@RolesAllowed` are mapped to group names in the `groups` claim of the JSON Web Token, which results in an authorization decision wherever the security constraint is applied.
+Role names used in `@RolesAllowed` are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
 The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with `admin` and `user` roles to access the `system` service.
 Therefore, this service is properly secured.
@@ -164,29 +165,29 @@ However, the class overrides the `buildClientBuilder()` method by adding the aut
 By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
-// Mapping MP-JWT with Java EE Container APIs
+// Trying more JAX-RS methods to validate tokens
 // =================================================================================================
 
-=== Mapping MP-JWT with Java EE Container APIs
+=== Trying more JAX-RS methods to validate tokens
 
-To demonstrate how MP-JWT retrieves confidential information and validates custom claims from the security token, add an additional service that uses JAX-RS security related methods. The JWT service also illustrates how Java EE container APIs map to MP-JWT features.
+To demonstrate how MicroProfile JWT retrieves confidential information and validates custom claims from the security token, add an additional service that uses JAX-RS security related methods. The JWT service also illustrates how JAX-RS methods map to MicroProfile JWT features.
 
-Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information from the JSON Web Token.
+Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information from the token.
 
 [source, java, indent=0]
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
-MicroProfile JSON Web Token (MP-JWT) maps its token claims to JAX-RS security related methods, and makes the set of claims available through get style accessors.
+MicroProfile JWT maps its token claims to JAX-RS security related methods, and makes the set of claims available through getters.
 
 `getJwtUsername()` retrieves the user name from the injected `JsonWebToken jwtPrincipal` by calling `getName()`.
 
 `getGroups()` retrieves the user groups information from the Json Web Token from the SecurityContext.
 `SecurityContext.getUserPrincipal()` returns an object in the `java.security.Principal` type. This object is also an instance of `org.eclipse.microprofile.jwt.JsonWebToken`.
 
-`getCustomClaim()` retrieves the custom claim from the JSON Web Token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
-`SecurityContext.isUserInRole(String)` returns `true` for any name that is included in the MP-JWT `groups` claim and for any role name that is mapped to a group name in the MP-JWT `groups` claim.
+`getCustomClaim()` retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
+`SecurityContext.isUserInRole(String)` returns `true` for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
 `jwtPrincipal.getClaim("customClaim")` retrieves the value of the custom claim by its name; this feature is useful when you want to validate information of a custom claim from the security token.
 
 // =================================================================================================
@@ -195,20 +196,23 @@ MicroProfile JSON Web Token (MP-JWT) maps its token claims to JAX-RS security re
 
 include::{common-includes}/mvnbuild.adoc[]
 
-When the Open Liberty application server has started, you can log in to the system with the simple front end that is provided. Use one of the following credentials to log in:
+When the Open Liberty application server has started, you can log in to the system with the simple front end. The entire front end code is provided for you to test if you can retrieve information from the back end services using a valid security token.
+You cannot directly visit a back end URL from a browser because you don't have a valid token in the authorication header when you try to send HTTP requests via browser. You have to use the provided front end to create a web client to send HTTP GET requests with valid security tokens.
+
+Use one of the following credentials to log in:
 
 |===
 | *Username* | *Password* | *Role*
-| `bob` | `bobpwd` | `admin, user`
-| `alice` | `alicepwd` | `user`
-| `carl` | `carlpwd` | `user`
+| bob | bobpwd | admin, user
+| alice | alicepwd | user
+| carl | carlpwd | user
 |===
 
 The following endpoint is used to log in to the application:
 
 * `http://localhost:9090/application.jsf`
 
-Once you log in, you can see some basic information about your current session, including the user name of the user who is currently logged in, your role[s], your current operating system, the size of your inventory service, and the JSON Web Token (JWT) that is  used for authorization.
+Once you log in, you can see some basic information about your current session, including the user name of the user who is currently logged in, your role[s], your current operating system, the size of your inventory service, and the JWT that is  used for authorization.
 Remember that if you log in as a user without the role of admin, you will be unable to see the inventory size because you do not have the correct permissions.
 
 include::{common-includes}/mvnpackage.adoc[]
@@ -219,7 +223,7 @@ include::{common-includes}/mvnpackage.adoc[]
 
 == Testing the application
 
-You will write `SystemEndpointTest`, `InventoryEndpointTest` and `JwtTest` classes to test the accessibility of different services.
+You will write `SystemEndpointTest`, `InventoryEndpointTest` and `JwtTest` classes to test if different services can be accessed with valid tokens.
 
 To begin, create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java` file:
 
@@ -286,7 +290,7 @@ Re-run the Maven build. You will see a test failure occur.
 
 == Great work! You're done!
 
-You have learned how to use MP-JWT to validate JWT and authorize users to secure your microservices.
+You have learned how to use MicroProfile JWT to validate JWT and authorize users to secure your microservices.
 
 Next, you can try one of the related MicroProfile guides. They demonstrate new technologies that you can learn and expand on what you built here.
 

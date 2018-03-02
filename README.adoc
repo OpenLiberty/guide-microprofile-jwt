@@ -25,9 +25,13 @@ Learn how to control user and role access to microservices with MicroProfile JWT
 
 == What you'll learn
 
-You will learn how to control user and role access to microservices with MicroProfile JWT. You will use Token Based Authentication mechanism to authenticate, authorize and verify user identities based on a security token.
+For microservices, Token Based Authentication mechanism offers a very lightweight way for security controls, and security tokens propagate user identities across different services. JSON Web Token (JWT) is becoming the most common token format to protect services because it follows a well defined and known standard.
 
-You will add MP-JWT to validate security tokens in the `System` and `Inventory` microservices. In addition, you will add a simple front end to handle user login and logout.
+MicroProfile JSON Web Token (MP-JWT) standard defines the required format of JWT for authentication and authorization, maps its token claims to various Java EE container APIs, and makes the set of claims available through get style accessors.
+
+You will add MP-JWT to validate security tokens in the `System` and `Inventory` microservices.  You will use Token Based Authentication mechanism to authenticate, authorize and verify user identities based on a security token.
+
+In addition, you will learn how to verify token claims through get style accessors using MicroProfile JWT.
 
 // =================================================================================================
 // Getting Started

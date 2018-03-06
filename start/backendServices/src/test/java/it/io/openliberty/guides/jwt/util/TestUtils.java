@@ -1,3 +1,15 @@
+// tag::copyright[]
+/**
+ * *****************************************************************************
+ * Copyright (c) 2018 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which accompanies this
+ * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * <p>Contributors: IBM Corporation - Initial implementation
+ * *****************************************************************************
+ */
+// end::copyright[]
 package it.io.openliberty.guides.jwt.util;
 
 import java.io.StringReader;
@@ -24,7 +36,7 @@ public class TestUtils {
         if (authHeader != null) {
             builder.header(HttpHeaders.AUTHORIZATION, authHeader);
         }
-        return (payload != null) 
+        return (payload != null)
                 ? builder.build(method, Entity.json(payload)).invoke()
                 : builder.build(method).invoke();
     }

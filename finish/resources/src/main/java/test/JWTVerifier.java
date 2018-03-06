@@ -55,7 +55,7 @@ public class JwtVerifier {
 
     // The issuer of the JWT. This must match the issuer that the liberty server expects,
     // defined in server.xml.
-    private static final String JWT_ISSUER = System.getProperty("jwt.issuer", "http://wasdev.net");
+    private static final String JWT_ISSUER = System.getProperty("jwt.issuer", "http://openliberty.io");
 
     // The hostname we'll use in our tests. The hostname of the backend service.
     private static final String libertyHostname = System.getProperty("liberty.backend.service.hostname");

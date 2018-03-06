@@ -2,25 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>mp-jwt-app</artifactId>
+    <artifactId>microprofile-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <!-- Plugins -->
-        <version.liberty.plugin>2.0</version.liberty.plugin>
-        <version.compiler.plugin>3.5.1</version.compiler.plugin>
-        <version.resources.plugin>3.0.1</version.resources.plugin>
-        <version.clean.plugin>3.0.0</version.clean.plugin>
-        <version.dependency.plugin>2.10</version.dependency.plugin>
-        <version.exec.plugin>1.5.0</version.exec.plugin>
-        <version.install.plugin>2.5.2</version.install.plugin>
-        <version.war.plugin>2.6</version.war.plugin>
-        <warfile.name>mp-jwt-app</warfile.name>
-        <version.jre>1.8</version.jre>
-        <version.keytool.plugin>1.5</version.keytool.plugin>
-        <version.exec.plugin>1.5.0</version.exec.plugin>
-        <version.jar.plugin>3.0.2</version.jar.plugin>
+        <warfile.name>microprofile-jwt</warfile.name>
 
         <!-- Liberty Server -->
         <version.liberty>RELEASE</version.liberty>
@@ -29,19 +16,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.shared.keystore>0.0.1-SNAPSHOT</version.shared.keystore>
-        <version.javaee>7.0</version.javaee>
-        <version.glassfish.json>1.0.4</version.glassfish.json>
-        <version.com.ibm.websphere.appserver.api.jwt>1.0.16</version.com.ibm.websphere.appserver.api.jwt>
-        <version.microprofile.config>1.0</version.microprofile.config>
-        <version.microprofile.api.jwt>1.0-RC10</version.microprofile.api.jwt>
-        <version.microprofile.faulttolerance>1.0-RC1</version.microprofile.faulttolerance>
-
-        <!-- Test -->
-        <version.junit>4.12</version.junit>
-        <version.surefire.plugin>2.19.1</version.surefire.plugin>
-        <version.failsafe.plugin>2.19.1</version.failsafe.plugin>
-        <version.apache.cxf>3.1.1</version.apache.cxf>
-        <version.spring.context>4.3.9.RELEASE</version.spring.context>
 
         <!-- Optional Microservice Configuration -->
         <backend.hostname>localhost</backend.hostname>
@@ -53,8 +27,7 @@
         <frontend.hostname>localhost</frontend.hostname>
 
         <!-- JSON Web Token used for microservice authorization -->
-        <jwt.shared.key>secret</jwt.shared.key>
-        <jwt.issuer>http://wasdev.net</jwt.issuer>
+        <jwt.issuer>http://openliberty.io</jwt.issuer>
     </properties>
 
     <repositories>
@@ -72,36 +45,13 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-rs-client</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <!-- Shared dependencies. -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
-                <version>${version.javaee}</version>
+                <version>7.0</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -109,7 +59,7 @@
             <dependency>
                 <groupId>org.eclipse.microprofile.jwt</groupId>
                 <artifactId>microprofile-jwt-auth-api</artifactId>
-                <version>${version.microprofile.api.jwt}</version>
+                <version>1.0-RC10</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -117,7 +67,7 @@
             <dependency>
                 <groupId>com.ibm.websphere.appserver.api</groupId>
                 <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
-                <version>${version.com.ibm.websphere.appserver.api.jwt}</version>
+                <version>1.0.16</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -125,19 +75,19 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.json</artifactId>
-                <version>${version.glassfish.json}</version>
+                <version>1.0.4</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>${version.junit}</version>
+                <version>4.12</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-rs-client</artifactId>
-                <version>${version.apache.cxf}</version>
+                <version>3.1.1</version>
                 <scope>test</scope>
             </dependency>
 
@@ -145,16 +95,10 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${version.spring.context}</version>
+                <version>4.3.9.RELEASE</version>
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.eclipse.microprofile.config</groupId>
-                <artifactId>microprofile-config-api</artifactId>
-                <version>${version.microprofile.config}</version>
-                <scope>provided</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -164,29 +108,24 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${version.clean.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>${version.resources.plugin}</version>
+                    <version>3.0.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${version.compiler.plugin}</version>
+                    <version>3.5.1</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
                         <compilerArgument>-XDignore.symbol.file</compilerArgument>
-                        <source>${version.jre}</source>
-                        <target>${version.jre}</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>${version.war.plugin}</version>
+                    <version>2.6</version>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                         <attachClasses>true</attachClasses>
@@ -196,65 +135,17 @@
                                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             </manifest>
-                            <manifestEntries>
-                                <Date>${maven.build.timestamp}</Date>
-                                <Specification-Title>${project.name}</Specification-Title>
-                                <Specification-Version>${project.version}</Specification-Version>
-                                <Specification-Vendor>${project.organization.name}</Specification-Vendor>
-                                <Implementation-Title>${project.name}</Implementation-Title>
-                                <Implementation-Version>${project.version}</Implementation-Version>
-                                <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
-                            </manifestEntries>
                         </archive>
                         <warName>${warfile.name}</warName>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${version.dependency.plugin}</version>
-                    <configuration>
-                        <useJvmChmod>true</useJvmChmod>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${version.install.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>${version.exec.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>keytool-maven-plugin</artifactId>
-                    <version>${version.keytool.plugin}</version>
-                </plugin>
 
-                <!-- Integration test plugins -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${version.surefire.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${version.failsafe.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${version.jar.plugin}</version>
-                </plugin>
 
                 <!-- Liberty server operations and management. -->
                 <plugin>
                     <groupId>net.wasdev.wlp.maven.plugins</groupId>
                     <artifactId>liberty-maven-plugin</artifactId>
-                    <version>${version.liberty.plugin}</version>
+                    <version>2.0</version>
                     <configuration>
                         <assemblyArtifact>
                             <groupId>io.openliberty</groupId>
@@ -263,22 +154,6 @@
                             <type>zip</type>
                         </assemblyArtifact>
                     </configuration>
-                    <executions>
-                      <execution>
-                         <id>start-server</id>
-                         <phase>pre-integration-test</phase>
-                         <goals>
-                             <goal>test-start-server</goal>
-                         </goals>
-                     </execution>
-                     <execution>
-                         <id>stop-server</id>
-                         <phase>post-integration-test</phase>
-                         <goals>
-                             <goal>test-stop-server</goal>
-                         </goals>
-                     </execution>
-                    </executions>
                 </plugin>
 
             </plugins>

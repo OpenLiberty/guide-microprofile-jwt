@@ -1,19 +1,10 @@
-<!-- Copyright (c) 2017 IBM Corporation and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
-
-  Contributors:
-  IBM Corporation - initial API and implementation
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>io.openliberty.guides</groupId>
-        <artifactId>mp-jwt-app</artifactId>
+        <artifactId>microprofile-jwt</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -43,6 +34,10 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
         <!-- The following is necessary to read CXF client configuration -->
         <dependency>
@@ -206,6 +201,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
                 <executions>
                     <execution>
                         <phase>integration-test</phase>
@@ -234,8 +230,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <summaryFile>${project.build.directory}/test-reports/mp-jwt-app/failsafe-summary.xml</summaryFile>
-                    <reportsDirectory>${project.build.directory}/test-reports/mp-jwt-app</reportsDirectory>
+                    <summaryFile>${project.build.directory}/test-reports/microprofile-jwt/failsafe-summary.xml</summaryFile>
+                    <reportsDirectory>${project.build.directory}/test-reports/microprofile-jwt</reportsDirectory>
                 </configuration>
             </plugin>
 
@@ -243,6 +239,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
                 <executions>
                     <execution>
                         <phase>test</phase>

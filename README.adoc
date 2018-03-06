@@ -7,12 +7,12 @@
 //   IBM Corporation
 :projectid: microprofile-jwt
 :page-layout: guide
-:page-duration: 25 minutes
-:page-releasedate: 2017-12-11
+:page-duration: 20 minutes
+:page-releasedate: 2018-03-09
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
-:page-tags: ['MicroProfile JWT', "JSON Web Tokens", "MicroProfile", "microservices"]
+:page-tags: ['MicroProfile JWT', "JSON Web Tokens", "MicroProfile", "microservices", "security"]
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['cdi-intro']
+:page-related-guides: ['rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 = Securing microservices with JSON Web Tokens (JWT)
@@ -104,7 +104,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 |===
 | `issuer` | Issues security tokens, should match the `iss` claim in the JWT
 | `audiences` | Identifies the recipients, should match the `aud` claim in the JWT
-| `keyName`| Specifies the JWT signature validation key, should match the key in the truststore in the SSL configuration
+| `keyName` | Specifies the JWT signature validation key, should match the key in the truststore in the SSL configuration
 |===
 
 // =================================================================================================

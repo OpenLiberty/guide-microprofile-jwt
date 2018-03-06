@@ -161,7 +161,6 @@
     </build>
 
     <modules>
-        <module>resources</module>
         <module>backendServices</module>
         <module>frontendUI</module>
     </modules>

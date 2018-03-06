@@ -21,64 +21,58 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 import it.io.openliberty.guides.jwt.util.TestUtils;
-import test.JwtVerifier;
+import it.io.openliberty.guides.jwt.util.JwtVerifier;
 
 public class InventoryEndpointTest {
 
-    private final String INVENTORY_HOSTS = "/inventory/systems";
-    private final String TESTNAME = "TESTUSER";
+  private final String INVENTORY_HOSTS = "/inventory/systems";
+  private final String TESTNAME = "TESTUSER";
 
-    String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
-            + System.getProperty("liberty.test.ssl.port");
+  String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
+      + System.getProperty("liberty.test.ssl.port");
 
-    String authHeader;
+  String authHeader;
 
-    @Before
-    public void setup() throws Exception {
-        authHeader = "Bearer " + new JwtVerifier().createAdminJwt(TESTNAME);
-    }
+  @Before
+  public void setup() throws Exception {
+    authHeader = "Bearer " + new JwtVerifier().createAdminJwt(TESTNAME);
+  }
 
-    @Test
-    public void testSuite() {
-        this.testEmptyInventoryWithJwt();
-        this.testHostRegistrationWithJwt();
-    }
+  @Test
+  public void testSuite() {
+    this.testEmptyInventoryWithJwt();
+    this.testHostRegistrationWithJwt();
+  }
 
-    public void testEmptyInventoryWithJwt() {
-        String invUrl = baseUrl + INVENTORY_HOSTS;
-        Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
+  public void testEmptyInventoryWithJwt() {
+    String invUrl = baseUrl + INVENTORY_HOSTS;
+    Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
 
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     invResponse.getStatus());
+    assertEquals(
+        "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
+        Status.OK.getStatusCode(), invResponse.getStatus());
 
-        JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
+    JsonObject responseJson = TestUtils.toJsonObj(
+        invResponse.readEntity(String.class));
 
-        assertEquals("The inventory should be empty on application start",
-                     0,
-                     responseJson.getInt("total"));
+    assertEquals("The inventory should be empty on application start", 0,
+        responseJson.getInt("total"));
+  }
 
-        // System.out.println(responseJson.getInt("total"));
-        // System.out.println(invUrl);
-    }
+  public void testHostRegistrationWithJwt() {
+    String invUrl = baseUrl + INVENTORY_HOSTS + "/localhost";
+    Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
 
-    public void testHostRegistrationWithJwt() {
-        String invUrl = baseUrl + INVENTORY_HOSTS + "/localhost";
-        Response invResponse = TestUtils.processRequest(invUrl, "GET", null, authHeader);
+    assertEquals(
+        "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
+        Status.OK.getStatusCode(), invResponse.getStatus());
 
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     invResponse.getStatus());
+    JsonObject responseJson = TestUtils.toJsonObj(
+        invResponse.readEntity(String.class));
 
-        JsonObject responseJson = TestUtils.toJsonObj(invResponse.readEntity(String.class));
-
-        assertEquals("The inventory should get the os.name of localhost",
-                     System.getProperty("os.name"),
-                     responseJson.getString("os.name"));
-
-        // System.out.println(responseJson.getString("os.name"));
-        // System.out.println(invUrl);
-    }
+    assertEquals("The inventory should get the os.name of localhost",
+        System.getProperty("os.name"), responseJson.getString("os.name"));
+  }
 
 }
 // end::test[]

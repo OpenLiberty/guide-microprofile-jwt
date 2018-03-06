@@ -31,32 +31,36 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Context;
 
 @RequestScoped
-@DeclareRoles({"admin", "user"})  // important to have here, otherwise test will fail
+@DeclareRoles({ "admin", "user" })
 @Path("systems")
 public class InventoryResource {
 
-        @Inject InventoryManager manager;
+  @Inject
+  InventoryManager manager;
 
-        @GET
-        @RolesAllowed({"admin", "user"})
-        @Path("{hostname}")
-        @Produces(MediaType.APPLICATION_JSON)
-        public Response getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
-            String authHeader = httpHeaders.getRequestHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            Properties props = manager.get(hostname, authHeader);
-            if (props == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                               .entity("ERROR: Unknown hostname or the resource may not be running on the host machine")
-                               .build();
-            }
-            return Response.ok(props).build();
-        }
+  @GET
+  @RolesAllowed({ "admin", "user" })
+  @Path("{hostname}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getPropertiesForHost(@PathParam("hostname") String hostname,
+      @Context HttpHeaders httpHeaders) {
+    String authHeader = httpHeaders.getRequestHeaders()
+                                   .getFirst(HttpHeaders.AUTHORIZATION);
+    Properties props = manager.get(hostname, authHeader);
+    if (props == null) {
+      return Response.status(Response.Status.NOT_FOUND)
+                     .entity(
+                         "ERROR: Unknown hostname or the resource may not be running on the host machine")
+                     .build();
+    }
+    return Response.ok(props).build();
+  }
 
-        @GET
-        @RolesAllowed({"admin"})
-        @Produces(MediaType.APPLICATION_JSON)
-        public InventoryList listContents() {
-            return manager.list();
-        }
+  @GET
+  @RolesAllowed({ "admin" })
+  @Produces(MediaType.APPLICATION_JSON)
+  public InventoryList listContents() {
+    return manager.list();
+  }
 }
 // end::jwt[]

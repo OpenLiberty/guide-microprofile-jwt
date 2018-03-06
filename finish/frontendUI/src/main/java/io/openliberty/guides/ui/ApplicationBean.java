@@ -26,38 +26,37 @@ import javax.json.JsonObject;
 public class ApplicationBean {
 
   public String getJwt() {
-      String jwtTokenString = SessionUtils.getJwtToken();
-      String authHeader = "Bearer " + jwtTokenString;
-      return authHeader;
+    String jwtTokenString = SessionUtils.getJwtToken();
+    String authHeader = "Bearer " + jwtTokenString;
+    return authHeader;
   }
 
-    public String getOs() {
-        String authHeader = getJwt();
-        if (ServiceUtils.responseOk(authHeader)) {
-            JsonObject properties = ServiceUtils.getProperties(authHeader);
-            return properties.getString("os.name");
-        }
-        return "You are not authorized to access the system service.";
+  public String getOs() {
+    String authHeader = getJwt();
+    if (ServiceUtils.responseOk(authHeader)) {
+      JsonObject properties = ServiceUtils.getProperties(authHeader);
+      return properties.getString("os.name");
     }
+    return "You are not authorized to access the system service.";
+  }
 
-    public String getInventorySize() {
-        String authHeader = getJwt();
-        if (ServiceUtils.invOk(authHeader)) {
-            JsonObject properties = ServiceUtils.getInventory(authHeader);
-            return String.valueOf(properties.getInt("total"));
-        }
-        return "You are not authorized to access the inventory service.";
+  public String getInventorySize() {
+    String authHeader = getJwt();
+    if (ServiceUtils.invOk(authHeader)) {
+      JsonObject properties = ServiceUtils.getInventory(authHeader);
+      return String.valueOf(properties.getInt("total"));
     }
+    return "You are not authorized to access the inventory service.";
+  }
 
+  public String getUsername() {
+    String authHeader = getJwt();
+    return ServiceUtils.getJwtUsername(authHeader);
+  }
 
-    public String getUsername() {
-      String authHeader = getJwt();
-      return ServiceUtils.getJwtUsername(authHeader);
-    }
-
-    public String getUserRole() {
-      String authHeader = getJwt();
-      return ServiceUtils.getJwtRoles(authHeader);
-    }
+  public String getUserRole() {
+    String authHeader = getJwt();
+    return ServiceUtils.getJwtRoles(authHeader);
+  }
 }
 // end::jwt[]

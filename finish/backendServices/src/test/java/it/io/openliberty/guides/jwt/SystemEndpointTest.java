@@ -21,46 +21,43 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 import it.io.openliberty.guides.jwt.util.TestUtils;
-import test.JwtVerifier;
+import it.io.openliberty.guides.jwt.util.JwtVerifier;
 
 public class SystemEndpointTest {
 
-    private final String SYSTEM_PROPERTIES = "/system/properties";
-    private final String TESTNAME = "TESTUSER";
+  private final String SYSTEM_PROPERTIES = "/system/properties";
+  private final String TESTNAME = "TESTUSER";
 
-    String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
-            + System.getProperty("liberty.test.ssl.port");
+  String baseUrl = "https://" + System.getProperty("liberty.test.hostname") + ":"
+      + System.getProperty("liberty.test.ssl.port");
 
-    String authHeader;
+  String authHeader;
 
-    @Before
-    public void setup() throws Exception {
-        authHeader = "Bearer " + new JwtVerifier().createAdminJwt(TESTNAME);
-    }
+  @Before
+  public void setup() throws Exception {
+    authHeader = "Bearer " + new JwtVerifier().createAdminJwt(TESTNAME);
+  }
 
-    @Test
-    public void testSuite() {
-        this.testGetPropertiesWithJwt();
-    }
+  @Test
+  public void testSuite() {
+    this.testGetPropertiesWithJwt();
+  }
 
-    public void testGetPropertiesWithJwt() {
-        // Get system properties by using Jwt token
-        String propUrl = baseUrl + SYSTEM_PROPERTIES;
-        Response propResponse = TestUtils.processRequest(propUrl, "GET", null,
-                authHeader);
+  public void testGetPropertiesWithJwt() {
+    // Get system properties by using Jwt token
+    String propUrl = baseUrl + SYSTEM_PROPERTIES;
+    Response propResponse = TestUtils.processRequest(propUrl, "GET", null,
+        authHeader);
 
-        assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     propResponse.getStatus());
+    assertEquals(
+        "HTTP response code should have been " + Status.OK.getStatusCode() + ".",
+        Status.OK.getStatusCode(), propResponse.getStatus());
 
-        JsonObject responseJson = TestUtils.toJsonObj(propResponse.readEntity(String.class));
+    JsonObject responseJson = TestUtils.toJsonObj(
+        propResponse.readEntity(String.class));
 
-        assertEquals("The system property for the local and remote JVM should match",
-                     System.getProperty("os.name"),
-                     responseJson.getString("os.name"));
-
-        // System.out.println(responseJson.getString("os.name"));
-        // System.out.println(propUrl);
-    }
+    assertEquals("The system property for the local and remote JVM should match",
+        System.getProperty("os.name"), responseJson.getString("os.name"));
+  }
 }
 // end::test[]

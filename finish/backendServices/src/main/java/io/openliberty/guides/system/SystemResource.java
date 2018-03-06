@@ -9,8 +9,8 @@
  * Contributors:
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
- // end::copyright[]
- // tag::jwt[]
+// end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.system;
 
 import java.util.Properties;
@@ -27,11 +27,11 @@ import javax.annotation.security.RolesAllowed;
 @RequestScoped
 @Path("properties")
 public class SystemResource {
-    @GET
-    @RolesAllowed({"admin", "user"})
-    @Produces(MediaType.APPLICATION_JSON)
-    public Properties getProperties() {
-        return System.getProperties();
-    }
+  @GET
+  @RolesAllowed({ "admin", "user" })
+  @Produces(MediaType.APPLICATION_JSON)
+  public Properties getProperties() {
+    return System.getProperties();
+  }
 }
 // end::jwt[]

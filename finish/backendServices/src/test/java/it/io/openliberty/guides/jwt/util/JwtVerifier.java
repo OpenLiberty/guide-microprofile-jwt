@@ -8,7 +8,7 @@
 //  Contributors:
 //  IBM Corporation - initial API and implementation
 // ******************************************************************************
-package test;
+package it.io.openliberty.guides.jwt.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -159,7 +159,7 @@ public class JwtVerifier {
 
         // Open the keystore that the server will use to validate the JWT
         KeyStore ks = KeyStore.getInstance("JCEKS");
-        InputStream ksStream = this.getClass().getResourceAsStream(this.keystorePath);
+        InputStream ksStream = this.getClass().getResourceAsStream(JwtVerifier.keystorePath);
         char[] password = new String("secret").toCharArray();
         ks.load(ksStream, password);
 

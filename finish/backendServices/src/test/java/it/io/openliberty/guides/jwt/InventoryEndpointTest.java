@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 import it.io.openliberty.guides.jwt.util.TestUtils;
-import it.io.openliberty.guides.jwt.util.JwtVerifier;
+import test.JwtVerifier;
 
 public class InventoryEndpointTest {
 

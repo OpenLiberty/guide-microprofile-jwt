@@ -248,7 +248,7 @@ This authorization header is added when the test client sends a GET request to a
 Each test case tries to first assert that with a valid authorization header, it can get a `Status.OK` code from the response.
 The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
 
-After making sure that the response code is correct, each test tries to get the content from the designated endpoint and compares the result with its expected value.
+After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
 Create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 

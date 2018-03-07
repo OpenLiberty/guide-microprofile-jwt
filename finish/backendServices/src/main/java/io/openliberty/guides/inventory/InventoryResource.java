@@ -31,7 +31,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Context;
 
 @RequestScoped
-@DeclareRoles({ "admin", "user" })
 @Path("systems")
 public class InventoryResource {
 

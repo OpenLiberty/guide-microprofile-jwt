@@ -104,8 +104,8 @@ The `<feature>mpJwt-1.0</feature>` feature adds the libraries that are required 
 The `<mpJwt>` element is required to configure the injection of the caller's JWT.
 
 |===
-| `issuer` | Issues security tokens and should match the `iss` claim in the JWT.
-| `audiences` | Identifies the recipients and should match the `aud` claim in the JWT.
+| `issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| `audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
 | `keyName` | Specifies the key alias name to locate public key for JWT signature validation and must be in the truststore in the SSL configuration.
 |===
 
@@ -122,7 +122,7 @@ Open the `start/backendServices/src/main/java/io/openliberty/guides/system/Syste
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
-Role names used in the `@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
+Role names that are used in the `@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
 The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with `admin` and `user` roles to access the `system` service.
 Therefore, this service is properly secured.
@@ -153,7 +153,7 @@ The final addition of the `manager.get(hostname, authHeader)` code adds the auth
 === Adding the SecureSystemClient class
 
 In the beginning, the inventory service uses the normal `SystemClient` class to create a client and send HTTP GET requests to retrieve information from the system service.
-However, after you secure the system service with token-based authentication, you need to add security tokens while sending HTTP requests through the client.
+However, after you secure the system service with token-based authentication, you need to add security tokens when you send HTTP requests through the client.
 
 Add the `SecureSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
 
@@ -181,7 +181,7 @@ Create a `start/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
-MicroProfile JWT maps its token claims to JAX-RS security related methods and makes the set of claims available through getters.
+MicroProfile JWT maps its token claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
 The `getJwtUsername()` feature retrieves the user name from the injected `JsonWebToken jwtPrincipal` principal by calling the `getName()` claim.
 
@@ -215,7 +215,7 @@ Use the following endpoint to log in to the application:
 
 * `http://localhost:9090/application.jsf`
 
-Once you log in, you can see some basic information about your current session, including the name of the user who is currently logged in, the role of the user, your current operating system, the size of your inventory service, and the JWT that is used for authorization.
+Once you log in, you can see some basic information about your current session, including the name of the user who is logged in, the role of the user, your current operating system, the size of your inventory service, and the JWT that is used for authorization.
 Remember that if you log in as a user without the `admin` role, you cannot see the inventory size because you do not have permission.
 
 include::{common-includes}/mvnpackage.adoc[]
@@ -248,7 +248,7 @@ This authorization header is added when the test client sends a GET request to a
 Each test case tries to first assert that with a valid authorization header, it can get a `Status.OK` code from the response.
 The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
 
-After assuring that the response code is correct, each test tries to get the content from the designated endpoint and compares the result with its expected value.
+After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
 Create a `start/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 
@@ -261,7 +261,7 @@ In the `setup()` step of the `JwtTest` test, an authorization header is created 
 The authorization header is added when the test client sends a GET request to a secure JWT service.
 
 * The `testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
-if the user name is the same as the `TESTUSER` user name.
+whether the user name is the same as the `TESTUSER` user name.
 
 * The `testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
@@ -285,7 +285,7 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 
 ```
 To see whether the tests detect a failure, remove the authorization header generation in the `setup()` method of the `InventoryEndpointTest.java` file.
-Rerun the Maven build. You see a test failure occur.
+Rerun the Maven build. You see that a test failure occurs.
 
 // =================================================================================================
 // Great work! You're done!

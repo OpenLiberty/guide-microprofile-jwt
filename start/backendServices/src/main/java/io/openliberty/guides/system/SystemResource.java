@@ -9,26 +9,28 @@
  * Contributors:
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
+// tag::jwt[]
 package io.openliberty.guides.system;
 
 import java.util.Properties;
 
-// CDI
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
-// JAX-RS
+
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@RequestScoped
-@Path("/properties")
-public class SystemResource {
+import javax.annotation.security.RolesAllowed;
 
+@RequestScoped
+@Path("properties")
+public class SystemResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getProperties() {
     return System.getProperties();
   }
 }
+// end::jwt[]

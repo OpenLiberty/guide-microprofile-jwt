@@ -21,19 +21,19 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class InventoryManager {
 
-    private InventoryList invList = new InventoryList();
-    SecureSystemClient secureSystemClient = new SecureSystemClient();
+  private InventoryList invList = new InventoryList();
+  SecureSystemClient secureSystemClient = new SecureSystemClient();
 
-    public Properties get(String hostname, String authHeader) {
-        secureSystemClient.init(hostname, authHeader);
-        Properties properties = secureSystemClient.getProperties();
-        if (properties != null) {
-            invList.addToInventoryList(hostname, properties);
-        }
-        return properties;
+  public Properties get(String hostname, String authHeader) {
+    secureSystemClient.init(hostname, authHeader);
+    Properties properties = secureSystemClient.getProperties();
+    if (properties != null) {
+      invList.addToInventoryList(hostname, properties);
     }
+    return properties;
+  }
 
-    public InventoryList list() {
-        return invList;
-    }
+  public InventoryList list() {
+    return invList;
+  }
 }

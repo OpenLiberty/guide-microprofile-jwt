@@ -30,40 +30,21 @@
         <jwt.issuer>http://openliberty.io</jwt.issuer>
     </properties>
 
-    <repositories>
-        <!-- This repository contains the open-liberty preview -->
-        <repository>
-            <id>openliberty-repo</id>
-            <name>openliberty-repo</name>
-            <url>http://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/wasliberty-open-liberty/</url>
-        </repository>
-        <!-- This repository contains microprofile pre-release specifications -->
-        <repository>
-            <id>eclipse-repo</id>
-            <name>eclipse-repo</name>
-            <url>https://repo.eclipse.org/content/groups/releases/</url>
-        </repository>
-    </repositories>
-
     <!-- Shared dependencies. -->
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>7.0</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- Pre-release microprofile specifications -->
+              <groupId>javax.ws.rs</groupId>
+              <artifactId>javax.ws.rs-api</artifactId>
+              <version>2.0.1</version>
+              <scope>provided</scope>
+           </dependency>
             <dependency>
                 <groupId>org.eclipse.microprofile.jwt</groupId>
                 <artifactId>microprofile-jwt-auth-api</artifactId>
-                <version>1.0-RC10</version>
+                <version>1.0</version>
                 <scope>provided</scope>
             </dependency>
-
-            <!-- Liberty helpers -->
             <dependency>
                 <groupId>com.ibm.websphere.appserver.api</groupId>
                 <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
@@ -90,7 +71,6 @@
                 <version>3.1.1</version>
                 <scope>test</scope>
             </dependency>
-
             <!-- The following is necessary to read CXF client configuration -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -139,7 +119,6 @@
                         <warName>${warfile.name}</warName>
                     </configuration>
                 </plugin>
-
 
                 <!-- Liberty server operations and management. -->
                 <plugin>

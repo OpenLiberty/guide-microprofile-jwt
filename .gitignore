@@ -16,5 +16,6 @@ MANIFEST.MF
 README.html
 
 finish/resources/src/main/resources/keystore.jceks
+start/resources/src/main/resources/keystore.jceks
 temp/
 /bin/

@@ -24,8 +24,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+           <groupId>javax.enterprise</groupId>
+           <artifactId>cdi-api</artifactId>
+           <version>1.2</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>javax.inject</groupId>
+           <artifactId>javax.inject</artifactId>
+           <version>1</version>
+           <scope>provided</scope>
+       </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>

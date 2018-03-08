@@ -23,37 +23,20 @@
 <title> Application </title>
 <body>
 
-  <h:outputText class="DetailsHeaders" value=" Hello! " />
-    <h:outputText class="Details"
-      value="#{applicationBean.username}" />
-    <br /> <br />
-
-  <h:outputText class="DetailsHeaders" value=" Your roles are: " />
-    <h:outputText class="Details"
-      value="#{applicationBean.userRole}" />
-      <br /> <br />
-
-    <h:outputText class="DetailsHeaders" value=" Your current OS is: " />
-      <br />
-      <h:outputText class="Details"
-        value="#{applicationBean.os}" />
-      <br /> <br />
-
-      <h:outputText class="DetailsHeaders" value=" Your current inventory size is: " />
-        <br />
-        <h:outputText class="Details"
-          value="#{applicationBean.inventorySize}" />
-        <br /> <br />
-
-
-      <h:outputText class="DetailsHeaders" value=" Your JSON web token is: " />
-        <br />
-        <h:outputText class="Details"
-          value="#{applicationBean.jwt}" />
-        <br /> <br />
+    <h:panelGrid class="table" columns="2" border="3">
+           <h:panelGroup>Name:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.username}</h:panelGroup>
+           <h:panelGroup>Roles:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.userRole}</h:panelGroup>
+           <h:panelGroup>Current OS:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.os}</h:panelGroup>
+           <h:panelGroup>Inventory Size:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.inventorySize}</h:panelGroup>
+           <h:panelGroup>JSON Web Token:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.jwt}</h:panelGroup>
+    </h:panelGrid>
 
     <div >
-
       <h:panelGroup layout="block">
       <FORM METHOD="POST" ACTION="ibm_security_logout" NAME="logout">
         <input type="submit" name="logout" value="Log Out" />

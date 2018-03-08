@@ -79,7 +79,7 @@ public class LoginBean {
         return "application.jsf";
     }
 
-    private String buildJwt(String userName, Set roles) throws Exception {
+  private String buildJwt(String userName, Set<String> roles) throws Exception {
         return JwtBuilder.create("jwtFrontEndBuilder")
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName) // MP-JWT defined subject claim
@@ -89,7 +89,7 @@ public class LoginBean {
                          .compact();
     }
 
-    private Set getRoles(HttpServletRequest request) {
+    private Set<String> getRoles(HttpServletRequest request) {
         Set<String> roles = new HashSet<String>();
         boolean isAdmin = request.isUserInRole("admin");
         boolean isUser = request.isUserInRole("user");

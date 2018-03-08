@@ -12,10 +12,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-        </dependency>
+      <dependency>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>javax.ws.rs-api</artifactId>
+      </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>

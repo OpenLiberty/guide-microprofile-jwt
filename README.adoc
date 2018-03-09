@@ -185,7 +185,7 @@ MicroProfile JWT maps its token claims to JAX-RS security-related methods and ma
 
 The `getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
 
-The `getGroups()` function retrieves the user groups information from the JSON Web Token.
+The `getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
 The `SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the `getGroups()` method.
 
 The `getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.

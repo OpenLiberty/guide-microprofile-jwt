@@ -133,7 +133,7 @@ Therefore, this service is properly secured.
 
 === Securing the inventory service
 
-In the `start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory, open the `InventoryResource.java` file  and add roles-based access control as shown in the following command:
+In the `start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory, open the `InventoryResource.java` file  and add roles-based access control as shown in the following code:
 
 [source, java, indent=0]
 ----
@@ -183,14 +183,14 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 
 MicroProfile JWT maps its token claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
-The `getJwtUsername()` feature retrieves the user name from the injected `JsonWebToken jwtPrincipal` principal by calling the `getName()` claim.
+The `getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
 
-The `getGroups()` feature retrieves the user groups information from the JWT from the SecurityContext.
-The `SecurityContext.getUserPrincipal()` feature returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type.
+The `getGroups()` function retrieves the user groups information from the JSON Web Token.
+The `SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the `getGroups()` method.
 
-The `getCustomClaim()` claim retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
-The `SecurityContext.isUserInRole(String)` feature returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
-The `jwtPrincipal.getClaim("customClaim")` feature retrieves the value of the custom claim by its name. This feature is useful when you want to validate information about a custom claim from the security token.
+The `getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
+The `SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
+The `jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
 
 // =================================================================================================
 // Building and running the application

@@ -115,7 +115,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 
 === Securing the system service
 
-Open the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and modify it to match the following code:
+Open the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. A simple way to proceed is to copy all the following code and replace the content of the file:
 
 [source, java, indent=0]
 ----
@@ -133,7 +133,7 @@ Therefore, this service is properly secured.
 
 === Securing the inventory service
 
-In the `start/backendServices/src/main/java/io/openliberty/guides/inventory/` directory, open the `InventoryResource.java` file  and add roles-based access control as shown in the following code:
+Open the `start/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file and add roles-based access control. A simple way to proceed is to copy all the following code and replace the content of the file:
 
 [source, java, indent=0]
 ----
@@ -155,8 +155,7 @@ The final addition of the `manager.get(hostname, authHeader)` code adds the auth
 In the beginning, the inventory service uses the normal `SystemClient` class to create a client and send HTTP GET requests to retrieve information from the system service.
 However, after you secure the system service with token-based authentication, you need to add security tokens when you send HTTP requests through the client.
 
-Add the `SecureSystemClient` class in the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
-
+Create the `start/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file with the following code:
 [source, java, indent=0]
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
@@ -268,7 +267,8 @@ the test asserts that the current test user with the `user` role is forbidden fr
 
 include::{common-includes}/mvnverify.adoc[]
 
-```
+[source, role="no_copy"]
+----
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
@@ -282,8 +282,8 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 sec - in i
 Results :
 
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+----
 
-```
 To see whether the tests detect a failure, remove the authorization header generation in the `setup()` method of the `InventoryEndpointTest.java` file.
 Rerun the Maven build. You see that a test failure occurs.
 

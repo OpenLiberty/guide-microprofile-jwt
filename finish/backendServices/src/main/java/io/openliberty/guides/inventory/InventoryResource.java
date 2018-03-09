@@ -14,7 +14,6 @@
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -23,7 +22,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import io.openliberty.guides.inventory.model.InventoryList;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.DeclareRoles;

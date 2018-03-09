@@ -57,6 +57,8 @@ Maven goals to build the application and run it inside of Open Liberty:
 mvn clean install liberty:start-server
 ```
 
+Note that you cannot directly visit a back end URL from a browser. You have to use the provided front end that generates valid JWT tokens to retrieve information from the back end.
+
 Navigate your browser to the front-end web application endpoint: `http://localhost:9090/application.jsf`. From here, you can log in to the application with the form-based login.
 Log in with one of the following user information credentials:
 
@@ -115,7 +117,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 
 === Securing the system service
 
-Open the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. A simple way to proceed is to copy all the following code and replace the content of the file:
+Open the `start/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
 
 [source, java, indent=0]
 ----
@@ -133,7 +135,7 @@ Therefore, this service is properly secured.
 
 === Securing the inventory service
 
-Open the `start/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file and add roles-based access control. A simple way to proceed is to copy all the following code and replace the content of the file:
+Open the `start/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
 
 [source, java, indent=0]
 ----

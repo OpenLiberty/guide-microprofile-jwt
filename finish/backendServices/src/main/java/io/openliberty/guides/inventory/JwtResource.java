@@ -46,7 +46,7 @@ public class JwtResource {
   @GET
   @RolesAllowed({ "admin", "user" })
   @Path("/groups")
-  public Response getGroups(@Context SecurityContext securityContext) {
+  public Response getJwtGroups(@Context SecurityContext securityContext) {
     Set<String> groups = null;
     Principal user = securityContext.getUserPrincipal();
     if (user instanceof JsonWebToken) {

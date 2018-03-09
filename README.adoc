@@ -198,7 +198,7 @@ The `jwtPrincipal.getClaim("customClaim")` method retrieves the value of the cus
 
 include::{common-includes}/mvnbuild.adoc[]
 
-After the Open Liberty application server starts, you can log in to the system with the simple front end. The entire front end code is provided for you to test if you can retrieve information from the back end services by using a valid security token.
+After the Open Liberty application server starts, you can log in to the application with the simple front end. The entire front end code is provided for you to test if you can retrieve information from the back end services by using a valid security token.
 
 You cannot directly visit a back end URL from a browser because no valid tokens exist in the authorization header when you send HTTP requests through a browser. You have to use the provided front end to create a web client to send HTTP GET requests with valid security tokens.
 

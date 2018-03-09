@@ -81,10 +81,10 @@ mvn liberty:stop-server
 Now, navigate back to the `start` directory to begin.
 
 // =================================================================================================
-// Securing back-end services with MicroProfile JWT
+// Securing back end services with MicroProfile JWT
 // =================================================================================================
 
-== Securing back-end services with MicroProfile JWT
+== Securing back end services with MicroProfile JWT
 
 The MicroProfile JWT feature, `microprofile-jwt-auth-api`, is added as a dependency in your `start/backendServices/pom.xml` file.
 

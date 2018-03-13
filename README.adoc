@@ -47,9 +47,9 @@ For example, a MicroProfile JWT in JSON format will be similar to the following 
   "sub": "bob",                     //Identifies the principal that is the subject of the JW
   "upn": "bob",                     //Provides the user principal name in the java.security.Principal interface
   "customClaim": "customValue",     //The MP-JWT can contain any number of other custom and standard claims
-  "groups": ["admin","user"],       //Provides the list of group names that have been assigned to the principal of the MP-JWT
+  "groups": ["admin","user"],       //Provides the list of group names that assigned to the principal of the MP-JWT
   "iss": "http://openliberty.io",   //The token issuer
-  "exp": 1520453327,                //Identifies the expiration time on or after which the JWT MUST NOT be accepted for processing
+  "exp": 1520453327,                //Identifies the expiration time
   "iat": 1520366927                 //Identifies the time at which the issuer generated the JWT
 }
 ----

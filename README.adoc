@@ -33,6 +33,26 @@ For microservices, a token-based authentication mechanism offers a lightweight w
 
 MicroProfile JWT standards define the required format of JWT for authentication and authorization. The standards also map JWT token claims to various Java EE container APIs and make the set of claims available through getters.
 
+For example, a MicroProfile JWT in JSON format will be similar to the following JSON, and you will see the encrypted format of it in this guide.
+
+[source, role="no_copy"]
+----
+{
+   "typ": "JWT",
+   "alg": "RS256"
+}
+{
+  "token_type": "Bearer", 
+  "aud": "simpleapp",
+  "sub": "bob",
+  "upn": "bob",
+  "customClaim": "customValue",
+  "groups": ["admin","user"],
+  "iss": "http://openliberty.io",
+  "exp": 1520453327,
+  "iat": 1520366927
+}
+----
 
 
 // =================================================================================================

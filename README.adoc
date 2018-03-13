@@ -38,19 +38,19 @@ For example, a MicroProfile JWT in JSON format will be similar to the following 
 [source, role="no_copy"]
 ----
 {
-   "typ": "JWT",
-   "alg": "RS256"
+   "typ": "JWT",                    //Identifies the token format and must be "JWT"
+   "alg": "RS256"                   //Identifies the cryptographic algorithm used to secure the JWT
 }
 {
-  "token_type": "Bearer", 
-  "aud": "simpleapp",
-  "sub": "bob",
-  "upn": "bob",
-  "customClaim": "customValue",
-  "groups": ["admin","user"],
-  "iss": "http://openliberty.io",
-  "exp": 1520453327,
-  "iat": 1520366927
+  "token_type": "Bearer",
+  "aud": "simpleapp",               //Identifies the recipients that the JWT is intended for
+  "sub": "bob",                     //Identifies the principal that is the subject of the JW
+  "upn": "bob",                     //Provides the user principal name in the java.security.Principal interface
+  "customClaim": "customValue",     //The MP-JWT can contain any number of other custom and standard claims
+  "groups": ["admin","user"],       //Provides the list of group names that have been assigned to the principal of the MP-JWT
+  "iss": "http://openliberty.io",   //The token issuer
+  "exp": 1520453327,                //Identifies the expiration time on or after which the JWT MUST NOT be accepted for processing
+  "iat": 1520366927                 //Identifies the time at which the issuer generated the JWT
 }
 ----
 

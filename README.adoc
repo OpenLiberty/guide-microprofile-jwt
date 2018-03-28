@@ -126,7 +126,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/system/Syste
 
 Role names that are used in the `@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with `admin` and `user` roles to access the `system` service.
+The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================

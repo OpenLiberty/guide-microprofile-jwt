@@ -52,6 +52,30 @@
         </h:commandButton>
       </h:form>
 
+      <h:panelGroup>
+        <h2>Systems</h2>
+        <table>
+          <tr>
+            <th>Hostname</th>
+            <th>Username</th>
+            <th>OS Name</th>
+          </tr>
+          <ui:repeat var="sys" value="#{applicationBean.inventoryList}">
+            <tr>
+              <td>
+                <h:outputText value="#{sys.hostname}" />
+              </td>
+              <td>
+                <h:outputText value="#{sys.username}" />
+              </td>
+              <td>
+                  <h:outputText value="#{sys.osName}" />
+              </td>
+            </tr>
+          </ui:repeat>
+        </table>
+      </h:panelGroup>
+
     </div>
 
 

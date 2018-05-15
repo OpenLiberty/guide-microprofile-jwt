@@ -100,7 +100,7 @@
 
       <h:form id="addSystemForm">
         <h2>Add System</h2>
-        <h:inputText placeholder="hostname" id="hostname" value="#{applicationBean.hostname}"></h:inputText>
+        <h:inputText pt:placeholder="hostname" id="hostname" value="#{applicationBean.hostname}"></h:inputText>
         <h:commandButton value="Add System">
           <f:ajax execute="hostname" render="invSize systemTable" />
         </h:commandButton>

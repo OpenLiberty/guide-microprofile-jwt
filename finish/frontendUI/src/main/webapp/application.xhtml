@@ -45,8 +45,9 @@
       </h:panelGroup>
 
       <h:form>
+        <h2>Add System</h2>
         <h:inputText id="hostname" value="#{applicationBean.hostname}"></h:inputText>
-        <h:commandButton value="Add Host">
+        <h:commandButton value="Add System">
           <f:ajax execute="hostname" render="invSize" />
         </h:commandButton>
       </h:form>

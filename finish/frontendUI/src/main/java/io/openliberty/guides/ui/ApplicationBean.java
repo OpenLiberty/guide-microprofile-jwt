@@ -25,6 +25,8 @@ import javax.json.JsonObject;
 @ViewScoped
 public class ApplicationBean {
 
+  private String hostname;
+
   public String getJwt() {
     String jwtTokenString = SessionUtils.getJwtToken();
     String authHeader = "Bearer " + jwtTokenString;
@@ -47,6 +49,19 @@ public class ApplicationBean {
       return String.valueOf(properties.getInt("total"));
     }
     return "You are not authorized to access the inventory service.";
+  }
+
+  public String getHostname() {
+    return hostname;
+  }
+
+  public void setHostname(String hostname) {
+    this.hostname = hostname;
+    String authHeader = getJwt();
+
+    if (ServiceUtils.invOk(authHeader)) {
+      ServiceUtils.addSystem(hostname, authHeader);
+    }
   }
 
   public String getUsername() {

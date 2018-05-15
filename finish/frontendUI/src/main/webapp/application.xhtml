@@ -31,7 +31,7 @@
            <h:panelGroup>Current OS:</h:panelGroup>
            <h:panelGroup>#{applicationBean.os}</h:panelGroup>
            <h:panelGroup>Inventory Size:</h:panelGroup>
-           <h:panelGroup>#{applicationBean.inventorySize}</h:panelGroup>
+           <h:panelGroup id="invSize">#{applicationBean.inventorySize}</h:panelGroup>
            <h:panelGroup>JSON Web Token:</h:panelGroup>
            <h:panelGroup>#{applicationBean.jwt}</h:panelGroup>
     </h:panelGrid>
@@ -43,6 +43,13 @@
         <input type="HIDDEN" name="logoutExitPage" value="/login.jsf" />
       </FORM>
       </h:panelGroup>
+
+      <h:form>
+        <h:inputText id="hostname" value="#{applicationBean.hostname}"></h:inputText>
+        <h:commandButton value="Add Host">
+          <f:ajax execute="hostname" render="invSize" />
+        </h:commandButton>
+      </h:form>
 
     </div>
 

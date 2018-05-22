@@ -8,7 +8,7 @@
 //  Contributors:
 //  IBM Corporation - initial API and implementation
 // ******************************************************************************
-package test;
+package it.io.openliberty.guides.jwt.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -160,6 +160,8 @@ public class JwtVerifier {
         // Open the keystore that the server will use to validate the JWT
         KeyStore ks = KeyStore.getInstance("JCEKS");
         InputStream ksStream = this.getClass().getResourceAsStream(this.keystorePath);
+        assertNotNull("Keystore resource not found!", this.getClass().getResource(JwtVerifier.keystorePath));
+
         char[] password = new String("secret").toCharArray();
         ks.load(ksStream, password);
 

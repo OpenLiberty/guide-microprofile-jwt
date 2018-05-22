@@ -13,17 +13,25 @@
 // tag::jwt[]
 package io.openliberty.guides.ui;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import io.openliberty.guides.ui.models.SystemModel;
 import io.openliberty.guides.ui.util.ServiceUtils;
 import io.openliberty.guides.ui.util.SessionUtils;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 @ManagedBean
 @ViewScoped
 public class ApplicationBean {
+
+  private String hostname;
 
   public String getJwt() {
     String jwtTokenString = SessionUtils.getJwtToken();
@@ -47,6 +55,29 @@ public class ApplicationBean {
       return String.valueOf(properties.getInt("total"));
     }
     return "You are not authorized to access the inventory service.";
+  }
+
+  public List<SystemModel> getInventoryList() {
+    String authHeader = getJwt();
+    if (ServiceUtils.invOk(authHeader)) {
+      JsonArray systems = ServiceUtils.getInventory(authHeader).getJsonArray("systems");
+      return systems.stream().map(s -> new SystemModel((JsonObject) s)).collect(Collectors.toList());
+    }
+
+    return Collections.emptyList();
+  }
+
+  public String getHostname() {
+    return hostname;
+  }
+
+  public void setHostname(String hostname) {
+    this.hostname = hostname;
+    String authHeader = getJwt();
+
+    if (ServiceUtils.invOk(authHeader)) {
+      ServiceUtils.addSystem(hostname, authHeader);
+    }
   }
 
   public String getUsername() {

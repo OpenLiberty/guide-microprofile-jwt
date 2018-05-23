@@ -4,6 +4,9 @@
     version="3.1">
     <display-name>Liberty Project</display-name>
 
+    <!--Create secrets using this tool: https://www.base64encode.org/
+        Default algorithm is DES, so the secret needs to be 8 characters
+        long, then Base64 encoded-->
     <context-param>
         <param-name>org.apache.myfaces.SECRET</param-name>
         <param-value>c3R1ZmZhbmQ=</param-value>

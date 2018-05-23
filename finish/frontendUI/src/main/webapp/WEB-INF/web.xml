@@ -6,12 +6,17 @@
 
     <context-param>
         <param-name>org.apache.myfaces.SECRET</param-name>
-        <param-value>dGhpc2lzbXlzZWNyZXQ=</param-value>
+        <param-value>c3R1ZmZhbmQ=</param-value>
     </context-param>
 
     <context-param>
         <param-name>org.apache.myfaces.MAC_SECRET</param-name>
-        <param-value>dGhpc2lzbXltYWNzZWNyZXQ=</param-value>
+        <param-value>bW9yZXN0dWY=</param-value>
+    </context-param>
+
+    <context-param>
+      <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
+      <param-value>false</param-value>
     </context-param>
 
 <!--

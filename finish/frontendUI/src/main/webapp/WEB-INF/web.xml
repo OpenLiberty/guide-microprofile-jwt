@@ -3,6 +3,17 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
     version="3.1">
     <display-name>Liberty Project</display-name>
+
+    <context-param>
+        <param-name>org.apache.myfaces.SECRET</param-name>
+        <param-value>dGhpc2lzbXlzZWNyZXQ=</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>org.apache.myfaces.MAC_SECRET</param-name>
+        <param-value>dGhpc2lzbXltYWNzZWNyZXQ=</param-value>
+    </context-param>
+
 <!--
   Copyright (c) 2018 IBM Corp.
 

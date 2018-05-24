@@ -97,7 +97,7 @@ The MicroProfile JWT feature, `microprofile-jwt-auth-api`, has been added as a d
 
 In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
 
-[source, java, indent=0]
+[source, xml, indent=0]
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----

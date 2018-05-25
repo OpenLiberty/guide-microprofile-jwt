@@ -51,6 +51,11 @@ public class ServiceUtils {
     return getJsonFromUrl(invUrl, authHeader);
   }
 
+  public static JsonObject addSystem(String hostname, String authHeader) {
+    String invUrl = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT, INVENTORY_HOSTS + "/" + hostname);
+    return getJsonFromUrl(invUrl, authHeader);
+  }
+
   public static String getJwtRoles(String authHeader) {
     String url = buildUrl(SECURED_PROTOCOL, HOSTNAME, DEFAULT_PORT,
         INV_JWT + "/groups");

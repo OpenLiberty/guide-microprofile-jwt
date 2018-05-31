@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Test;
 import org.junit.Before;
 import it.io.openliberty.guides.jwt.util.TestUtils;
-import test.JwtVerifier;
+import it.io.openliberty.guides.jwt.util.JwtVerifier;
 
 public class JwtTest {
 

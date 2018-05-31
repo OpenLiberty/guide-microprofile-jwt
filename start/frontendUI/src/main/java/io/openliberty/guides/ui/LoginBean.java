@@ -51,6 +51,7 @@ public class LoginBean {
 
         // do login
         try {
+            request.logout();
             request.login(this.username, this.password);
         } catch (ServletException e) {
             System.out.println("Login failed.");
@@ -67,7 +68,7 @@ public class LoginBean {
 
             String jwt = buildJwt(username, roles);
             // get the current session
-            HttpSession ses = request.getSession(false);
+            HttpSession ses = request.getSession();
             if (ses == null) {
                 System.out.println("Session is timeout.");
             } else {

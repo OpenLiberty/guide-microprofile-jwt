@@ -87,7 +87,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, `microprofile-jwt-auth-api`, is added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, `microprofile-jwt-auth-api`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -97,7 +97,7 @@ The MicroProfile JWT feature, `microprofile-jwt-auth-api`, is added as a depende
 
 In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
 
-[source, java, indent=0]
+[source, xml, indent=0]
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----
@@ -109,7 +109,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 |===
 | `issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 | `audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| `keyName` | Specifies the key alias name to locate public key for JWT signature validation and must be in the truststore in the SSL configuration.
+| `keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
 |===
 
 // =================================================================================================
@@ -183,7 +183,7 @@ Create a `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResou
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
-MicroProfile JWT maps its token claims to JAX-RS security-related methods and makes the set of claims available through getters.
+MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
 The `getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
 

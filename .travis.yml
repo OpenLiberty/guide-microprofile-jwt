@@ -30,3 +30,8 @@ notifications:
 branches:
   only:
   - master
+jdk:
+- openjdk10
+- openjdk9
+- oraclejdk10
+- oraclejdk9

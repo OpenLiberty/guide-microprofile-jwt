@@ -98,7 +98,6 @@ When you are done with the application, stop the server with the following comma
 mvn liberty:stop-server
 ```
 
-Now, navigate back to the `start` directory to begin.
 
 // =================================================================================================
 // Securing back end services with MicroProfile JWT
@@ -106,7 +105,9 @@ Now, navigate back to the `start` directory to begin.
 
 == Securing back end services with MicroProfile JWT
 
-The MicroProfile JWT feature, `microprofile-jwt-auth-api`, is added as a dependency in your `start/backendServices/pom.xml` file.
+Navigate to the `start` directory.
+
+The MicroProfile JWT feature, `microprofile-jwt-auth-api`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -116,7 +117,7 @@ The MicroProfile JWT feature, `microprofile-jwt-auth-api`, is added as a depende
 
 In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
 
-[source, java, indent=0]
+[source, xml, indent=0]
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----
@@ -128,7 +129,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 |===
 | `issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 | `audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| `keyName` | Specifies the key alias name to locate public key for JWT signature validation and must be in the truststore in the SSL configuration.
+| `keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
 |===
 
 // =================================================================================================
@@ -146,7 +147,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/system/Syste
 
 Role names that are used in the `@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with `admin` and `user` roles to access the `system` service.
+The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================
@@ -202,7 +203,7 @@ Create a `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResou
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
-MicroProfile JWT maps its token claims to JAX-RS security-related methods and makes the set of claims available through getters.
+MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
 The `getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
 
@@ -239,7 +240,7 @@ Use the following endpoint to log in to the application:
 Once you log in, you can see some basic information retrieved from the back end services.
 Remember that if you log in as a user without the `admin` role, you cannot see the inventory size because you do not have permission.
 
-include::{common-includes}/mvnpackage.adoc[]
+include::{common-includes}/mvncompile.adoc[]
 
 // =================================================================================================
 // Testing the application

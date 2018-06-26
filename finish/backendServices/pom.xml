@@ -57,6 +57,14 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>3.2.5</version>
+  </dependency>
+
+
+
+        <dependency>
             <groupId>com.ibm.websphere.appserver.api</groupId>
             <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
             <scope>provided</scope>

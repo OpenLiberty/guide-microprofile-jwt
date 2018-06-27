@@ -29,9 +29,11 @@ public class TestUtils {
 
     public static Response processRequest(String url, String method, String payload,
             String authHeader) {
+
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
         Builder builder = target.request();
+        System.out.println("in the process");
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         if (authHeader != null) {
             builder.header(HttpHeaders.AUTHORIZATION, authHeader);

@@ -58,6 +58,7 @@ public class JwtTest {
   }
 
   public void testJwtGetCustomClaim() {
+    System.out.println("lala");
     String jwtUrl = baseUrl + INV_JWT + "/customClaim";
     Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
 

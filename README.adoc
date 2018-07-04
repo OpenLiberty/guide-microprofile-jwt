@@ -17,6 +17,9 @@
 :source-highlighter: prettify
 = Securing microservices with JSON Web Tokens
 
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
 You'll explore how to control user and role access to microservices with MicroProfile JSON Web Token (MicroProfile JWT).
 
 // =================================================================================================

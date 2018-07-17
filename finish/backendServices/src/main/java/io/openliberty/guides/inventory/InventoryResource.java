@@ -42,6 +42,7 @@ public class InventoryResource {
       @Context HttpHeaders httpHeaders) {
     String authHeader = httpHeaders.getRequestHeaders()
                                    .getFirst(HttpHeaders.AUTHORIZATION);
+    // Get properties
     Properties props = manager.get(hostname, authHeader);
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
@@ -49,6 +50,9 @@ public class InventoryResource {
                          "ERROR: Unknown hostname or the resource may not be running on the host machine")
                      .build();
     }
+
+    // Add to inventory
+    manager.add(hostname, props);
     return Response.ok(props).build();
   }
 

@@ -12,28 +12,39 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import io.openliberty.guides.inventory.client.SecureSystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
+import io.openliberty.guides.inventory.model.SystemData;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class InventoryManager {
 
-  private InventoryList invList = new InventoryList();
+  private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   SecureSystemClient secureSystemClient = new SecureSystemClient();
 
   public Properties get(String hostname, String authHeader) {
     secureSystemClient.init(hostname, authHeader);
-    Properties properties = secureSystemClient.getProperties();
-    if (properties != null) {
-      invList.addToInventoryList(hostname, properties);
+    return secureSystemClient.getProperties();
+  }
+
+  public void add(String hostname, Properties systemProps) {
+    Properties props = new Properties();
+    props.setProperty("os.name", systemProps.getProperty("os.name"));
+    props.setProperty("user.name", systemProps.getProperty("user.name"));
+
+    SystemData system = new SystemData(hostname, props);
+    if (!systems.contains(system)) {
+      systems.add(system);
     }
-    return properties;
   }
 
   public InventoryList list() {
-    return invList;
+    return new InventoryList(systems);
   }
 }

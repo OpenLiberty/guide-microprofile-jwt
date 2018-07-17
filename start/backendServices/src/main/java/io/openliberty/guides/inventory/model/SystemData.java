@@ -12,21 +12,31 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.model;
 
-import java.util.List;
+import java.util.Properties;
 
-public class InventoryList {
+public class SystemData {
 
-    private List<SystemData> systems;
+  private final String hostname;
+  private final Properties properties;
 
-    public InventoryList(List<SystemData> systems) {
-        this.systems = systems;
+  public SystemData(String hostname, Properties properties) {
+    this.hostname = hostname;
+    this.properties = properties;
+  }
+
+  public String getHostname() {
+    return hostname;
+  }
+
+  public Properties getProperties() {
+    return properties;
+  }
+
+  @Override
+  public boolean equals(Object host) {
+    if (host instanceof SystemData) {
+      return hostname.equals(((SystemData) host).getHostname());
     }
-
-    public List<SystemData> getSystems() {
-        return systems;
-    }
-
-    public int getTotal() {
-        return systems.size();
-    }
+    return false;
+  }
 }

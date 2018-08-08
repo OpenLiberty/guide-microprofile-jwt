@@ -36,7 +36,7 @@ For microservices, a token-based authentication mechanism offers a lightweight w
 
 MicroProfile JWT standards define the required format of JWT for authentication and authorization. The standards also map JWT token claims to various Java EE container APIs and make the set of claims available through getters.
 
-
+The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems. Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties. The JWT token gets propagated and verified during the comminication between two services.
 
 // =================================================================================================
 // Getting Started
@@ -168,7 +168,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/cl
 ----
 
 The `SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand the HTTP `GET` request to the system service to retrieve system properties.
-However, the `SystemClient` class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
+However, the `SecureSystemClient` class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
 By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================

@@ -36,7 +36,7 @@ For microservices, a token-based authentication mechanism offers a lightweight w
 
 MicroProfile JWT standards define the required format of JWT for authentication and authorization. The standards also map JWT token claims to various Java EE container APIs and make the set of claims available through getters.
 
-
+The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems. Whenever a request is made to the inventory service to retrieve the JVM system properties of a particular host, the inventory service communicates with the `system` service on that host to get these system properties. The JWT token gets propagated and verified during the comminication between two services.
 
 // =================================================================================================
 // Getting Started

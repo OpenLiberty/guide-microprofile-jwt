@@ -9,6 +9,8 @@
 :page-layout: guide
 :page-duration: 25 minutes
 :page-releasedate: 2018-03-09
+:page-guide-category: microprofile
+:page-essential: false
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
 :page-tags: ['MicroProfile JWT', "JSON Web Tokens", "MicroProfile", "microservices", "security"]
 :page-permalink: /guides/{projectid}

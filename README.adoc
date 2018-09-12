@@ -92,7 +92,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, `microprofile-jwt-auth-api`, has been added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -107,7 +107,7 @@ In the `backendServices/src/main/liberty/config` directory, create a configurati
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----
 
-The `<feature>mpJwt-1.0</feature>` feature adds the libraries that are required for MicroProfile JWT implementation.
+The `mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
 The `<mpJwt>` element is required to configure the injection of the caller's JWT.
 

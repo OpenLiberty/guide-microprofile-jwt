@@ -20,46 +20,34 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.openliberty.guides</groupId>
-            <artifactId>resources</artifactId>
-            <version>${version.shared.keystore}</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jaxrs-2.1</artifactId>
+            <type>esa</type>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jsonp-1.1</artifactId>
+            <type>esa</type>
         </dependency>
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jsf-2.3</artifactId>
+            <type>esa</type>
         </dependency>
         <dependency>
-            <groupId>com.ibm.websphere.appserver.api</groupId>
-            <artifactId>com.ibm.websphere.appserver.api.json</artifactId>
-            <version>1.0.10</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>appSecurity-3.0</artifactId>
+            <type>esa</type>
         </dependency>
         <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>javax.faces-api</artifactId>
-            <version>2.2</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>servlet-4.0</artifactId>
+            <type>esa</type>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.websphere.appserver.api</groupId>
-            <artifactId>com.ibm.websphere.appserver.api.jwt</artifactId>
-            <version>1.0.15</version>
-            <scope>provided</scope>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jwt-1.0</artifactId>
+            <type>esa</type>
         </dependency>
     </dependencies>
 

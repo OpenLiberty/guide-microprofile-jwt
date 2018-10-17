@@ -77,7 +77,7 @@ public class LoginBean {
         } else {
             System.out.println("Update Sessional JWT Failed.");
         }
-        return "application.jsf";
+        return "application.jsf?faces-redirect=true";
     }
 
   private String buildJwt(String userName, Set<String> roles) throws Exception {

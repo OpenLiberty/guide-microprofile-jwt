@@ -22,23 +22,33 @@
   xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <title> Security Login Page </title>
 <body>
-<h2>Form Login</h2>
-<h:form id="loginform">
-        <p>
-          Username
-          <h:inputText id="username" value="#{loginBean.username}" required="true"/>
-        </p>
-        <p>
-          Password
-          <h:inputSecret id="password" value="#{loginBean.password}" required="true"/>
-        </p>
-        <p>
-          <h:commandButton value="Submit" type="submit"
-            action="#{loginBean.doLogin()}">
-          </h:commandButton>
-           <br /> <br /> <input
-            type="reset" value="Reset" />
-        </p>
-      </h:form>
+  <h2>Form Login</h2>
+  <h:form id="loginform">
+    <p>
+      Username
+      <h:inputText id="username" value="#{loginBean.username}" required="true"/>
+    </p>
+    <p>
+      Password
+      <h:inputSecret id="password" value="#{loginBean.password}" required="true"/>
+    </p>
+    <p>
+      <h:commandButton value="Submit" type="submit"
+        action="#{loginBean.doLogin()}">
+      </h:commandButton>
+        <br /> <br /> <input
+        type="reset" value="Reset" />
+    </p>
+  </h:form>
+  <script type="text/javascript">
+    // Force safari to refresh the page
+    // if a cached copy was loaded
+    // from the browser back-forward cache.
+    window.onpageshow = function(e) {
+      if (e.persisted) {
+        window.location.reload();
+      }
+    }
+  </script>
 </body>
 </html>

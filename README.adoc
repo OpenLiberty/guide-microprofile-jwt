@@ -125,7 +125,7 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 
 Open the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
 
-[source, java, indent=0, role="code_column"]
+[source, java, indent=0]
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----

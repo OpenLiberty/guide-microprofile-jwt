@@ -6,7 +6,7 @@
 // Contributors:
 //   IBM Corporation
 :projectid: microprofile-jwt
-:page-layout: guide
+:page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2018-03-09
 :page-guide-category: microprofile

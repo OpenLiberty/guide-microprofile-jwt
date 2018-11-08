@@ -100,9 +100,12 @@ The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `s
 
 === Creating the server configuration file
 
+[role="code_command hotspot"]
+----
 In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
+----
 
-[source, xml, indent=0, role="code_command hotspot=1-12"]
+[source, xml, indent=0, role="code_column"]
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----
@@ -122,10 +125,12 @@ The `<mpJwt>` element is required to configure the injection of the caller's JWT
 // =================================================================================================
 
 === Securing the system service
-
+[role="code_command hotspot"]
+----
 Open the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
+----
 
-[source, java, indent=0]
+[source, java, indent=0, role="code_column"]
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----

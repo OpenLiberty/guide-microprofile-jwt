@@ -132,6 +132,7 @@ The [hotspot=32]`<mpJwt>` element is required to configure the injection of the 
 Open the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
 ----
 
+SystemResource.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
@@ -152,6 +153,7 @@ Therefore, this service is properly secured.
 Open the `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
 ----
 
+InventoryResource.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
@@ -171,11 +173,13 @@ The final addition of the `manager.get(hostname, authHeader)` code adds the auth
 
 In the beginning, the inventory service uses the normal `SystemClient` class to create a client and send HTTP `GET` requests to retrieve information from the system service.
 However, after you secure the system service with token-based authentication, you need to add security tokens when you send HTTP requests through the client.
+
 [role="code_command hotspot=14-51"]
 ----
 Create the `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file with the following code:
 ----
 
+SecureSystemClient.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
@@ -198,6 +202,7 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 Create a `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information from the token.
 ----
 
+JwtResource.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
@@ -255,6 +260,7 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 To begin, create a test class for the `system` service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java` file:
 ----
 
+SystemEndpointTest.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
@@ -265,6 +271,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Syste
 Next, create a test class for the `inventory` service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java` file:
 ----
 
+InventoryEndpointTest.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[tags=test]
@@ -283,6 +290,7 @@ After each test confirms that the response code is correct, each test gets the c
 Create a test class for the JWT service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 ----
 
+JwtTest.java
 [source, java, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]

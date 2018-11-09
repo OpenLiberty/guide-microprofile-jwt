@@ -105,7 +105,8 @@ The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `s
 In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
 ----
 
-[source, xml, indent=0, role="code_column"]
+server.xml
+[source, xml, indent=0, role='code_column']
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----

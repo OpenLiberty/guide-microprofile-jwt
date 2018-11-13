@@ -298,13 +298,16 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTe
 
 In the `setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
 The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
-
+[role="code_command hotspot=46-58"]
+----
 * The `testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
 whether the user name is the same as the `TESTUSER` user name.
-
+----
+[role="code_command hotspot=60-69"]
+----
 * The `testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
-
+----
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]

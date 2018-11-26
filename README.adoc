@@ -43,7 +43,7 @@ The application that you will be working with is an `inventory` service, which s
 // =================================================================================================
 // Getting Started
 // =================================================================================================
-
+[role='command']
 include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
@@ -57,7 +57,7 @@ JWT security implementation for the services in the application. You can try the
 
 To try out the application, first navigate to the `finish` directory. Next, execute the following
 Maven goals to build the application and run it inside of Open Liberty:
-
+[role='command']
 ```
 mvn clean install liberty:start-server
 ```
@@ -78,7 +78,7 @@ You are redirected to a page that displays the user who is logged in, the curren
 In addition, if you log in as an `admin` user, the current inventory size appears. If you log in as a `user`, you instead see the message, `You are not authorized to access the inventory service.`, which means you cannot access the inventory service in the back end.
 
 When you are done with the application, stop the server with the following command:
-
+[role='command']
 ```
 mvn liberty:stop-server
 ```
@@ -92,7 +92,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, [hotspot=2-3]`mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -100,25 +100,25 @@ The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `s
 
 === Creating the server configuration file
 
-[role="code_command hotspot=11-33"]
+[role="code_command hotspot=1-23"]
 ----
-In the `backendServices/src/main/liberty/config` directory, create a configuration file named `server.xml`.
+Create a configuration file `backendServices/src/main/liberty/config/server.xml`.
 ----
 
 server.xml
-[source, xml, indent=0, role='code_column']
+[source, xml, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 ----
 
 The `mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=32]`<mpJwt>` element is required to configure the injection of the caller's JWT.
+The [hotspot=21-22]`<mpJwt>` element is required to configure the injection of the caller's JWT.
 
 |===
-| `issuer` | Issues security tokens and must match the `iss` claim in the JWT.
-| `audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| `keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
+| [hotspot=21-22]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| [hotspot=21-22]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
+| [hotspot=21-22]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
 |===
 
 // =================================================================================================
@@ -126,21 +126,25 @@ The [hotspot=32]`<mpJwt>` element is required to configure the injection of the 
 // =================================================================================================
 
 === Securing the system service
-
-[role="code_command hotspot=14-33"]
+*Option A: Copy all the following code*
+[role="code_command hotspot=1-20"]
 ----
-Open the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
+Replace the file `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` with roles-based access control.
 ----
-
+*Option B: Add this part of the code in*
+[role="code_command hotspot=14-15"]
+----
+Add roles-based access control to the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file.
+----
 SystemResource.java
-[source, java, indent=0, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
-Role names that are used in the `@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
+Role names that are used in the [hotspot=14-15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The `@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+The [hotspot=14-15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================
@@ -148,22 +152,23 @@ Therefore, this service is properly secured.
 // =================================================================================================
 
 === Securing the inventory service
-[role="code_command hotspot=14-65"]
+*Same as above, we can use the other option*
+[role="code_command hotspot=1-52"]
 ----
-Open the `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java` file and add roles-based access control. Simply copy all the following code and replace the contents of the file:
+Replace the file `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`  with roles-based access control.
 ----
 
 InventoryResource.java
-[source, java, indent=0, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
 ----
 
-Similarly, for each specific service, the `@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
+Similarly, for each specific service, the [hotspot=46-47]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
 
-In addition, the `getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
+In addition, the [hotspot=28-44]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
 
-The final addition of the `manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
+The final addition of the [hotspot=32-33]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
 
 // =================================================================================================
 // Adding the SecureSystemClient class
@@ -174,19 +179,19 @@ The final addition of the `manager.get(hostname, authHeader)` code adds the auth
 In the beginning, the inventory service uses the normal `SystemClient` class to create a client and send HTTP `GET` requests to retrieve information from the system service.
 However, after you secure the system service with token-based authentication, you need to add security tokens when you send HTTP requests through the client.
 
-[role="code_command hotspot=14-51"]
+[role="code_command hotspot=1-38"]
 ----
-Create the `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file with the following code:
+Create the `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
 ----
 
 SecureSystemClient.java
-[source, java, indent=0, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
 ----
 
 The `SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand the HTTP `GET` request to the system service to retrieve system properties.
-However, the `SecureSystemClient` class overrides the `buildClientBuilder()` method by adding the authorization header to the returned builder, `return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
+However, the `SecureSystemClient` class overrides the [hotspot=19-24]`buildClientBuilder()` method by adding the authorization header to the returned builder, [hotspot=32-33]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
 By adding the authorization header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
@@ -197,32 +202,32 @@ By adding the authorization header to the client request, the `SecureSystemClien
 
 To demonstrate how MicroProfile JWT retrieves confidential information and validates custom claims from the security token, add an additional service that uses JAX-RS security-related methods. The JWT service also illustrates how JAX-RS methods map to MicroProfile JWT features.
 
-[role="code_command hotspot=14-67"]
+[role="code_command hotspot=1-54"]
 ----
 Create a `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information from the token.
 ----
 
 JwtResource.java
-[source, java, indent=0, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
 ----
 
 MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
-The `getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
+The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the `getName()` method.
 
-The `getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
-The `SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the `getGroups()` method.
+The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
+The [hotspot=35-36]`SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the `getGroups()` method.
 
-The `getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a `Status.FORBIDDEN` message.
-The `SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
-The `jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
+The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the [hotspot=44-45]`admin` role. Otherwise, it returns a [hotspot=52-53]`Status.FORBIDDEN` message.
+The [hotspot=48-49]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
+The [hotspot=48-49]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
 
 // =================================================================================================
 // Building and running the application
 // =================================================================================================
-
+[role='command']
 include::{common-includes}/mvnbuild.adoc[]
 
 After the Open Liberty application server starts, you can log in to the application with the simple front end. The entire front end code is provided for you to test if you can retrieve information from the back end services by using a valid security token.
@@ -257,7 +262,7 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 
 [role="code_command hotspot=14-62"]
 ----
-To begin, create a test class for the `system` service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java` file:
+Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java` file:
 ----
 
 SystemEndpointTest.java
@@ -268,7 +273,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Syste
 
 [role="code_command hotspot=14-77"]
 ----
-Next, create a test class for the `inventory` service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java` file:
+Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java` file:
 ----
 
 InventoryEndpointTest.java
@@ -285,29 +290,26 @@ The test fails if the response returns a `Status.FORBIDDEN` message, which means
 
 After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
-[role="code_command hotspot=14-69"]
+[role="code_command hotspot=1-56"]
 ----
-Create a test class for the JWT service in the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
+Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
 ----
 
 JwtTest.java
-[source, java, indent=0, role='code_column']
+[source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
 ----
 
 In the `setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
 The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
-[role="code_command hotspot=46-58"]
-----
-* The `testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
+
+The [hotspot=33-45]`testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
 whether the user name is the same as the `TESTUSER` user name.
-----
-[role="code_command hotspot=60-69"]
-----
-* The `testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
+
+The [hotspot=47-54]`testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
-----
+
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]

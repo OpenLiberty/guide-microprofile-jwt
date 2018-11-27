@@ -102,7 +102,8 @@ The MicroProfile JWT feature, [hotspot=2-3]`mpJwt`, has been added as a dependen
 
 [role="code_command hotspot=1-23"]
 ----
-Create a configuration file `backendServices/src/main/liberty/config/server.xml`.
+Create the configuration file.
+`backendServices/src/main/liberty/config/server.xml`
 ----
 
 server.xml
@@ -126,15 +127,10 @@ The [hotspot=21-22]`<mpJwt>` element is required to configure the injection of t
 // =================================================================================================
 
 === Securing the system service
-*Option A: Copy all the following code*
 [role="code_command hotspot=1-20"]
 ----
-Replace the file `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` with roles-based access control.
-----
-*Option B: Add this part of the code in*
-[role="code_command hotspot=14-15"]
-----
-Add roles-based access control to the `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java` file.
+Replace the System Resource class file with roles-based access control.
+`backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 SystemResource.java
 [source, java, linenums, role='code_column']
@@ -155,7 +151,8 @@ Therefore, this service is properly secured.
 *Same as above, we can use the other option*
 [role="code_command hotspot=1-52"]
 ----
-Replace the file `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`  with roles-based access control.
+Replace the Inventory Resource class file with roles-based access control.
+`backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
 InventoryResource.java
@@ -181,7 +178,8 @@ However, after you secure the system service with token-based authentication, yo
 
 [role="code_command hotspot=1-38"]
 ----
-Create the `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java` file.
+Create the class file.
+`backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java`
 ----
 
 SecureSystemClient.java
@@ -204,7 +202,8 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 
 [role="code_command hotspot=1-54"]
 ----
-Create a `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java` file to enable a service that retrieves information from the token.
+Create the JWT Ressource file to enable a service that retrieves information from the token.
+`backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java`
 ----
 
 JwtResource.java
@@ -262,7 +261,8 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 
 [role="code_command hotspot=14-62"]
 ----
-Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java` file:
+Create the class file.
+`backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java`
 ----
 
 SystemEndpointTest.java
@@ -273,7 +273,8 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Syste
 
 [role="code_command hotspot=14-77"]
 ----
-Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java` file:
+Create the class file.
+`backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
 ----
 
 InventoryEndpointTest.java
@@ -292,7 +293,8 @@ After each test confirms that the response code is correct, each test gets the c
 
 [role="code_command hotspot=1-56"]
 ----
-Create the `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java` file:
+Create the class file.
+`backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java`
 ----
 
 JwtTest.java
@@ -344,3 +346,5 @@ Next, you can try one of the related MicroProfile guides. They demonstrate techn
 
 
 include::{common-includes}/finish.adoc[]
+
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]

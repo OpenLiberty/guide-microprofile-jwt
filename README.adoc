@@ -259,7 +259,7 @@ include::{common-includes}/mvncompile.adoc[]
 
 Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to test that you can access different services with valid tokens.
 
-[role="code_command hotspot=14-62"]
+[role="code_command hotspot=14-62" subs="quotes"]
 ----
 Create the `System Endpoint Test` class file.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java`
@@ -271,7 +271,7 @@ SystemEndpointTest.java
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
 ----
 
-[role="code_command hotspot=14-77"]
+[role="code_command hotspot=14-77" subs="quotes"]
 ----
 Create the `Inventory Endpoint Test` class file.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
@@ -291,7 +291,7 @@ The test fails if the response returns a `Status.FORBIDDEN` message, which means
 
 After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
-[role="code_command hotspot=1-56"]
+[role="code_command hotspot=1-56"  subs="quotes"]
 ----
 Create the `JWT Test` class file.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java`

@@ -21,16 +21,18 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class InventoryManager {
 
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
-  SecureSystemClient secureSystemClient = new SecureSystemClient();
+
+  @Inject
+  SecureSystemClient secureSystemClient;
 
   public Properties get(String hostname, String authHeader) {
-    secureSystemClient.init(hostname, authHeader);
-    return secureSystemClient.getProperties();
+    return secureSystemClient.getProperties(hostname, authHeader);
   }
 
   public void add(String hostname, Properties systemProps) {

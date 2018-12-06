@@ -12,6 +12,7 @@
 // end::copyright[]
 package io.openliberty.guides.inventory.client;
 
+import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 import java.util.Properties;
 import java.net.URI;
 
+@RequestScoped
 public class SystemClient {
 
   // Constants for building URI to the system service.
@@ -29,28 +31,11 @@ public class SystemClient {
   private final String SYSTEM_PROPERTIES = "/system/properties";
   private final String PROTOCOL = "http";
 
-  private String url;
-  private Builder clientBuilder;
-
-  // Used by the following guide(s): CDI, MP-METRICS, FAULT-TOLERANCE
-  public void init(String hostname) {
-    this.initHelper(hostname, DEFAULT_PORT);
-  }
-
-  // Used by the following guide(s): MP-CONFIG, MP-HEALTH
-  public void init(String hostname, int port) {
-    this.initHelper(hostname, port);
-  }
-
-  // Helper method to set the attributes.
-  private void initHelper(String hostname, int port) {
-    this.url = buildUrl(PROTOCOL, hostname, port, SYSTEM_PROPERTIES);
-    this.clientBuilder = buildClientBuilder(this.url);
-  }
-
   // Wrapper function that gets properties
-  public Properties getProperties() {
-    return getPropertiesHelper(this.clientBuilder);
+  public Properties getProperties(String hostname) {
+    String url = buildUrl(PROTOCOL, hostname, DEFAULT_PORT, SYSTEM_PROPERTIES);
+    Builder clientBuilder = buildClientBuilder(url);
+    return getPropertiesHelper(clientBuilder);
   }
 
   // tag::doc[]

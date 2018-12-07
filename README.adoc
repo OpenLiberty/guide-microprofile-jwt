@@ -114,7 +114,7 @@ include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 
 The `mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=21-22]`<mpJwt>` element is required to configure the injection of the caller's JWT.
+The [hotspot=21-22]`</mpJwt>` element is required to configure the injection of the caller's JWT.
 
 |===
 | [hotspot=21-22]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.

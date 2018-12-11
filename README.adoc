@@ -148,7 +148,6 @@ Therefore, this service is properly secured.
 // =================================================================================================
 
 === Securing the inventory service
-*Same as above, we can use the other option*
 [role="code_command hotspot=1-52", subs="quotes"]
 ----
 Replace the `InventoryResource` class with roles-based access control.

@@ -114,7 +114,7 @@ include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 
 The [hotspot=2-3]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=21-22]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
+The [hotspot=22]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
 |===
 | [hotspot=21-22]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
@@ -129,7 +129,7 @@ The [hotspot=21-22]`<mpJwt/>` element is required to configure the injection of 
 === Securing the system service
 [role="code_command hotspot=1-20", subs="quotes"]
 ----
-Replace the `SystemResource` class with roles-based access control.
+Add roles-based access control to the SystemResource class 
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 SystemResource.java
@@ -151,7 +151,7 @@ Therefore, this service is properly secured.
 *Same as above, we can use the other option*
 [role="code_command hotspot=1-52", subs="quotes"]
 ----
-Replace the `InventoryResource` class with roles-based access control.
+Add roles-based access control to the `InventoryResource` class
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
@@ -340,7 +340,7 @@ Rerun the Maven build. You see that a test failure occurs.
 
 == Great work! You're done!
 
-You learned how to use MicroProfile JWT to validate JWT and authorize users to secure your microservices.
+You learned how to use MicroProfile JWT to validate JWTs and authorize users to secure your microservices.
 
 Next, you can try one of the related MicroProfile guides. They demonstrate technologies that you can learn and expand on what you built here.
 

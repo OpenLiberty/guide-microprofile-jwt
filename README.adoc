@@ -92,13 +92,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, [hotspot=3]`mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
-
-server.xml
-[source, xml, linenums, role='code_column']
-----
-include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
-----
+The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file

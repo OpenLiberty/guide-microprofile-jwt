@@ -106,6 +106,12 @@ Create the configuration file.
 `backendServices/src/main/liberty/config/server.xml`
 ----
 
+server.xml
+[source, xml, linenums, role='code_column']
+----
+include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
+----
+
 The [hotspot=3]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
 The [hotspot=22]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
@@ -116,11 +122,7 @@ The [hotspot=22]`<mpJwt/>` element is required to configure the injection of the
 | [hotspot=22]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 |===
 
-server.xml
-[source, xml, linenums, role='code_column']
-----
-include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
-----
+
 
 // =================================================================================================
 // Securing the system service
@@ -133,16 +135,17 @@ Add roles-based access control to the SystemResource class
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
-Role names that are used in the [hotspot=15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
-
-The [hotspot=15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
-Therefore, this service is properly secured.
-
 SystemResource.java
 [source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
+
+
+Role names that are used in the [hotspot=15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
+
+The [hotspot=15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+Therefore, this service is properly secured.
 
 // =================================================================================================
 // Securing the inventory service
@@ -156,18 +159,17 @@ Add roles-based access control to the
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-Similarly, for each specific service, the [hotspot=47]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
-
-In addition, the [hotspot=28-44]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
-
-The final addition of the [hotspot=33]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
-
 InventoryResource.java
 [source, java, linenums, role='code_column']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
 ----
 
+Similarly, for each specific service, the [hotspot=47]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
+
+In addition, the [hotspot=28-44]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
+
+The final addition of the [hotspot=33]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
 
 // =================================================================================================
 // Adding the SecureSystemClient class
@@ -184,18 +186,17 @@ Create the `SecureSystemClient` class.
 `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java`
 ----
 
+SecureSystemClient.java
+[source, java, linenums, role='code_column']
+----
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
+----
 
 The [hotspot=10-32]`SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand 
 the HTTP `GET` request to the system service to retrieve system properties. However, the [hotspot=10-32]`SecureSystemClient` 
 class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned 
 builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
 header to the client request, the [hotspot=10-32]`SecureSystemClient` class can access services that are secured.
-
-SecureSystemClient.java
-[source, java, linenums, role='code_column']
-----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
-----
 
 // =================================================================================================
 // Trying more JAX-RS methods to validate tokens
@@ -212,6 +213,12 @@ service that retrieves information from the token.
 `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java`
 ----
 
+JwtResource.java
+[source, java, linenums, role='code_column']
+----
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
+----
+
 MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
 The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the [hotspot=28]`getName()` method.
@@ -222,12 +229,6 @@ The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object in
 The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the [hotspot=45 file=4]`admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
 The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
 The [hotspot=49]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
-
-JwtResource.java
-[source, java, linenums, role='code_column']
-----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
-----
 
 // =================================================================================================
 // Building and running the application
@@ -276,7 +277,6 @@ SystemEndpointTest.java
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
 ----
-
 
 [role="code_command hotspot=13-64" subs="quotes"]
 ----

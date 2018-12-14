@@ -92,7 +92,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, [hotspot=3]`mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -208,7 +208,7 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 
 [role="code_command hotspot=17-54", subs="quotes"]
 ----
-Create the `JWTResource` class to enable a 
+Create the `JwtResource` class to enable a 
 service that retrieves information from the token.
 `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java`
 ----
@@ -226,7 +226,7 @@ The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the 
 The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
 The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
 
-The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the [hotspot=45 file=4]`admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
+The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the [hotspot=45]`admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
 The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
 The [hotspot=49]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
 

@@ -273,7 +273,7 @@ Create the `SystemEndpointTest` class.
 ----
 
 SystemEndpointTest.java
-[source, java, indent=0, role='code_column']
+[source, java, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
 ----
@@ -285,7 +285,7 @@ Create the `InventoryEndpointTest` class.
 ----
 
 InventoryEndpointTest.java
-[source, java, indent=0, role='code_column']
+[source, java, role='code_column']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[tags=test]
 ----

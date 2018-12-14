@@ -144,7 +144,6 @@ SystemResource.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
-
 // =================================================================================================
 // Securing the inventory service
 // =================================================================================================
@@ -186,10 +185,11 @@ Create the `SecureSystemClient` class.
 ----
 
 
-
-The [hotspot=10-32]`SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand the HTTP `GET` request to the system service to retrieve system properties.
-However, the [hotspot=10-32]`SecureSystemClient` class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`.
-By adding the authorization header to the client request, the [hotspot=10-32]`SecureSystemClient` class can access services that are secured.
+The [hotspot=10-32]`SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand 
+the HTTP `GET` request to the system service to retrieve system properties. However, the [hotspot=10-32]`SecureSystemClient` 
+class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned 
+builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
+header to the client request, the [hotspot=10-32]`SecureSystemClient` class can access services that are secured.
 
 SecureSystemClient.java
 [source, java, linenums, role='code_column']
@@ -271,10 +271,23 @@ Create the `SystemEndpointTest` class.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java`
 ----
 
+SystemEndpointTest.java
+[source, java, indent=0, role='code_column']
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
+----
+
+
 [role="code_command hotspot=13-64" subs="quotes"]
 ----
 Create the `InventoryEndpointTest` class.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
+----
+
+InventoryEndpointTest.java
+[source, java, indent=0, role='code_column']
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[tags=test]
 ----
 
 In the [hotspot=24-26 file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
@@ -289,6 +302,12 @@ After each test confirms that the response code is correct, each test gets the c
 ----
 Create the `JwtTest` class.
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java`
+----
+
+JwtTest.java
+[source, java, linenums, role='code_column']
+----
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
 ----
 
 In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
@@ -322,24 +341,6 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=24-26 file=1]`setup()` method of the `InventoryEndpointTest.java` file.
 Rerun the Maven build. You see that a test failure occurs.
 
-
-SystemEndpointTest.java
-[source, java, indent=0, role='code_column']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
-----
-
-InventoryEndpointTest.java
-[source, java, indent=0, role='code_column']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[tags=test]
-----
-
-JwtTest.java
-[source, java, linenums, role='code_column']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
-----
 // =================================================================================================
 // Great work! You're done!
 // =================================================================================================

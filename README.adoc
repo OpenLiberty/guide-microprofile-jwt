@@ -92,7 +92,7 @@ mvn liberty:stop-server
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, [hotspot=3]`mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -102,7 +102,7 @@ The MicroProfile JWT feature, [hotspot=3]`mpJwt`, has been added as a dependency
 
 [role="code_command hotspot=1-23", subs="quotes"]
 ----
-Create the configuration file.
+Create the server configuration file.
 `backendServices/src/main/liberty/config/server.xml`
 ----
 
@@ -129,9 +129,9 @@ The [hotspot=22]`<mpJwt/>` element is required to configure the injection of the
 // =================================================================================================
 
 === Securing the system service
-[role="code_command hotspot=13-20", subs="quotes"]
+[role="code_command hotspot=15", subs="quotes"]
 ----
-Add roles-based access control to the SystemResource class 
+Add roles-based access control to the `SystemResource` class 
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
@@ -152,7 +152,7 @@ Therefore, this service is properly secured.
 // =================================================================================================
 
 === Securing the inventory service
-[role="code_command hotspot=19-52", subs="quotes"]
+[role="code_command hotspot=25", subs="quotes"]
 ----
 Add roles-based access control to the 
 `InventoryResource` class
@@ -192,11 +192,11 @@ SecureSystemClient.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
 ----
 
-The [hotspot=10-32]`SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand 
-the HTTP `GET` request to the system service to retrieve system properties. However, the [hotspot=10-32]`SecureSystemClient` 
+The `SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand 
+the HTTP `GET` request to the system service to retrieve system properties. However, the `SecureSystemClient` 
 class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned 
 builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
-header to the client request, the [hotspot=10-32]`SecureSystemClient` class can access services that are secured.
+header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
 // Trying more JAX-RS methods to validate tokens
@@ -226,7 +226,7 @@ The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the 
 The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
 The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
 
-The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the [hotspot=45]`admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
+The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
 The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
 The [hotspot=49]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
 
@@ -318,6 +318,7 @@ whether the username is the same as the `TESTUSER` user name.
 The [hotspot=47-54 file=2]`testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
 
+[role='command']
 include::{common-includes}/mvnverify.adoc[]
 
 [source, role="no_copy"]
@@ -346,7 +347,7 @@ Rerun the Maven build. You see that a test failure occurs.
 
 == Great work! You're done!
 
-You learned how to use MicroProfile JWT to validate JWTs and authorize users to secure your microservices.
+You learned how to use MicroProfile JWT to validate JWTs and authorize users to secure your microservices in Open Liberty.
 
 Next, you can try one of the related MicroProfile guides. They demonstrate technologies that you can learn and expand on what you built here.
 

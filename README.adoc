@@ -100,7 +100,7 @@ The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `s
 
 === Creating the server configuration file
 
-[role="code_command hotspot=1-23", subs="quotes"]
+[role="code_command hotspot=1-29", subs="quotes"]
 ----
 Create the server configuration file.
 `backendServices/src/main/liberty/config/server.xml`
@@ -114,12 +114,12 @@ include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 
 The [hotspot=3]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=22]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
+The [hotspot=25-28]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
 |===
-| [hotspot=22]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
-| [hotspot=22]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| [hotspot=22]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| [hotspot=26]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
+| [hotspot=27]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
+| [hotspot=28]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 |===
 
 
@@ -165,9 +165,9 @@ InventoryResource.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
 ----
 
-Similarly, for each specific service, the [hotspot=47]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
+Similarly, for each specific service, the [hotspot=49]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
 
-In addition, the [hotspot=28-44]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
+In addition, the [hotspot=28-46]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
 
 The final addition of the [hotspot=33]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
 
@@ -180,7 +180,7 @@ The final addition of the [hotspot=33]`manager.get(hostname, authHeader)` code a
 In the beginning, the `inventory` service uses the normal `SystemClient` class to create a client and send HTTP `GET` requests to retrieve information from the system service.
 However, after you secure the system service with token-based authentication, you need to add security tokens when you send HTTP requests through the client.
 
-[role="code_command hotspot=10-32", subs="quotes"]
+[role="code_command hotspot=10-33", subs="quotes"]
 ----
 Create the `SecureSystemClient` class.
 `backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java`
@@ -208,8 +208,7 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 
 [role="code_command hotspot=17-54", subs="quotes"]
 ----
-Create the `JwtResource` class to enable a 
-service that retrieves information from the token.
+Create the `JwtResource` class
 `backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java`
 ----
 
@@ -221,10 +220,10 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/Jw
 
 MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
-The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected `JsonWebToken jwtPrincipal` token by calling the [hotspot=28]`getName()` method.
+The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected [hotspot=22]`JsonWebToken jwtPrincipal` token by calling the [hotspot=28]`getName()` method.
 
 The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
-The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object in the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
+The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object of the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
 
 The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
 The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.

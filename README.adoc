@@ -308,7 +308,7 @@ JwtTest.java
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
 ----
 
-In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` test, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
+In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
 The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
 
 The [hotspot=33-45 file=2]`testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify

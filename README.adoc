@@ -89,10 +89,16 @@ mvn liberty:stop-server
 // =================================================================================================
 
 == Securing back end services with MicroProfile JWT
+pom.xml
+[source, xml, linenums, role='code_column']
+----
+include::finish/backendServices/pom.xml[tags=**]
+----
+
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, `mpJwt`, has been added as a dependency in your `start/backendServices/pom.xml` file.
+The MicroProfile JWT feature, [hotspot=29]`mpJwt`, has been added as a dependency in your [hotspot=1-261]`pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
@@ -114,12 +120,12 @@ include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
 
 The [hotspot=3]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=25-28]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
+The [hotspot=25-26]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
 |===
-| [hotspot=26]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
-| [hotspot=27]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| [hotspot=28]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| [hotspot=25]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
+| [hotspot=25]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
+| [hotspot=26]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 |===
 
 
@@ -192,7 +198,7 @@ SecureSystemClient.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
 ----
 
-The `SecureSystemClient` class inherits methods from the `SystemClient` class. These methods hand 
+The [hotspot=10-33]`SecureSystemClient` class inherits methods from the [hotspot=10]`SystemClient` class. These methods hand 
 the HTTP `GET` request to the system service to retrieve system properties. However, the `SecureSystemClient` 
 class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned 
 builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
@@ -223,7 +229,7 @@ MicroProfile maps the JWT claims to JAX-RS security-related methods and makes th
 The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected [hotspot=22]`JsonWebToken jwtPrincipal` token by calling the [hotspot=28]`getName()` method.
 
 The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
-The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object of the `java.security.Principal` type. This object is also an instance of the `org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
+The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object of the [hotspot=13]`java.security.Principal` type. This object is also an instance of the [hotspot=10]`org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
 
 The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
 The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
@@ -289,10 +295,10 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Inven
 ----
 
 In the [hotspot=24-26 file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
-This authorization header is added when the test client sends a HTTP `GET` request to a secure service to retrieve information.
+This authorization header is added when the test client sends an HTTP `GET` request to a secure service to retrieve information.
 
-Each test case tries to first assert that with a valid authorization header, it can get a `Status.OK` code from the response.
-The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
+Each test case tries to first assert that with a valid authorization header, it can get a [hotspot=39-40 file=1]`Status.OK` code from the response.
+The test fails if the response returns a [hotspot=`Status.FORBIDDEN` message, which means the authorization header is invalid.
 
 After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
@@ -309,7 +315,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTe
 ----
 
 In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
-The authorization header is added when the test client sends a HTTP `GET` request to a secure JWT service.
+The authorization header is added when the test client sends an HTTP `GET` request to a secure JWT service.
 
 The [hotspot=33-45 file=2]`testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
 whether the username is the same as the `TESTUSER` user name.

@@ -17,6 +17,7 @@
 :page-related-guides: ['rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
+:guide-author: Open Liberty
 = Securing microservices with JSON Web Tokens
 
 [.hidden]

@@ -60,7 +60,7 @@ To try out the application, first navigate to the `finish` directory. Next, exec
 Maven goals to build the application and run it inside of Open Liberty:
 [role='command']
 ```
-mvn clean install liberty:start-server
+mvn install liberty:start-server
 ```
 
 Note that you cannot directly visit a back end URL from a browser. You have to use the provided front end that generates valid JWT tokens to retrieve information from the back end.

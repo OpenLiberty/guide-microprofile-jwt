@@ -99,7 +99,7 @@ include::finish/backendServices/pom.xml[tags=**]
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, [hotspot=29]`mpJwt`, has been added as a dependency in your [hotspot=1-261]`pom.xml` file.
+The MicroProfile JWT feature, [hotspot=29]`mpJwt`, has been added as a dependency in your [hotspot=1-260]`pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file

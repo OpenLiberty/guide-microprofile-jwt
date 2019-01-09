@@ -161,7 +161,8 @@ Therefore, this service is properly secured.
 === Securing the inventory service
 [role="code_command hotspot=25", subs="quotes"]
 ----
-#Add roles-based access control to the `InventoryResource` class.#
+#Add roles-based access control to the `InventoryResource` 
+class.#
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 

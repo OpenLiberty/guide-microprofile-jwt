@@ -133,8 +133,12 @@
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>
+                                    true
+                                </addDefaultSpecificationEntries>
+                                <addDefaultImplementationEntries>
+                                    true
+                                </addDefaultImplementationEntries>
                             </manifest>
                         </archive>
                         <warName>${warfile.name}</warName>

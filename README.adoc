@@ -359,6 +359,5 @@ You learned how to use MicroProfile JWT to validate JWTs and authorize users to 
 Next, you can try one of the related MicroProfile guides. They demonstrate technologies that you can learn and expand on what you built here.
 
 
-include::{common-includes}/finish.adoc[]
 
 include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]

@@ -17,12 +17,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.openliberty.guides</groupId>
-            <artifactId>resources</artifactId>
-            <version>${version.shared.keystore}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- Open Liberty features -->
         <dependency>
             <groupId>io.openliberty.features</groupId>
@@ -55,6 +49,12 @@
             <type>esa</type>
         </dependency>
         <!-- For testing -->
+        <dependency>
+            <groupId>io.openliberty.guides</groupId>
+            <artifactId>resources</artifactId>
+            <version>${version.shared.keystore}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>

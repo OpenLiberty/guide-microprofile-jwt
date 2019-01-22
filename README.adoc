@@ -12,7 +12,7 @@
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
-:page-tags: ['MicroProfile JWT', "JSON Web Tokens", "MicroProfile", "microservices", "security"]
+:page-tags: ["MicroProfile"]
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
@@ -136,9 +136,10 @@ The [hotspot=25-26]`<mpJwt/>` element is required to configure the injection of 
 // =================================================================================================
 
 === Securing the system service
+
 [role="code_command hotspot=15", subs="quotes"]
 ----
-#Add roles-based access control to the `SystemResource` class#
+#Replace the `SystemResource` class#
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
@@ -148,7 +149,7 @@ SystemResource.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
 ----
 
-
+You have just added roles-based access control to the `SystemResource` class.
 Role names that are used in the [hotspot=15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
 The [hotspot=15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
@@ -161,8 +162,7 @@ Therefore, this service is properly secured.
 === Securing the inventory service
 [role="code_command hotspot=25", subs="quotes"]
 ----
-#Add roles-based access control to the `InventoryResource` 
-class.#
+#Replace the `InventoryResource` class.#
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
@@ -172,6 +172,7 @@ InventoryResource.java
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
 ----
 
+You have just added roles-based access control to the `InventoryResource` class.
 Similarly, for each specific service, the [hotspot=49]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
 
 In addition, the [hotspot=28-46]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.

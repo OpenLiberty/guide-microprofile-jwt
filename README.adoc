@@ -173,7 +173,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/In
 ----
 
 You have just added roles-based access control to the `InventoryResource` class.
-Similarly, for each specific service, the [hotspot=49]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
+Similarly, for each specific service, the [hotspot=25 hotspot=49]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
 
 In addition, the [hotspot=28-46]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
 

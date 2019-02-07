@@ -346,7 +346,7 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=24-26 file=1]`setup()` method of the [hotspot=* file=1]`InventoryEndpointTest.java` file.
+To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=24-26 file=1]`setup()` method of the [hotspot file=1]`InventoryEndpointTest.java` file.
 Rerun the Maven build. You see that a test failure occurs.
 
 // =================================================================================================

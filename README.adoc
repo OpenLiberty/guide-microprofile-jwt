@@ -65,7 +65,7 @@ mvn install liberty:start-server
 
 Note that you cannot directly visit a back end URL from a browser. You have to use the provided front end that generates valid JWT tokens to retrieve information from the back end.
 
-Navigate your browser to the front end web application endpoint: `http://localhost:9090/application.jsf`. From here, you can log in to the application with the form-based login.
+Navigate your browser to the front end web application endpoint: `http://localhost:9090/application.jsf[http://localhost:9090/application.jsf^]`. From here, you can log in to the application with the form-based login.
 Log in with one of the following user information credentials:
 
 |===
@@ -320,10 +320,10 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTe
 In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
 The authorization header is added when the test client sends an HTTP `GET` request to a secure JWT service.
 
-The [hotspot=33-45 file=2]`testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
+The [hotspot=33-45 file=2]`testJWTGetName()` test accesses the `https://localhost:5051/inventory/jwt/username[https://localhost:5051/inventory/jwt/username^]` endpoint to get the username from the JWT token and to verify
 whether the username is the same as the `TESTUSER` user name.
 
-The [hotspot=47-54 file=2]`testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
+The [hotspot=47-54 file=2]`testJWTGetCustomClaim()` test accesses the `https://localhost:5051/inventory/jwt/customClaim[https://localhost:5051/inventory/jwt/customClaim^]` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
 
 [role='command']

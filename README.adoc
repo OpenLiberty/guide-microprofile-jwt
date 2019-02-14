@@ -12,7 +12,7 @@
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to control user and role access to microservices using MicroProfile JWT.
-:page-tags: ["MicroProfile"]
+:page-tags: ["MicroProfile", "Security"]
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master

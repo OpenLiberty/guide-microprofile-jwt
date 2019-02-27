@@ -112,45 +112,13 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>install-liberty</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>install-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-default-server</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>create-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>install-app</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>install-apps</goal>
-                        </goals>
+                        <id>install-apps</id>
                         <configuration>
                             <appsDirectory>apps</appsDirectory>
                             <stripVersion>true</stripVersion>
                             <installAppPackages>project</installAppPackages>
                             <looseApplication>true</looseApplication>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>start-server</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>test-start-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-server</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>test-stop-server</goal>
-                        </goals>
                     </execution>
                 </executions>
                 <configuration>

@@ -11,10 +11,12 @@
         <feature>jwt-1.0</feature>
     </featureManager>
 
-    <httpEndpoint httpPort="${server.http.port}" httpsPort="${server.https.port}" id="defaultHttpEndpoint" />
+    <httpEndpoint httpPort="${server.http.port}" httpsPort="${server.https.port}" 
+                  id="defaultHttpEndpoint" />
 
     <!-- The keystore for SSL is built using the maven keytool plugin -->
-    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" password="secret" />
+    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" 
+              password="secret" />
 
     <basicRegistry id="basic" realm="WebRealm">
         <user name="bob" password="{xor}PTA9Lyg7" />  <!-- bobpwd -->

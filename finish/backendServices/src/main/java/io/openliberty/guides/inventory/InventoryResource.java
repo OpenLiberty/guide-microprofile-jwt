@@ -47,7 +47,9 @@ public class InventoryResource {
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
                      .entity(
-                         "ERROR: Unknown hostname or the resource may not be running on the host machine")
+                         "ERROR: Unknown hostname or the resource"
+                         + "may not be running on the host machine")
+                         
                      .build();
     }
 

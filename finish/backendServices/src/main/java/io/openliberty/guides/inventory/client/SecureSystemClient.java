@@ -38,7 +38,8 @@ public class SecureSystemClient extends SystemClient {
   }
 
   public Properties getProperties(String hostname, String authHeader) {
-    String url = buildUrl(SECURED_PROTOCOL, hostname, DEFAULT_SEC_PORT, SYSTEM_PROPERTIES);
+    String url = buildUrl(SECURED_PROTOCOL, hostname, 
+                          DEFAULT_SEC_PORT, SYSTEM_PROPERTIES);
     Builder clientBuilder = buildClientBuilder(url, authHeader);
     return getPropertiesHelper(clientBuilder);
   }

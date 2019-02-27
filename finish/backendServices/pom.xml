@@ -17,12 +17,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.openliberty.guides</groupId>
-            <artifactId>resources</artifactId>
-            <version>${version.shared.keystore}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- Open Liberty features -->
         <dependency>
             <groupId>io.openliberty.features</groupId>
@@ -55,6 +49,12 @@
             <type>esa</type>
         </dependency>
         <!-- For testing -->
+        <dependency>
+            <groupId>io.openliberty.guides</groupId>
+            <artifactId>resources</artifactId>
+            <version>${version.shared.keystore}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
@@ -175,45 +175,13 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>install-liberty</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>install-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>create-default-server</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>create-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>install-app</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>install-apps</goal>
-                        </goals>
+                        <id>install-apps</id>
                         <configuration>
                             <appsDirectory>apps</appsDirectory>
                             <stripVersion>true</stripVersion>
                             <installAppPackages>project</installAppPackages>
                             <looseApplication>true</looseApplication>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>start-server</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>test-start-server</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-server</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>test-stop-server</goal>
-                        </goals>
                     </execution>
                 </executions>
                 <configuration>

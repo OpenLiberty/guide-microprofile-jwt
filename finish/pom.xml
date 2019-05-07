@@ -79,7 +79,7 @@
                 <version>4.3.9.RELEASE</version>
                 <scope>test</scope>
             </dependency>
-            
+            <!-- Support for JDK 9 and above -->
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>

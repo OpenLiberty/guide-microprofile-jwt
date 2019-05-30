@@ -139,20 +139,22 @@ The [hotspot=25-26]`<mpJwt/>` element is required to configure the injection of 
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Replace the `SystemResource` class#
+#Update the `SystemResource` class#
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
+[role="edit_command_text"]
+Add the [hotspot=RolesAllowed]`@RolesAllowed` line.
 
 SystemResource.java
 [source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[]
 ----
 
 You have just added roles-based access control to the `SystemResource` class.
 Role names that are used in the [hotspot=15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The [hotspot=15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+The [hotspot=RolesAllowed]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================

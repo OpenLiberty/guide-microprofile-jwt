@@ -35,15 +35,20 @@ public class InventoryResource {
   InventoryManager manager;
 
   @GET
+  // tag::RolesAllowed[]
   @RolesAllowed({ "admin", "user" })
+  // end::RolesAllowed[]
   @Path("{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::getPropertiesForHost[]
   public Response getPropertiesForHost(@PathParam("hostname") String hostname,
       @Context HttpHeaders httpHeaders) {
     String authHeader = httpHeaders.getRequestHeaders()
                                    .getFirst(HttpHeaders.AUTHORIZATION);
     // Get properties
+    // tag::managerGet[]
     Properties props = manager.get(hostname, authHeader);
+    // end::managerGet[]
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
                      .entity(
@@ -57,9 +62,12 @@ public class InventoryResource {
     manager.add(hostname, props);
     return Response.ok(props).build();
   }
+  // end::getPropertiesForHost[]
 
   @GET
+  // tag::RolesAllowed2[]
   @RolesAllowed({ "admin" })
+  // end::RolesAllowed2[]
   @Produces(MediaType.APPLICATION_JSON)
   public InventoryList listContents() {
     return manager.list();

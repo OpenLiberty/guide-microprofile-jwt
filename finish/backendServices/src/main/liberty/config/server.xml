@@ -10,7 +10,9 @@
 <!-- tag::jwt[] -->
 <server description="Backend server">
     <featureManager>
+        <!-- tag::mpJwt[] -->
         <feature>mpJwt-1.1</feature>
+        <!-- end::mpJwt[] -->
         <feature>ssl-1.0</feature>
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
@@ -32,7 +34,9 @@
 
     <!-- The MP JWT configuration that injects the caller's JWT into a 
          ResourceScoped bean for inspection. -->
+    <!-- tag::mpJwtTag[] -->     
     <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp" 
            issuer="${jwt.issuer}"/>
+    <!-- end::mpJwtTag[] -->   
 </server>
 <!-- end::jwt[] -->

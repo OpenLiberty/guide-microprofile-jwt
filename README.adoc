@@ -143,7 +143,7 @@ The [hotspot=mpJwtTag]`<mpJwt/>` element is required to configure the injection 
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 [role="edit_command_text"]
-Add the [hotspot=RolesAllowed]`@RolesAllowed({"admin", "user"})` annotation.
+Add the [hotspot=RolesAllowed]`@RolesAllowed` annotation.
 
 SystemResource.java
 [source, java, linenums, role='code_column']
@@ -154,7 +154,7 @@ include::finish/backendServices/src/main/java/io/openliberty/guides/system/Syste
 You have just added roles-based access control to the `SystemResource` class.
 Role names that are used in the [hotspot=RolesAllowed]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The [hotspot=RolesAllowed]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+The [hotspot=RolesAllowed]`@RolesAllowed` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================
@@ -169,7 +169,7 @@ Therefore, this service is properly secured.
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 [role="edit_command_text"]
-Add the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed({"admin", "user"})` annotation.
+Add the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed` annotations.
 
 InventoryResource.java
 [source, java, linenums, role='code_column']
@@ -236,7 +236,7 @@ MicroProfile maps the JWT claims to JAX-RS security-related methods and makes th
 The [hotspot=getJwtUsername]`getJwtUsername()` function retrieves the user name from the injected [hotspot=JsonWebToken]`JsonWebToken jwtPrincipal` token by calling the [hotspot=getName]`getName()` method.
 
 The [hotspot=getJwtGroups]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
-The [hotspot=securityContext]`SecurityContext.getUserPrincipal()` method returns an object of the [hotspot=javaSecurity]`java.security.Principal` type. This object is also an instance of the [hotspot=JsonWebToken]`org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=groups]`getGroups()` method.
+The [hotspot=securityContext]`SecurityContext.getUserPrincipal()` method returns an object of the [hotspot=javaSecurity]`java.security.Principal` type. This object is also an instance of the [hotspot=JsonWebTokenImport]`org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=groups]`getGroups()` method.
 
 The [hotspot=getCustomClaim]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=responseStatus]`Status.FORBIDDEN` message.
 The [hotspot=isUserInRole]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
@@ -291,7 +291,7 @@ SystemEndpointTest.java
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[]
 ----
 
-[role="code_command hotspot" subs="quotes"]
+[role="code_command hotspot file=1" subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`

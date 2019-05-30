@@ -36,9 +36,9 @@ public class SystemEndpointTest {
   @Before
   // tag::setup[]
   public void setup() throws Exception {
-  // end::setup[]
     authHeader = "Bearer " + new JwtVerifier().createAdminJwt(TESTNAME);
   }
+  // end::setup[]
 
   @Test
   public void testSuite() {

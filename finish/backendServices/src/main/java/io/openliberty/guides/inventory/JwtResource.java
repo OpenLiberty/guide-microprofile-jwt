@@ -20,9 +20,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Context;
-// tag::JsonWebToken[]
+// tag::JsonWebTokenImport[]
 import org.eclipse.microprofile.jwt.JsonWebToken;
-// end::JsonWebToken[]
+// end::JsonWebTokenImport[]
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.SecurityContext;
 // tag::javaSecurity[]

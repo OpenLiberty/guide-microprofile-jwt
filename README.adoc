@@ -297,7 +297,7 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Syste
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
 ----
 InventoryEndpointTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[]
 ----

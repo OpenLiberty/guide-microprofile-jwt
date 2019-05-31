@@ -114,7 +114,7 @@ The MicroProfile JWT feature, [hotspot=mpJwt]`mpJwt`, has been added as a depend
 ----
 
 server.xml
-[source, xml, linenums, role='code_column hide_tags=Copyright']
+[source, xml, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/main/liberty/config/server.xml[]
 ----
@@ -146,7 +146,7 @@ The [hotspot=mpJwtTag]`<mpJwt/>` element is required to configure the injection 
 Add the [hotspot=RolesAllowed]`@RolesAllowed` annotation.
 
 SystemResource.java
-[source, java, linenums, role='code_column hide_tags=Copyright']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[]
 ----
@@ -172,7 +172,7 @@ Therefore, this service is properly secured.
 Add the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed` annotations.
 
 InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=Copyright']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
@@ -200,7 +200,7 @@ However, after you secure the system service with token-based authentication, yo
 ----
 
 SecureSystemClient.java
-[source, java, linenums, role='code_column hide_tags=Copyright']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[]
 ----
@@ -226,7 +226,7 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 ----
 
 JwtResource.java
-[source, java, linenums, role='code_column hide_tags=Copyright']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
 ----

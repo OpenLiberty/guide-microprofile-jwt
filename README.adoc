@@ -317,7 +317,7 @@ After each test confirms that the response code is correct, each test gets the c
 ----
 
 JwtTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[]
 ----

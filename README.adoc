@@ -286,7 +286,7 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 ----
 
 SystemEndpointTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[]
 ----

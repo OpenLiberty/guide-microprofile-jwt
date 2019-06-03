@@ -25,6 +25,7 @@ import javax.annotation.security.RolesAllowed;
 @Path("properties")
 public class SystemResource {
   @GET
+  //Add the @RolesAllowed({ "admin", "user" }) annotation here.
   @Produces(MediaType.APPLICATION_JSON)
   public Properties getProperties() {
     return System.getProperties();

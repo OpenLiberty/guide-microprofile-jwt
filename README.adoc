@@ -105,8 +105,6 @@ The MicroProfile JWT feature, [hotspot=mpJwt]`mpJwt`, has been added as a depend
 // Creating the server configuration file
 // =================================================================================================
 
-=== Creating the server configuration file
-
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the server configuration file.#

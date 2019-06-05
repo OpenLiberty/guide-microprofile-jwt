@@ -20,7 +20,9 @@
         <!-- Open Liberty features -->
         <dependency>
             <groupId>io.openliberty.features</groupId>
+            <!-- tag::mpJwt[] -->
             <artifactId>mpJwt-1.1</artifactId>
+            <!-- end::mpJwt[] -->
             <type>esa</type>
         </dependency>
         <dependency>

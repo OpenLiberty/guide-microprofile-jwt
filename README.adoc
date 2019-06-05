@@ -135,6 +135,7 @@ The [hotspot=mpJwtTag]`<mpJwt/>` element is required to configure the injection 
 
 === Securing the system service
 
+
 [role="code_command hotspot", subs="quotes"]
 ----
 #Update the `SystemResource` class.#
@@ -160,6 +161,7 @@ Therefore, this service is properly secured.
 // =================================================================================================
 
 === Securing the inventory service
+
 
 [role="code_command hotspot", subs="quotes"]
 ----

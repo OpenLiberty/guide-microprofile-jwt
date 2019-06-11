@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,9 +33,11 @@ public class JwtTest {
   String authHeader;
 
   @Before
+  // tag::setup[]
   public void setup() throws Exception {
     authHeader = "Bearer " + new JwtVerifier().createUserJwt(TESTNAME);
   }
+  // end::setup[]
 
   @Test
   public void testSuite() {
@@ -43,6 +45,7 @@ public class JwtTest {
     this.testJwtGetCustomClaim();
   }
 
+  // tag::testJwtGetName[]
   public void testJwtGetName() {
     String jwtUrl = baseUrl + INV_JWT + "/username";
     Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
@@ -56,7 +59,9 @@ public class JwtTest {
     assertEquals("The test name and jwt token name should match", TESTNAME,
         responseName);
   }
+  // end::testJwtGetName[]
 
+  // tag::testJwtGetCustomClaim[]
   public void testJwtGetCustomClaim() {
     String jwtUrl = baseUrl + INV_JWT + "/customClaim";
     Response jwtResponse = TestUtils.processRequest(jwtUrl, "GET", null, authHeader);
@@ -65,6 +70,7 @@ public class JwtTest {
         + Status.FORBIDDEN.getStatusCode() + ".", Status.FORBIDDEN.getStatusCode(),
         jwtResponse.getStatus());
   }
+  // end::testJwtGetCustomClaim[]
 
 }
 // end::test[]

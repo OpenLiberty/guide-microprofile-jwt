@@ -93,19 +93,17 @@ mvn liberty:stop-server
 pom.xml
 [source, xml, linenums, role='code_column']
 ----
-include::finish/backendServices/pom.xml[tags=**]
+include::finish/backendServices/pom.xml[]
 ----
 
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, [hotspot=23]`mpJwt`, has been added as a dependency in your [hotspot]`pom.xml` file.
+The MicroProfile JWT feature, [hotspot=mpJwt]`mpJwt`, has been added as a dependency in your [hotspot]`pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
 // =================================================================================================
-
-=== Creating the server configuration file
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -114,19 +112,19 @@ The MicroProfile JWT feature, [hotspot=23]`mpJwt`, has been added as a dependenc
 ----
 
 server.xml
-[source, xml, linenums, role='code_column']
+[source, xml, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/liberty/config/server.xml[tags=jwt]
+include::finish/backendServices/src/main/liberty/config/server.xml[]
 ----
 
-The [hotspot=3]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
+The [hotspot=mpJwt]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=25-26]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
+The [hotspot=mpJwtTag]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
 |===
-| [hotspot=25]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
-| [hotspot=25]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| [hotspot=26]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| [hotspot=mpJwtTag]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
+| [hotspot=mpJwtTag]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
+| [hotspot=mpJwtTag]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 |===
 
 
@@ -137,22 +135,25 @@ The [hotspot=25-26]`<mpJwt/>` element is required to configure the injection of 
 
 === Securing the system service
 
+
 [role="code_command hotspot", subs="quotes"]
 ----
-#Replace the `SystemResource` class#
+#Update the `SystemResource` class.#
 `backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
+[role="edit_command_text"]
+Add the [hotspot=RolesAllowed]`@RolesAllowed` annotation.
 
 SystemResource.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[tags=jwt;!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[]
 ----
 
 You have just added roles-based access control to the `SystemResource` class.
-Role names that are used in the [hotspot=15]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
+Role names that are used in the [hotspot=RolesAllowed]`@RolesAllowed` annotation are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The [hotspot=15]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+The [hotspot=RolesAllowed]`@RolesAllowed({"admin", "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 // =================================================================================================
@@ -160,24 +161,28 @@ Therefore, this service is properly secured.
 // =================================================================================================
 
 === Securing the inventory service
+
+
 [role="code_command hotspot", subs="quotes"]
 ----
-#Replace the `InventoryResource` class.#
+#Update the `InventoryResource` class.#
 `backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
+[role="edit_command_text"]
+Add the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed` annotations.
 
 InventoryResource.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[tags=jwt;!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
 You have just added roles-based access control to the `InventoryResource` class.
-Similarly, for each specific service, the [hotspot=25 hotspot=49]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
+Similarly, for each specific service, the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed` annotation sets which roles are allowed to access it. Therefore, the inventory service is properly secured, as well.
 
-In addition, the [hotspot=28-46]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
+In addition, the [hotspot=getPropertiesForHost]`getPropertiesForHost()` method gets the HTTP Authorization header, which contains the corresponding security token, from the HTTP request caller. The method uses this authorization header to retrieve information from the `system` service.
 
-The final addition of the [hotspot=33]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
+The final addition of the [hotspot=managerGet]`manager.get(hostname, authHeader)` code adds the authentication header to the client that sends the HTTP `GET` request to the `system` service.
 
 // =================================================================================================
 // Adding the SecureSystemClient class
@@ -195,15 +200,15 @@ However, after you secure the system service with token-based authentication, yo
 ----
 
 SecureSystemClient.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[tags=jwt;!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[]
 ----
 
-The [hotspot=10-33]`SecureSystemClient` class inherits methods from the [hotspot=10]`SystemClient` class. These methods hand 
+The [hotspot=SecureSystemClient]`SecureSystemClient` class inherits methods from the [hotspot=SystemClient]`SystemClient` class. These methods hand 
 the HTTP `GET` request to the system service to retrieve system properties. However, the `SecureSystemClient` 
-class overrides the [hotspot=22-25]`buildClientBuilder()` method by adding the authorization header to the returned 
-builder, [hotspot=24]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
+class overrides the [hotspot=buildClientBuilder]`buildClientBuilder()` method by adding the authorization header to the returned 
+builder, [hotspot=return]`return builder.header(HttpHeaders.AUTHORIZATION, authHeader)`. By adding the authorization 
 header to the client request, the `SecureSystemClient` class can access services that are secured.
 
 // =================================================================================================
@@ -221,21 +226,21 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 ----
 
 JwtResource.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[tags=jwt;!copyright]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
 ----
 
 MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
 
-The [hotspot=27-29]`getJwtUsername()` function retrieves the user name from the injected [hotspot=22]`JsonWebToken jwtPrincipal` token by calling the [hotspot=28]`getName()` method.
+The [hotspot=getJwtUsername]`getJwtUsername()` function retrieves the user name from the injected [hotspot=JsonWebToken]`JsonWebToken jwtPrincipal` token by calling the [hotspot=getName]`getName()` method.
 
-The [hotspot=34-42]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
-The [hotspot=36]`SecurityContext.getUserPrincipal()` method returns an object of the [hotspot=13]`java.security.Principal` type. This object is also an instance of the [hotspot=10]`org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=39]`getGroups()` method.
+The [hotspot=getJwtGroups]`getJwtGroups()` function retrieves the user groups information from the JSON Web Token.
+The [hotspot=securityContext]`SecurityContext.getUserPrincipal()` method returns an object of the [hotspot=javaSecurity]`java.security.Principal` type. This object is also an instance of the [hotspot=JsonWebTokenImport]`org.eclipse.microprofile.jwt.JsonWebToken` type, which has the [hotspot=groups]`getGroups()` method.
 
-The [hotspot=47-53]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=52]`Status.FORBIDDEN` message.
-The [hotspot=48]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
-The [hotspot=49]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
+The [hotspot=getCustomClaim]`getCustomClaim()` function retrieves the custom claim from the token if the authenticated user has the `admin` role. Otherwise, it returns a [hotspot=responseStatus]`Status.FORBIDDEN` message.
+The [hotspot=isUserInRole]`SecurityContext.isUserInRole(String)` method returns a `true` value for any role that appears in the MicroProfile JWT `groups` claim because role names are mapped to group names in the claim.
+The [hotspot=customClaim]`jwtPrincipal.getClaim("customClaim")` method retrieves the value of the custom claim by its name. This method is useful when you want to validate information about a custom claim from the security token.
 
 // =================================================================================================
 // Building and running the application
@@ -281,49 +286,49 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 ----
 
 SystemEndpointTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[tags=test]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[]
 ----
 
-[role="code_command hotspot" subs="quotes"]
+[role="code_command hotspot file=1" subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
 ----
 InventoryEndpointTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[tags=test]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[]
 ----
 
-In the [hotspot=24-26 file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
+In the [hotspot=setup file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
 This authorization header is added when the test client sends an HTTP `GET` request to a secure service to retrieve information.
 
-Each test case tries to first assert that with a valid authorization header, it can get a [hotspot=39-40 file=1]`Status.OK` code from the response.
+Each test case tries to first assert that with a valid authorization header, it can get a [hotspot=statusOK file=1]`Status.OK` code from the response.
 The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
 
 After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
 
-[role="code_command hotspot"  subs="quotes"]
+[role="code_command hotspot file=2"  subs="quotes"]
 ----
 #Create the `JwtTest` class.#
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java`
 ----
 
 JwtTest.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[tags=test]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[]
 ----
 
-In the [hotspot=23-25 file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
+In the [hotspot=setup file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
 The authorization header is added when the test client sends an HTTP `GET` request to a secure JWT service.
 
-The [hotspot=33-45 file=2]`testJWTGetName()` test accesses the `\https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
+The [hotspot=testJwtGetName file=2]`testJWTGetName()` test accesses the `\https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
 whether the username is the same as the `TESTUSER` user name.
 
-The [hotspot=47-54 file=2]`testJWTGetCustomClaim()` test accesses the `\https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
+The [hotspot=testJwtGetCustomClaim file=2]`testJWTGetCustomClaim()` test accesses the `\https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
 the test asserts that the current test user with the `user` role is forbidden from accessing it.
 
 [role='command']
@@ -346,7 +351,7 @@ Results :
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=24-26 file=1]`setup()` method of the [hotspot file=1]`InventoryEndpointTest.java` file.
+To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=setup file=1]`setup()` method of the [hotspot file=1]`InventoryEndpointTest.java` file.
 Rerun the Maven build. You see that a test failure occurs.
 
 // =================================================================================================

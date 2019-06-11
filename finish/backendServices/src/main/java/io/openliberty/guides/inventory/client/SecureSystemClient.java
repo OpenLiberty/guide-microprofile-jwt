@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,10 @@ import java.util.Properties;
 import io.openliberty.guides.inventory.client.SystemClient;
 
 @RequestScoped
+// tag::SecureSystemClient[]
+// tag::SystemClient[]
 public class SecureSystemClient extends SystemClient {
+// end::SystemClient[]  
 
   // Constants for building URI to the system service.
   private final int DEFAULT_SEC_PORT = Integer.valueOf(
@@ -32,10 +35,14 @@ public class SecureSystemClient extends SystemClient {
     return super.buildUrl(protocol, host, port, path);
   }
 
+  // tag::buildClientBuilder[]
   public Builder buildClientBuilder(String url, String authHeader) {
     Builder builder = super.buildClientBuilder(url);
+    // tag::return[]
     return builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+    // end::return[]
   }
+  // end::buildClientBuilder[]
 
   public Properties getProperties(String hostname, String authHeader) {
     String url = buildUrl(SECURED_PROTOCOL, hostname, 
@@ -44,4 +51,5 @@ public class SecureSystemClient extends SystemClient {
     return getPropertiesHelper(clientBuilder);
   }
 }
+// end::SecureSystemClient[]
 // end::jwt[]

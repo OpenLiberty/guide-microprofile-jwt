@@ -99,13 +99,13 @@ include::finish/backendServices/pom.xml[]
 
 Navigate to the `start` directory.
 
-The MicroProfile JWT feature, [hotspot=mpJwt]`mpJwt`, has been added as a dependency in your [hotspot]`pom.xml` file.
+The MicroProfile JWT feature, [hotspot=mpJwt file=0]`mpJwt`, has been added as a dependency in your [hotspot file=0]`pom.xml` file.
 
 // =================================================================================================
 // Creating the server configuration file
 // =================================================================================================
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the server configuration file.#
 `backendServices/src/main/liberty/config/server.xml`
@@ -117,14 +117,14 @@ server.xml
 include::finish/backendServices/src/main/liberty/config/server.xml[]
 ----
 
-The [hotspot=mpJwt]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
+The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=mpJwtTag]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
+The [hotspot=mpJwtTag file=1]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
 |===
-| [hotspot=mpJwtTag]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
-| [hotspot=mpJwtTag]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| [hotspot=mpJwtTag]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
+| [hotspot=mpJwtTag file=1]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
+| [hotspot=mpJwtTag file=1]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
+| [hotspot=mpJwtTag file=1]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
 |===
 
 

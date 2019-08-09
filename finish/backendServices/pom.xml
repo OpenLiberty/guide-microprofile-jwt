@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>io.openliberty.features</groupId>
-            <artifactId>ssl-1.0</artifactId>
+            <artifactId>transportSecurity-1.0</artifactId>
             <type>esa</type>
         </dependency>
         <dependency>

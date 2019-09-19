@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>microprofile-jwt</artifactId>
+    <artifactId>guide-microprofile-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 

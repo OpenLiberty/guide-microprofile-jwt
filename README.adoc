@@ -112,9 +112,9 @@ The MicroProfile JWT feature, [hotspot=mpJwt file=0]`mpJwt`, has been added as a
 ----
 
 server.xml
-[source, xml, linenums, role='code_column hide_tags=copyright']
+[source, xml, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/liberty/config/server.xml[]
+include::finish/backendServices/src/main/liberty/config/server.xml[][tags=**;!copyright;]
 ----
 
 The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
@@ -145,9 +145,9 @@ The [hotspot=mpJwtTag file=1]`<mpJwt/>` element is required to configure the inj
 Add the [hotspot=RolesAllowed]`@RolesAllowed` annotation.
 
 SystemResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[]
+include::finish/backendServices/src/main/java/io/openliberty/guides/system/SystemResource.java[][tags=**;!copyright;]
 ----
 
 You have just added roles-based access control to the `SystemResource` class.
@@ -172,9 +172,9 @@ Therefore, this service is properly secured.
 Add the [hotspot=RolesAllowed hotspot=RolesAllowed2]`@RolesAllowed` annotations.
 
 InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[][tags=**;!copyright;]
 ----
 
 You have just added roles-based access control to the `InventoryResource` class.
@@ -200,9 +200,9 @@ However, after you secure the system service with token-based authentication, yo
 ----
 
 SecureSystemClient.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/client/SecureSystemClient.java[][tags=**;!copyright;]
 ----
 
 The [hotspot=SecureSystemClient]`SecureSystemClient` class inherits methods from the [hotspot=SystemClient]`SystemClient` class. These methods hand 
@@ -226,9 +226,9 @@ To demonstrate how MicroProfile JWT retrieves confidential information and valid
 ----
 
 JwtResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
+include::finish/backendServices/src/main/java/io/openliberty/guides/inventory/JwtResource.java[][tags=**;!copyright;]
 ----
 
 MicroProfile maps the JWT claims to JAX-RS security-related methods and makes the set of claims available through getters.
@@ -286,9 +286,9 @@ Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to te
 ----
 
 SystemEndpointTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[][tags=**;!copyright;]
 ----
 
 [role="code_command hotspot file=1" subs="quotes"]
@@ -297,9 +297,9 @@ include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/Syste
 `backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
 ----
 InventoryEndpointTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[][tags=**;!copyright;]
 ----
 
 In the [hotspot=setup file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
@@ -317,9 +317,9 @@ After each test confirms that the response code is correct, each test gets the c
 ----
 
 JwtTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column']
 ----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[]
+include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[][tags=**;!copyright;]
 ----
 
 In the [hotspot=setup file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.

@@ -17,6 +17,8 @@
 :page-related-guides: ['rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
+:page-seo-title: Securing Java microservices with MicroProfile JSON Web Token (MicroProfile JWT)
+:page-seo-description: A tutorial on how to secure Java microservices to authenticate users and control access by validating JSON Web Tokens using Eclipse MicroProfile JWT.
 :guide-author: Open Liberty
 = Securing microservices with JSON Web Tokens
 

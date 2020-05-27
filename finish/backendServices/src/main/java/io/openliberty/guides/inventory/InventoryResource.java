@@ -50,11 +50,9 @@ public class InventoryResource {
     Properties props = manager.get(hostname, authHeader);
     // end::managerGet[]
     if (props == null) {
+      // unknown hostname or the resource may not be running on the host machine
       return Response.status(Response.Status.NOT_FOUND)
-                     .entity(
-                         "ERROR: Unknown hostname or the resource"
-                         + "may not be running on the host machine")
-                         
+                     .entity(new Properties())
                      .build();
     }
 

@@ -51,7 +51,7 @@ public class InventoryResource {
     // end::managerGet[]
     if (props == null) {
       return Response.status(Response.Status.NOT_FOUND)
-                     .entity("{ \"ERROR\" : \"Unknown hostname or the system service " 
+                     .entity("{ \"error\" : \"Unknown hostname or the system service " 
                      + "may not be running on " + hostname + "\" }")
                      .build();
     }

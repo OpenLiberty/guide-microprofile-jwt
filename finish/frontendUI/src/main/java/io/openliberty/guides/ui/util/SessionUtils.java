@@ -16,6 +16,10 @@ package io.openliberty.guides.ui.util;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.security.auth.Subject;
+import com.ibm.websphere.security.auth.WSSubject;
+import java.util.Set;
+import java.util.Map;
 
 public class SessionUtils {
 
@@ -35,8 +39,29 @@ public class SessionUtils {
                                             .getExternalContext().getRequest();
   }
 
+  /*
   public static String getJwtToken() {
     return (String) getSession().getAttribute("jwt");
+  }
+  */
+
+  public static String getJwtToken() {
+      try {
+        Subject subj = WSSubject.getRunAsSubject();
+        Set<Object> privCredentials = subj.getPrivateCredentials();
+        for (Object credentialObj : privCredentials) {
+            if (credentialObj instanceof Map) {
+                Object value = ((Map<?, ?>) credentialObj).get("access_token");
+                if (value != null)
+                    System.out.println("access_token="+value);
+                    return (String) value;
+            }
+        }
+      }catch (Exception e) {
+      }
+
+      System.out.println("access_token is null");
+      return null;
   }
 
 }

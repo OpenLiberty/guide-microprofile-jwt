@@ -9,10 +9,20 @@
         <feature>appSecurity-3.0</feature>
         <feature>servlet-4.0</feature>
         <feature>jwt-1.0</feature>
+        <feature>openidConnectClient-1.0</feature>
     </featureManager>
 
     <httpEndpoint httpPort="${server.http.port}" httpsPort="${server.https.port}" 
                   id="defaultHttpEndpoint" />
+                  
+                  
+    <openidConnectClient id="keycloakLogin" signatureAlgorithm="RS256" groupIdentifier="role" userIdentifier="upn"  
+           scope="openid"
+           clientId="libertyOidcCient"
+           clientSecret="5ce6a96d-3bae-44a4-86ba-a71ca503a8de"
+           discoveryEndpointUrl="https://localhost:8443/auth/realms/LibertWebApp/.well-known/openid-configuration"
+           >
+    </openidConnectClient>
 
     <!-- The keystore for SSL is built using the maven keytool plugin -->
     <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS" 
@@ -36,6 +46,7 @@
 
     <application location="${application.name}" type="war" id="${application.name}"
                  name="${application.name}" context-root="/">
+        <!--
         <application-bnd>
             <security-role name="admin">
                 <group name="myAdmins" />
@@ -44,6 +55,7 @@
                 <group name="myUsers" />
             </security-role>
         </application-bnd>
+        -->
     </application>
 
     <!-- This JWT builder is used to build a JWT for an authenticated user.

@@ -1,3 +1,4 @@
+
 <!-- tag::copyright[] -->
 <!-- Copyright (c) 2018, 2019 IBM Corporation and others.
     All rights reserved. This program and the accompanying materials
@@ -36,9 +37,15 @@
 
     <!-- The MP JWT configuration that injects the caller's JWT into a 
          ResourceScoped bean for inspection. -->
-    <!-- tag::mpJwtTag[] -->     
+    <!-- tag::mpJwtTag[] -->  
+    <!--   
     <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp" 
            issuer="${jwt.issuer}"/>
+    -->       
+    <mpJwt id="jwtUserConsumer" 
+           jwksUri="https://localhost:8443/auth/realms/LibertWebApp/protocol/openid-connect/certs"
+           audiences="account"
+           issuer="https://localhost:8443/auth/realms/LibertWebApp"/>
     <!-- end::mpJwtTag[] -->   
 </server>
 <!-- end::jwt[] -->

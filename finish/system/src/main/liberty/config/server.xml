@@ -1,0 +1,38 @@
+<server description="Sample Liberty server">
+
+  <featureManager>
+    <feature>jaxrs-2.1</feature>
+    <feature>jsonp-1.1</feature>
+    <feature>cdi-2.0</feature>
+    <!-- tag::mpConfig[] -->
+    <feature>mpConfig-1.4</feature>
+    <!-- end::mpConfig[] -->
+    <!-- tag::mpRestClient[] -->
+    <feature>mpRestClient-1.4</feature>
+    <!-- end::mpRestClient[] -->
+    <feature>mpJwt-1.1</feature>
+    <feature>appSecurity-3.0</feature>
+    <feature>servlet-4.0</feature>
+
+  </featureManager>
+
+  <variable name="default.http.port" defaultValue="8080"/>
+  <variable name="default.https.port" defaultValue="8443"/>
+
+  <!-- This is the keystore that will be used by SSL and by JWT.
+         The keystore is built using the maven keytool plugin -->
+    <keyStore id="defaultKeyStore" password="secret"/>
+  
+  <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint"/>
+
+  <webApplication location="system.war" contextRoot="/"/>
+
+  <!-- <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp"
+           issuer="http://openliberty.io"/> -->
+
+  <!-- <mpJwt id="jwtUserConsumer" audiences="simpleapp"/> -->
+
+  <mpJwt id="jwtUserConsumer" jwksUri="https://localhost:9091/jwt/ibm/api/jwtFrontEndBuilder/jwk"/>
+
+</server>

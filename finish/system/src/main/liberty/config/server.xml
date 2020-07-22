@@ -28,11 +28,4 @@
 
   <webApplication location="system.war" contextRoot="/"/>
 
-  <!-- <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp"
-           issuer="http://openliberty.io"/> -->
-
-  <!-- <mpJwt id="jwtUserConsumer" audiences="simpleapp"/> -->
-
-  <mpJwt id="jwtUserConsumer" jwksUri="https://localhost:9091/jwt/ibm/api/jwtFrontEndBuilder/jwk"/>
-
 </server>

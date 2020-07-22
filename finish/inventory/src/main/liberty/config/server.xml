@@ -29,8 +29,4 @@
 
   <webApplication location="inventory.war" contextRoot="/"/>
 
-  <!-- <mpJwt id="jwtUserConsumer" jwksUri="https://localhost:9091/jwt/ibm/api/jwtFrontEndBuilder/jwk"/> -->
-
-  <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
-
 </server>

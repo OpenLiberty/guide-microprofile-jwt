@@ -111,7 +111,6 @@ public class ServiceUtils {
     if (authHeader != null) {
       builder.header(HttpHeaders.AUTHORIZATION, authHeader);
     }
-    System.out.println("HERE 3 _____________");
     return (payload != null) ? builder.build(method, Entity.json(payload)).invoke()
         : builder.build(method).invoke();
   }

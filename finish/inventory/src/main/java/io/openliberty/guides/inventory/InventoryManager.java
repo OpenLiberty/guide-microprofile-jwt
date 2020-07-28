@@ -46,7 +46,7 @@ public class InventoryManager {
                                        new ArrayList<SystemData>());
 
   @Inject
-  @ConfigProperty(name = "system.http.port", defaultValue="8080")
+  @ConfigProperty(name = "system.http.port", defaultValue="8443")
   String DEFAULT_PORT;
 
   // tag::Inject[]
@@ -60,7 +60,13 @@ public class InventoryManager {
   // end::SystemClient[]
 
   public Properties get(String hostname) {
-    return defaultRestClient.getProperties();
+	Properties properties = null;
+    if (hostname.equals("localhost")) {
+		properties = getPropertiesWithDefaultHostName();
+    } else {
+		properties = getPropertiesWithGivenHostName(hostname);
+	}
+	return properties;
   }
 
   public void add(String hostname, Properties systemProps) {
@@ -75,6 +81,29 @@ public class InventoryManager {
 
   public InventoryList list() {
     return new InventoryList(systems);
+  }
+
+  private Properties getPropertiesWithDefaultHostName() {
+	return defaultRestClient.getProperties();
+  }
+  // end::getPropertiesWithDefaultHostName[]
+
+  // tag::getPropertiesWithGivenHostName[]
+  private Properties getPropertiesWithGivenHostName(String hostname) {
+	String customURIString = "https://" + hostname + ":" + DEFAULT_PORT + "/system";
+	System.out.println(customURIString);
+    URI customURI = null;
+    try {
+      customURI = URI.create(customURIString);
+      SystemClient customRestClient = RestClientBuilder.newBuilder()
+                                        .baseUri(customURI)
+                                        .build(SystemClient.class);
+	  return customRestClient.getProperties();
+	  
+    } catch (ProcessingException ex) {
+      handleProcessingException(ex);
+    }
+    return null;
   }
 
   // tag::getPropertiesWithDefaultHostName[]

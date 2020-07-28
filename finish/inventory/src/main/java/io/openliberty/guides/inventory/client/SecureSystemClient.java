@@ -33,7 +33,7 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 @RegisterClientHeaders
 // tag::SystemClient[]
 // tag::AutoCloseable[]
-public interface SystemClient extends AutoCloseable {
+public interface SecureSystemClient extends AutoCloseable {
 // end::AutoCloseable[]
 
   @GET

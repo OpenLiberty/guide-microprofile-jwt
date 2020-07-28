@@ -46,7 +46,6 @@ public class JwtResource {
   // tag::getJwtUsername[]
   public Response getJwtUsername() {
     // tag::getName[]
-    System.out.println("GOT HERE");
     return Response.ok(this.jwtPrincipal.getName()).build();
     // end::getName[]
   }

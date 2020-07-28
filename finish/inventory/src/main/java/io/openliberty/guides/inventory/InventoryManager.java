@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import javax.ws.rs.core.HttpHeaders;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

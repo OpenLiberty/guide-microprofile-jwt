@@ -91,7 +91,6 @@ public class InventoryManager {
   // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
 	String customURIString = "https://" + hostname + ":" + DEFAULT_PORT + "/system";
-	System.out.println(customURIString);
     URI customURI = null;
     try {
       customURI = URI.create(customURIString);

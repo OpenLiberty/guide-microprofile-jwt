@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.openliberty.guides</groupId>
+    <artifactId>frontend</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+         <!-- Optional Microservice Configuration -->
+        <backend.hostname>localhost</backend.hostname>
+        <backend.http.port>5050</backend.http.port>
+        <backend.https.port>9443</backend.https.port>
+
+        <frontend.http.port>9090</frontend.http.port>
+        <frontend.https.port>9091</frontend.https.port>
+        <frontend.hostname>localhost</frontend.hostname>
+
+        <!-- JSON Web Token used for microservice authorization -->
+        <!-- <jwt.issuer>http://openliberty.io</jwt.issuer> -->
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.openliberty.features</groupId>
+                <artifactId>features-bom</artifactId>
+                <version>RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>3.3</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>jwt-1.0</artifactId>
+            <type>esa</type>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+             <plugin>
+                <groupId>io.openliberty.tools</groupId>
+                <artifactId>liberty-maven-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <serverName>UIServer</serverName>
+                    <appArchive>${project.build.directory}/UIService.war</appArchive>
+                    <configFile>src/main/liberty/config/server.xml</configFile>
+                    <bootstrapProperties>
+                        <server.http.port>9090</server.http.port>
+                        <server.https.port>9091</server.https.port>
+                        <inventory.https.port>9443</inventory.https.port>
+                        <system.https.port>8443</system.https.port>
+                        <inventory.hostname>localhost</inventory.hostname>
+                        <system.hostname>localhost</system.hostname>
+                        <application.name>frontend-1.0-SNAPSHOT.war.xml</application.name>
+                        <jwt.issuer>http://openliberty.io</jwt.issuer>
+                    </bootstrapProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

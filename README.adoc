@@ -33,15 +33,26 @@ You'll explore how to control user and role access to microservices with MicroPr
 
 == What you'll learn
 
-You will add MicroProfile JWT to validate security tokens in the `system` and `inventory` microservices. You will use a token-based authentication mechanism to authenticate, authorize, and verify user identities based on a security token.
+You will add MicroProfile JWT to validate security tokens in the `system` and
+`inventory` microservices. You will use a token-based authentication mechanism
+to authenticate, authorize, and verify user identities based on a security
+token.
 
-In addition, you will learn how to verify token claims through getters with MicroProfile JWT.
+For microservices, a token-based authentication mechanism offers a lightweight
+way for security controls and security tokens to propagate user identities
+across different services. JSON Web Token (JWT) is becoming the most common
+token format because it follows well-defined and known standards.
 
-For microservices, a token-based authentication mechanism offers a lightweight way for security controls and security tokens to propagate user identities across different services. JSON Web Token (JWT) is becoming the most common token format because it follows well-defined and known standards.
+MicroProfile JWT standards define the required format of JWT for authentication
+and authorization. The standards also map JWT token claims to various Java EE
+container APIs and make the set of claims available through getters.
 
-MicroProfile JWT standards define the required format of JWT for authentication and authorization. The standards also map JWT token claims to various Java EE container APIs and make the set of claims available through getters.
-
-The application that you will be working with is an `inventory` service, which stores the information about various JVMs that run on different systems. Whenever a request is made to the `inventory` service to retrieve the JVM system properties of a particular host, the `inventory` service communicates with the `system` service on that host to get these system properties. The JWT token gets propagated and verified during the communication between two services.
+The application that you will be working with is an `inventory` service, which
+stores the information about various JVMs that run on different systems.
+Whenever a request is made to the `inventory` service to retrieve the JVM system
+properties of a particular host, the `inventory` service communicates with the
+`system` service on that host to get these system properties. The JWT token gets
+propagated and verified during the communication between two services.
 
 // =================================================================================================
 // Getting Started
@@ -55,19 +66,37 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-The `finish` directory contains the finished
-JWT security implementation for the services in the application. You can try the finished application before you build your own.
+The `finish` directory contains the finished JWT security implementation for the
+services in the application. You can try the finished application before you
+build your own.
 
-To try out the application, first navigate to the `finish` directory. Next, execute the following
-Maven goals to build the application and run it inside of Open Liberty:
+To try out the application, first navigate to the `finish` directory. Next,
+execute the following command from the `frontend` directory to run a script that
+starts that starts the frontend module in the background.
+
 [role='command']
 ```
-mvn install liberty:start-server
+./startFrontend.sh
 ```
 
-Note that you cannot directly visit a back end URL from a browser. You have to use the provided front end that generates valid JWT tokens to retrieve information from the back end.
+Next, navigate out of the `frontend` directory and into the `inventory` directory. Run the following goal:
 
-Navigate your browser to the front end web application endpoint: http://localhost:9090/application.jsf[http://localhost:9090/application.jsf^]. From here, you can log in to the application with the form-based login.
+[role='command']
+```
+mvn liberty:run
+```
+
+In a new tab of your terminal, navigate to the `system` directory and run the following goal:
+
+[role='command']
+```
+mvn liberty:run
+```
+
+Navigate your browser to the front end web application endpoint:
+http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
+you can log in to the application with the form-based login.
+
 Log in with one of the following user information credentials:
 
 |===
@@ -77,65 +106,108 @@ Log in with one of the following user information credentials:
 | carl | carlpwd | user
 |===
 
-You are redirected to a page that displays the user who is logged in, the current OS of your localhost, and the security token that the front end uses when it sends the HTTP request to access the data from the back end.
-In addition, if you log in as an `admin` user, the current inventory size appears. If you log in as a `user`, you instead see the message, `You are not authorized to access the inventory service`, which means you cannot access the `inventory` service in the back end.
+You are redirected to a page that displays some information. The current OS is
+requsted from the `system` service, and the inventory size is requested from the
+`inventory` service. Both of these services are secured and require a valid JWT
+in the request. If you log in as an `admin` user, the current inventory size
+appears and can add systems to this inventory using the interface below. If you
+log in as a `user`, you instead see the message, `You are not authorized to
+access the inventory service`, which means you cannot access the `inventory`
+service in the backend.
 
-When you are done with the application, stop the server with the following command:
+You can try accessing these services without a JWT, by entering the inventory URL,
+https://localhost:9090/inventory/systems[https://localhost:9090/inventory/systems],
+or the system URL,
+https://localhost:9090/system/properties[https://localhost:9090/system/properties]
+directly into your browser. You can see that you are not able to access them
+because you didn't supply a valid JWT with the request. 
+
+When you are done with the application, stop both the `inventory` and `system`
+services  by pressing CTRL+C in the command-line session where you ran them.
+Afterward, run the `liberty:stop` goal from the `frontend` directory.
+
 [role='command']
 ```
-mvn liberty:stop-server
+mvn liberty:stop
 ```
 
-
 // =================================================================================================
-// Securing back end services with MicroProfile JWT
+// Configuring the MicroProfile JWT
 // =================================================================================================
 
-== Securing back end services with MicroProfile JWT
-pom.xml
-[source, xml, linenums, role='code_column']
-----
-include::finish/backendServices/pom.xml[]
-----
 
+Navigate to the `start` directory 
 
-Navigate to the `start` directory.
+First start your application with the `inventory` and `system` services in `dev`
+mode.Execute the following command from the `frontend` directory to run a script
+that starts that starts the frontend module in the background.
 
-The MicroProfile JWT feature, [hotspot=mpJwt file=0]`mpJwt`, has been added as a dependency in your [hotspot file=0]`pom.xml` file.
+[role='command']
+```
+./startFrontend.sh
+```
 
-// =================================================================================================
-// Creating the server configuration file
-// =================================================================================================
+Next, navigate out of the `frontend` directory and into the `inventory` directory. Run the following goal:
+
+[role='command']
+```
+mvn liberty:dev
+```
+
+In a new tab of your terminal, navigate to the `system` directory and run the following goal:
+
+[role='command']
+```
+mvn liberty:dev
+```
+
+When you run Open Liberty in dev mode, the server listens for file changes and automatically recompiles and deploys your updates whenever you save a new change.
+
+First add the MicroProfile JWT feature to the server configuration file for both
+the `inventory` service. 
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the server configuration file.#
-`backendServices/src/main/liberty/config/server.xml`
+#Replace the inventory server configuration file.#
+`inventory/src/main/liberty/config/server.xml`
 ----
+
+This has already been done for you in the `system` service.
 
 server.xml
 [source, xml, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/backendServices/src/main/liberty/config/server.xml[]
+include::finish/inventory/src/main/liberty/config/server.xml[]
 ----
 
 The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-The [hotspot=mpJwtTag file=1]`<mpJwt/>` element is required to configure the injection of the caller's JWT.
 
-|===
-| [hotspot=mpJwtTag file=1]`keyName` | Specifies the key alias name to locate the public key for JWT signature validation and must be in the keystore in the SSL configuration.
-| [hotspot=mpJwtTag file=1]`audiences` | Identifies the recipients and must match the `aud` claim in the JWT.
-| [hotspot=mpJwtTag file=1]`issuer` | Issues security tokens and must match the `iss` claim in the JWT.
-|===
+Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `inventory` service.
 
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Replace the microprofile-config.properties file.#
+`inventory/src/main/webapp/META-INF/microprofile-config.properties`
+----
+
+This has already been done for you in the `system` service.
+
+The `mp.jwt.verify.issuer` config property specifies what the expected value of
+the `iss` claim on an incoming token is. Incoming tokens with a different issuer
+claim are not considered valid.
+
+The `mp.jwt.verify.publickey.location` config properties specifies the location
+of the public key to be used the validate the an incoming tokens signature. In
+this case, the `frontend` service, where our JWT is built, provides an endpoint
+to retrieve the public signing key.
 
 
 // =================================================================================================
-// Securing the system service
+// Securing the inventory and system services
 // =================================================================================================
 
-=== Securing the system service
+Create the `inventory` 
 
 
 [role="code_command hotspot", subs="quotes"]

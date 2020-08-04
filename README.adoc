@@ -57,6 +57,9 @@ propagated and verified during the communication between two services.
 // =================================================================================================
 // Getting Started
 // =================================================================================================
+
+=== Getting Started
+
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 
@@ -79,7 +82,7 @@ starts that starts the frontend module in the background.
 ./startFrontend.sh
 ```
 
-Next, navigate out of the `frontend` directory and into the `inventory` directory. Run the following goal:
+Next, navigate out of the `frontend` directory and into the `inventory` directory and run the following goal:
 
 [role='command']
 ```
@@ -106,16 +109,16 @@ Log in with one of the following user information credentials:
 | carl | carlpwd | user
 |===
 
-You are redirected to a page that displays some information. The current OS is
+You will be redirected to a page that displays some information. The current OS is
 requsted from the `system` service, and the inventory size is requested from the
 `inventory` service. Both of these services are secured and require a valid JWT
-in the request. If you log in as an `admin` user, the current inventory size
-appears and can add systems to this inventory using the interface below. If you
-log in as a `user`, you instead see the message, `You are not authorized to
+to be in the request. If you log in as an `admin` user, the current inventory size
+appears and can add systems to this inventory using the interface below it. If you
+log in as a `user`, you will instead see the message, `You are not authorized to
 access the inventory service`, which means you cannot access the `inventory`
 service in the backend.
 
-You can try accessing these services without a JWT, by entering the inventory URL,
+You can try accessing these services without a JWT by entering the inventory URL,
 https://localhost:9090/inventory/systems[https://localhost:9090/inventory/systems],
 or the system URL,
 https://localhost:9090/system/properties[https://localhost:9090/system/properties]
@@ -132,36 +135,40 @@ mvn liberty:stop
 ```
 
 // =================================================================================================
-// Configuring the MicroProfile JWT
+// Configuring MicroProfile JWT
 // =================================================================================================
 
+=== Configuring MicroProfile JWT
 
-Navigate to the `start` directory 
+Navigate to the `start` directory.
 
-First start your application with the `inventory` and `system` services running in `dev`
-mode. Execute the following command from the `frontend` directory to run a script
-that starts that starts the frontend module in the background.
+Execute the following command from the `frontend` directory to
+run a script that starts the frontend module in the background.
 
 [role='command']
 ```
 ./startFrontend.sh
 ```
 
-Next, navigate out of the `frontend` directory and into the `inventory` directory. Run the following goal:
+Next, navigate out of the `frontend` directory and into the `inventory`
+directory run the following goal to start the `inventory` service in `dev` mode:
 
 [role='command']
 ```
 mvn liberty:dev
 ```
 
-In a new tab of your terminal, navigate to the `system` directory and run the following goal:
+In a new tab of your terminal, navigate to the `system` directory and run the
+following goal to start the `system` service in `dev` mode:
 
 [role='command']
 ```
 mvn liberty:dev
 ```
 
-When you run Open Liberty in dev mode, the server listens for file changes and automatically recompiles and deploys your updates whenever you save a new change.
+When you run Open Liberty in dev mode, the server listens for file changes and
+automatically recompiles and deploys your updates whenever you save a new
+change.
 
 First add the MicroProfile JWT feature to the server configuration file for
 the `inventory` service. 

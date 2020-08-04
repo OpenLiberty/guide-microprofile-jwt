@@ -57,9 +57,6 @@ propagated and verified during the communication between two services.
 // =================================================================================================
 // Getting Started
 // =================================================================================================
-
-== Getting Started
-
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 

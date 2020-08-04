@@ -29,10 +29,9 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 // end::RegisterRestClient[]
 
 @Path("/properties")
-@RegisterClientHeaders
 // tag::SystemClient[]
 // tag::AutoCloseable[]
-public interface SecureSystemClient extends AutoCloseable {
+public interface SystemClient extends AutoCloseable {
 // end::AutoCloseable[]
 
   @GET

@@ -40,7 +40,6 @@ public class InventoryResource {
   @GET
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
-  @RolesAllowed({ "admin", "user" })
   public Response getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
     // Get properties
     Properties props = manager.get(hostname);
@@ -58,7 +57,6 @@ public class InventoryResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @RolesAllowed({ "admin"})
   public InventoryList listContents() {
     return manager.list();
   }

@@ -30,7 +30,7 @@ import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import io.openliberty.guides.inventory.client.SecureSystemClient;
+import io.openliberty.guides.inventory.client.SystemClient;
 import io.openliberty.guides.inventory.model.InventoryList;
 import io.openliberty.guides.inventory.model.SystemData;
 
@@ -55,7 +55,7 @@ public class InventoryManager {
   @RestClient
   // end::RestClient[]
   // tag::SystemClient[]
-  private SecureSystemClient defaultRestClient;
+  private SystemClient defaultRestClient;
   // end::SystemClient[]
 
   public Properties get(String hostname) {
@@ -93,9 +93,9 @@ public class InventoryManager {
     URI customURI = null;
     try {
       customURI = URI.create(customURIString);
-      SecureSystemClient customRestClient = RestClientBuilder.newBuilder()
+      SystemClient customRestClient = RestClientBuilder.newBuilder()
                                         .baseUri(customURI)
-                                        .build(SecureSystemClient.class);
+                                        .build(SystemClient.class);
 	  return customRestClient.getProperties();
 	  
     } catch (ProcessingException ex) {

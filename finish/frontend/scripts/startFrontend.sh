@@ -1,4 +1,3 @@
-cd frontend
 mvn liberty:create
 mvn liberty:install-feature
 mvn compile

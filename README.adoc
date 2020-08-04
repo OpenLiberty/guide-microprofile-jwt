@@ -58,7 +58,7 @@ propagated and verified during the communication between two services.
 // Getting Started
 // =================================================================================================
 
-=== Getting Started
+== Getting Started
 
 [role='command']
 include::{common-includes}/gitclone.adoc[]
@@ -67,7 +67,7 @@ include::{common-includes}/gitclone.adoc[]
 // Try what you'll build
 // =================================================================================================
 
-=== Try what you'll build
+== Try what you'll build
 
 The `finish` directory contains the finished JWT security implementation for the
 services in the application. You can try the finished application before you
@@ -138,7 +138,7 @@ mvn liberty:stop
 // Configuring MicroProfile JWT
 // =================================================================================================
 
-=== Configuring MicroProfile JWT
+== Configuring MicroProfile JWT
 
 Navigate to the `start` directory.
 
@@ -214,6 +214,7 @@ to retrieve the public signing key.
 // Securing the inventory and system services
 // =================================================================================================
 
+== Securing the inventory and system services
 
 Next, create the `SystemResource` class.
 

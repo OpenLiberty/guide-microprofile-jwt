@@ -55,6 +55,49 @@ properties of a particular host, the `inventory` service communicates with the
 propagated and verified during the communication between two services.
 
 // =================================================================================================
+//  JSON Web Tokens
+// =================================================================================================
+
+== JSON Web Tokens for Authorization and Authentication
+
+=== What is a JSON Web Token
+
+A JSON Web Token is a self contained token designed to securely transmit information as a JSON object.
+The information in this JSON object is digitally signed and can be trusted and verified by the recipient. 
+
+A JWT contains 3 different parts, a header, a payload, and a signature with each
+part being seperated by a dot (`.`). An encoded token typically looks like
+the following:
+
+`xxxxx.yyyyy.zzzzz`
+
+The header contains the type of token, and the signing algorithm used.
+
+The payload contains the claims of a token. The claims are statements about the
+user and other information. Some examples of claims are `iss` (issuer), `exp`
+(expiration time), `name`, or any other information you would like to transmit.
+
+The signature is used to verify the message wasn't changed along the way, and
+can verify that the sender of the JWT is who it says it is.
+
+=== JSON Web Tokens for Authorization and Authentication
+
+In our case, we will be using JWTs to authenticate a user, allowing them to make
+authorized requests to backend services. 
+
+The user will sign into the frontend application using a username and password,
+at which point a JWT will be created and signed using a private key stored in
+the frontend. The frontend will then make requests to the backend services with
+the JWT included in the `Authorization` header of the request. The backend
+services, which are secured, will examine the JWT included with the request and
+use the frontends public key to verify the signature of the JWT to ensure that
+the request did in fact come from the authorized frontend and wasn't changed
+along the way. After a JWT has been validated, the information stored the claims
+of the JWT, such as the user role, can be trusted and will be used to determine
+which services the requesting user has access to in the backend.
+
+
+// =================================================================================================
 // Getting Started
 // =================================================================================================
 [role='command']
@@ -191,7 +234,7 @@ Next, configure the `mpJwt` feature in the `microprofile-config.properties` file
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Replace the microprofile-config.properties file.#
+#Create the microprofile-config.properties file.#
 `inventory/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
@@ -237,9 +280,9 @@ Create a secured `InventoryResource` class.
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-Similarly, for each specific service, the @RolesAllowed annotation sets which
-roles are allowed to access it. Therefore, the inventory service is properly
-secured, as well.
+Similarly, for each specific service, the `@RolesAllowed` annotation sets which
+roles are allowed to access it. Therefore, the `inventory` service is properly
+secured as well.
 
 
 Create a RESTful client interface for the `system` service. 
@@ -251,22 +294,23 @@ Create a RESTful client interface for the `system` service.
 ----
 
 The MicroProfile Rest Client feature automatically builds and generates a client
-implementation based on what is defined in the SystemClient interface. There is
+implementation based on what is defined in the `SystemClient` interface. There is
 no need to set up the client and connect with the remote service.
 
 When the `inventory` service requests properties from the `system` service, there must be 
 a JWT included in the `Authorization` header of that request. 
 
 The `@RegisterClientHeaders` annotation instructs the client to propagate the
-headers specified in in the MicroProfile Config property:
+headers specified in the MicroProfile Config property:
 `org.eclipse.microprofile.rest.client.propagateHeaders`
 
 In the case, the `inventory` received a request with a JWT in the
 `Authorization` header, so you must propagate that header to the `system`
 service.
 
-Specify the `Authorization` header for the `org.eclipse.microprofile.rest.client.propagateHeaders`
-MicroProfile Config property for the inventory service. 
+
+In the `org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
+Config property for the inventory service, specify the `Authorization` header.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -277,6 +321,8 @@ MicroProfile Config property for the inventory service.
 // =================================================================================================
 // Building and running the application
 // =================================================================================================
+
+== Building and running the application
 
 Because you are running the `system` and `inventory` in `dev` mode, the changes you made have been automatically picked up. You can now checkout your application in the browser.
 
@@ -295,89 +341,6 @@ Use the following endpoint to log in to the application:
 
 Once you log in, you can see some basic information retrieved from the backend services.
 Remember that if you log in as a `user` without the `admin` role, you cannot see the inventory size because you do not have permission.
-
-// =================================================================================================
-// Testing the application
-// =================================================================================================
-
-== Testing the application
-
-Write `SystemEndpointTest`, `InventoryEndpointTest`, and `JwtTest` classes to test that you can access different services with valid tokens.
-
-[role="code_command hotspot" subs="quotes"]
-----
-#Create the `SystemEndpointTest` class.#
-`backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java`
-----
-
-SystemEndpointTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/SystemEndpointTest.java[]
-----
-
-[role="code_command hotspot file=1" subs="quotes"]
-----
-#Create the `InventoryEndpointTest` class.#
-`backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java`
-----
-InventoryEndpointTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/InventoryEndpointTest.java[]
-----
-
-In the [hotspot=setup file=0]`setup()` step before test cases, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `admin` role.
-This authorization header is added when the test client sends an HTTP `GET` request to a secure service to retrieve information.
-
-Each test case tries to first assert that with a valid authorization header, it can get a [hotspot=statusOK file=1]`Status.OK` code from the response.
-The test fails if the response returns a `Status.FORBIDDEN` message, which means the authorization header is invalid.
-
-After each test confirms that the response code is correct, each test gets the content from the designated endpoint and compares the result with its expected value.
-
-[role="code_command hotspot file=2"  subs="quotes"]
-----
-#Create the `JwtTest` class.#
-`backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java`
-----
-
-JwtTest.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/backendServices/src/test/java/it/io/openliberty/guides/jwt/JwtTest.java[]
-----
-
-In the [hotspot=setup file=2]`setup()` step of the `JwtTest` class, an authorization header is created with the credentials of a test user who has the `TESTUSER` name and the `user` role.
-The authorization header is added when the test client sends an HTTP `GET` request to a secure JWT service.
-
-The [hotspot=testJwtGetName file=2]`testJWTGetName()` test accesses the `\https://localhost:5051/inventory/jwt/username` endpoint to get the username from the JWT token and to verify
-whether the username is the same as the `TESTUSER` user name.
-
-The [hotspot=testJwtGetCustomClaim file=2]`testJWTGetCustomClaim()` test accesses the `\https://localhost:5051/inventory/jwt/customClaim` endpoint. Because this service is secured and only accessible to users who have the `admin` role,
-the test asserts that the current test user with the `user` role is forbidden from accessing it.
-
-[role='command']
-include::{common-includes}/mvnverify.adoc[]
-
-[source, role="no_copy"]
-----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running it.io.openliberty.guides.jwt.InventoryEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.434 sec - in it.io.openliberty.guides.jwt.InventoryEndpointTest
-Running it.io.openliberty.guides.jwt.JwtTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in it.io.openliberty.guides.jwt.JwtTest
-Running it.io.openliberty.guides.jwt.SystemEndpointTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 sec - in it.io.openliberty.guides.jwt.SystemEndpointTest
-
-Results :
-
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-----
-
-To see whether the tests detect a failure, remove the authorization header generation in the [hotspot=setup file=1]`setup()` method of the [hotspot file=1]`InventoryEndpointTest.java` file.
-Rerun the Maven build. You see that a test failure occurs.
 
 // =================================================================================================
 // Great work! You're done!

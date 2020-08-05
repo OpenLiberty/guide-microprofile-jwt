@@ -85,7 +85,6 @@ public class LoginBean {
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName) // MP-JWT defined subject claim
                          .claim("groups", roles.toArray(new String[roles.size()])) // MP-JWT builds an array from this
-                         .claim("customClaim", "customValue")
                          .buildJwt()
                          .compact();
     }

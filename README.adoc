@@ -324,7 +324,7 @@ Config property for the inventory service, specify the `Authorization` header.
 `inventory/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
-The `inventory` service will now propagate the Authorization header, containing the JWT, to the `system` service. 
+The `inventory` service will now propagate the Authorization header, which contains the JWT, to the `system` service. 
 
 
 // =================================================================================================
@@ -334,14 +334,14 @@ The `inventory` service will now propagate the Authorization header, containing 
 == Manually accessing JWT claims
 
 The previous section showed how to implement role-based access control with the
-`@RolesAllowed` annotation, which automatically reads from the groups claim of
-the token and makes an authorization decision.
+`@RolesAllowed` annotation, which automatically reads from the `groups` claim of
+the JWT and makes an authorization decision.
 
 If you wish to manually access the claims of the JWT, perhaps to provide more
-granual access control, MicroProfile JWT provides you with get style accessors.
+granual access control, MicroProfile JWT provides you with "get style" accessors.
 
 Create a new service that uses these accessors to read the `name` and `groups`
-claim of the incoming JWT and show that this information was able to be retrived
+claim of the incoming JWT. Show that this information was able to be retrived
 by exposing endpoints that provide this information back to the frontend. 
 
 [role="code_command hotspot", subs="quotes"]
@@ -357,7 +357,9 @@ include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResou
 ----
 
 In this case you are using the `getName()` and `getGroups()` accessors of the
-`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of accessors for different claims, including how to access custom claims added when the JWT was built, check out the MP-JWT documentation [add link].
+`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of
+accessors for different claims, including how to access custom claims added when
+the JWT was built, check out the MP-JWT documentation [add link].
 
 // =================================================================================================
 // Building and running the application
@@ -380,20 +382,22 @@ Use one of the following credentials to log in:
 | carl | carlpwd | user
 |===
 
-Once you log in, you can see some basic information retrieved from the backend services.
-Remember that if you log in as a `user` without the `admin` role, you cannot see the inventory size because you do not have permission.
+Once you log in, you can see some basic information retrieved from the backend
+services. Remember that if you log in as a `user` without the `admin` role, you
+cannot see the inventory size because you do not have permission.
 
 As before, you can enter the inventory URL,
 https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
 or the system URL,
 https://localhost:8443/system/properties[https://localhost:8443/system/properties]
-directly into your browser to check that they are secured against users making request without a valid JWT included.
+directly into your browser to check that they are secured against users making a
+request without a valid JWT included.
 
 Once you are logged, you should see your JWT displayed in the bottom row labeled `JSON Web Token`.
 
-To see the information that this JWT holds, you can enter it into the JWT.io website[https://jwt.io], which includes a token reader.
+To see the information that this JWT holds, you can enter it into the JWT.io website[https://jwt.io^], which includes a token reader.
 
-You will be able to see the different claims in the payload of our token:
+You will be able to see the different claims in the payload of your token:
 
 [source, role="no_copy"]
 ----
@@ -401,16 +405,20 @@ You will be able to see the different claims in the payload of our token:
   "token_type": "Bearer",
   "sub": "bob",
   "upn": "bob",
-  "customClaim": "customValue",
-  "groups": [
-    "admin",
-    "user"
-  ],
+  "groups": [ "admin", "user" ],
   "iss": "http://openliberty.io",
   "exp": 1596723489,
   "iat": 1596637089
 }
 ----
+
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+
+== Testing the application
+
+To-do
 
 // =================================================================================================
 // Great work! You're done!

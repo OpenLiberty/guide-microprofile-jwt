@@ -66,8 +66,7 @@ A JSON Web Token is a self contained token designed to securely transmit informa
 The information in this JSON object is digitally signed and can be trusted and verified by the recipient. 
 
 A JWT contains 3 different parts, a header, a payload, and a signature with each
-part being seperated by a dot (`.`). An encoded token takes the following form
-the following:
+part being seperated by a dot (`.`). An encoded token takes the following form:
 
 `xxxxx.yyyyy.zzzzz`
 
@@ -75,7 +74,8 @@ The header contains the type of token, and the signing algorithm used.
 
 The payload contains the claims of a token. The claims are statements about the
 user and other information. Some examples of claims are `iss` (issuer), `exp`
-(expiration time), `name`, or any other information you would like to transmit.
+(expiration time), and `name`. Custom claims can be added to the token to include any other
+information you would like to transmit.
 
 The signature is used to verify that the message wasn't changed along the way, and
 can verify that the sender of the JWT is who it says it is.
@@ -93,7 +93,7 @@ services, which are secured, will examine the JWT included with the request and
 use the frontends public key to verify the signature of the JWT to ensure that
 the request did in fact come from the authorized frontend and wasn't changed
 along the way. After a JWT has been validated, the information stored the claims
-of the JWT, such as the user role, can be trusted and will be used to determine
+of the JWT, such as the user's role, can be trusted and will be used to determine
 which services the requesting user has access to in the backend.
 
 
@@ -113,8 +113,9 @@ The `finish` directory contains the finished JWT security implementation for the
 services in the application. You can try the finished application before you
 build your own.
 
-To try out the application, first navigate to the `finish` directory. Next,
-execute the following command from the `frontend` directory to run a script that
+To try out the application, first navigate to the `finish` directory.
+
+Execute the following command from the `frontend` directory to run a script that
 starts the frontend module in the background.
 
 [role='command']
@@ -152,18 +153,27 @@ Log in with one of the following user information credentials:
 You will be redirected to a page that displays some information. The current OS is
 requsted from the `system` service, and the inventory size is requested from the
 `inventory` service. Both of these services are secured and require a valid JWT
-to be in the request. If you log in as an `admin` user, the current inventory size
-appears and can add systems to this inventory using the interface below it. If you
+to be in the request's header. If you log in as an `admin` user, the current inventory size
+appears and can add systems to this inventory using the interface beneath the bottom row. If you
 log in as a `user`, you will instead see the message, `You are not authorized to
-access the inventory service`, which means you cannot access the `inventory`
-service in the backend.
+access the inventory service`, as the role does not have sufficient privileges. 
 
-You can try accessing these services without a JWT by entering the inventory URL,
+Additionally, the `name` and `groups` claim of the JWT are read by the inventory
+service and are exposed to the frontend to be displayed.
+
+You can try accessing these services without a JWT by entering the inventoryURL,
 https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
 or the system URL,
 https://localhost:8443/system/properties[https://localhost:8443/system/properties]
 directly into your browser. You can see that you are not able to access them
-because you didn't supply a valid JWT with the request. 
+because you didn't supply a valid JWT with the request. The following error
+will appear in the command-line sessions of the services you tried to
+access:
+
+[source, role="no_copy"]
+----
+[ERROR] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+----
 
 When you are done with the application, stop both the `inventory` and `system`
 services  by pressing CTRL+C in the command-line session where you ran them.
@@ -191,14 +201,14 @@ run a script that starts the frontend module in the background.
 ```
 
 Next, navigate out of the `frontend` directory and into the `inventory`
-directory run the following goal to start the `inventory` service in `dev` mode:
+directory and run the following goal to start the `inventory` service in `dev` mode:
 
 [role='command']
 ```
 mvn liberty:dev
 ```
 
-In a new tab of your terminal, navigate to the `system` directory and run the
+In a new tab of your command-line session, navigate to the `system` directory and run the
 following goal to start the `system` service in `dev` mode:
 
 [role='command']
@@ -251,12 +261,12 @@ to retrieve the public signing key.
 
 
 // =================================================================================================
-// Securing the inventory and system services
+// Creating secure system and inventory services
 // =================================================================================================
 
-== Securing the inventory and system services
+== Creating secure system and inventory services
 
-Next, create the `SystemResource` class.
+Create the `SystemResource` class.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -272,7 +282,7 @@ wherever the security constraint is applied.
 The [hotspot=RolesAllowed]`@RolesAllowed({"admin, "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
-Create a secured `InventoryResource` class.
+Next, create the `InventoryResource` class.
 
 [role="code_command hotspot", subs="quotes"]
 ----
@@ -280,10 +290,7 @@ Create a secured `InventoryResource` class.
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-Similarly, for each specific service, the `@RolesAllowed` annotation sets which
-roles are allowed to access it. Therefore, the `inventory` service is properly
-secured as well.
-
+In this class, the `@RolesAllowed` annotation is limited to `admin` meaning only authenticated users with the role of `admin` are able to access the `inventory` service
 
 Create a RESTful client interface for the `system` service. 
 
@@ -317,9 +324,14 @@ Config property for the inventory service, specify the `Authorization` header.
 `inventory/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
+The `inventory` service will now propagate the Authorization header, containing the JWT, to the `system` service. 
+
+
 // =================================================================================================
 // Manually accessing JWT claims
 // =================================================================================================
+
+== Manually accessing JWT claims
 
 The previous section showed how to implement role-based access control with the
 `@RolesAllowed` annotation, which automatically reads from the groups claim of

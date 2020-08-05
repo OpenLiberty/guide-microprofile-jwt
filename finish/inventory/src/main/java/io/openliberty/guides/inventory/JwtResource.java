@@ -13,21 +13,16 @@
 // tag::jwt[]
 package io.openliberty.guides.inventory;
 
-import java.util.Set;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Context;
 // tag::JsonWebTokenImport[]
 import org.eclipse.microprofile.jwt.JsonWebToken;
 // end::JsonWebTokenImport[]
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.core.SecurityContext;
-// tag::javaSecurity[]
-import java.security.Principal;
-// end::javaSecurity[]
+
 
 @RequestScoped
 @Path("jwt")
@@ -55,38 +50,8 @@ public class JwtResource {
   @RolesAllowed({ "admin", "user" })
   @Path("/groups")
   // tag::getJwtGroups[]
-  public Response getJwtGroups(@Context SecurityContext securityContext) {
-    Set<String> groups = null;
-    // tag::securityContext[]
-    Principal user = securityContext.getUserPrincipal();
-    // end::securityContext[]
-    if (user instanceof JsonWebToken) {
-      JsonWebToken jwt = (JsonWebToken) user;
-      // tag::groups[]
-      groups = jwt.getGroups();
-      // end::groups[]
-    }
-    return Response.ok(groups.toString()).build();
+  public Response getJwtGroups() {
+    return Response.ok(this.jwtPrincipal.getGroups().toString()).build();
   }
   // end::getJwtGroups[]
-
-  @GET
-  @RolesAllowed({ "admin", "user" })
-  @Path("/customClaim")
-  // tag::getCustomClaim[]
-  public Response getCustomClaim(@Context SecurityContext securityContext) {
-    // tag::isUserInRole[]
-    if (securityContext.isUserInRole("admin")) {
-    // end::isUserInRole[]
-      // tag::customClaim[]
-      String customClaim = jwtPrincipal.getClaim("customClaim");
-      // end::customClaim[]
-      return Response.ok(customClaim).build();
-    }
-    // tag::responseStatus[]
-    return Response.status(Response.Status.FORBIDDEN).build();
-    // end::responseStatus[]
-  }
-  // end::getCustomClaim[]
 }
-// end::jwt[]

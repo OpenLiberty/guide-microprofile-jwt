@@ -318,15 +318,15 @@ Config property for the inventory service, specify the `Authorization` header.
 ----
 
 // =================================================================================================
-// Manually Accessing JWT Claims
+// Manually accessing JWT claims
 // =================================================================================================
 
 The previous section showed how to implement role-based access control with the
 `@RolesAllowed` annotation, which automatically reads from the groups claim of
 the token and makes an authorization decision.
 
-If you wish to manually access the claims of the JWT, perhaps to provide more granual access control, MicroProfile JWT provides
-you with get style accessors.
+If you wish to manually access the claims of the JWT, perhaps to provide more
+granual access control, MicroProfile JWT provides you with get style accessors.
 
 Create a new service that uses these accessors to read the `name` and `groups`
 claim of the incoming JWT and show that this information was able to be retrived
@@ -343,6 +343,9 @@ JwtResource.java
 ----
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
 ----
+
+In this case you are using the `getName()` and `getGroups()` accessors of the
+`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of accessors for different claims, including how to access custom claims added when the JWT was built, check out the MP-JWT documentation [add link].
 
 // =================================================================================================
 // Building and running the application

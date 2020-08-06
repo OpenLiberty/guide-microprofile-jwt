@@ -41,9 +41,7 @@ public class InventoryResource {
   @GET
   @Path("/add/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowed[]
   @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowed[]
   public Response addPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
     // Get properties
     Properties props = manager.get(hostname);
@@ -60,9 +58,7 @@ public class InventoryResource {
   @GET
   @Path("/get/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowed[]
   @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowed[]
   public Properties getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
     // Get properties
     Properties props = manager.get(hostname);

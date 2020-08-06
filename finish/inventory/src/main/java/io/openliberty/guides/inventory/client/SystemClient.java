@@ -33,12 +33,8 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 // end::registerClientHeaders[]
 public interface SystemClient extends AutoCloseable {
 
-
   @GET
-
   @Produces(MediaType.APPLICATION_JSON)
-
-
   public Properties getProperties() throws ProcessingException;
 
 }

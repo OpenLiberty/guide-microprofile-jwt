@@ -55,10 +55,10 @@ properties of a particular host, the `inventory` service communicates with the
 propagated and verified during the communication between two services.
 
 // =================================================================================================
-//  JSON Web Tokens
+//  JSON Web Tokens for authorization and authentication
 // =================================================================================================
 
-== JSON Web Tokens for Authorization and Authentication
+== JSON Web Tokens for authorization and authentication
 
 === What is a JSON Web Token
 
@@ -98,7 +98,7 @@ user has access to in the backend.
 
 
 // =================================================================================================
-// Getting Started
+// Getting started
 // =================================================================================================
 [role='command']
 include::{common-includes}/gitclone.adoc[]
@@ -380,7 +380,7 @@ InventoryResource.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
-The previous section showed how to implement role-based access control with the
+In the previous section you implemented role-based access control with the
 `@RolesAllowed` annotation, which automatically reads from the `groups` claim of
 the JWT and makes an authorization decision.
 
@@ -429,7 +429,7 @@ services. If you successfully implemented role-based access, you can see that if
 you log in as a `user` role without `admin`, you won't have access to the
 inventory size. 
 
-You can also see the values of the `name` and `groups` claims in the top two
+You can also see the values of the `upn` and `groups` claims in the top two
 rows. Again, these are being read from the JWT and sent back to the frontend to
 be displayed.
 

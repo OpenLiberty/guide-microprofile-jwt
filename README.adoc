@@ -150,16 +150,21 @@ Log in with one of the following user information credentials:
 | carl | carlpwd | user
 |===
 
-You will be redirected to a page that displays some information. The current OS is
-requsted from the `system` service, and the inventory size is requested from the
-`inventory` service. Both of these services are secured and require a valid JWT
-to be in the request's header. If you log in as an `admin` user, the current inventory size
-appears and can add systems to this inventory using the interface beneath the bottom row. If you
-log in as a `user`, you will instead see the message, `You are not authorized to
-access the inventory service`, as the role does not have sufficient privileges. 
+You will be redirected to a page that displays some information. The frontend
+requests the inventory size and current OS from the `inventory` service. To get
+the current OS, the `inventory` make a request to the `system` service. Both of
+the `inventory` and `system` services are secured and require a valid JWT to be in the request's
+header. 
 
-Additionally, the `name` and `groups` claim of the JWT are read by the inventory
-service and are exposed to the frontend to be displayed.
+If you log in as an `admin` user, the current inventory size appears and
+can add systems to this inventory using the interface beneath the bottom row. If
+you log in as a `user`, you will instead see the message, `You are not
+authorized to access the inventory service`, as the role does not have
+sufficient privileges. 
+
+Additionally, the `upn` (unique principal name, or username) and `groups` claim
+of the JWT are read by the inventory service and are requested by the frontend
+to be displayed.
 
 You can try accessing these services without a JWT by entering the inventory URL,
 https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
@@ -340,16 +345,15 @@ The MicroProfile Rest Client feature automatically builds and generates a client
 implementation based on what is defined in the `SystemClient` interface. There is
 no need to set up the client and connect with the remote service.
 
-As stated previously, when the `inventory` service requests properties from the
-`system` service, there must be a valid JWT included in the request.
+As stated previously, because the `system` service is secure, requests made to
+it must include a JWT in the header. In this case, the `inventory` receives
+requests with a JWT in the `Authorization` header, so you must propagate that
+header to the `system` service what making requests to it.
 
-The [hotspot=registerClientHeaders file=2]`@RegisterClientHeaders` annotation instructs the client to propagate the
-headers specified in the MicroProfile Config property
-[hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders`.
-
-In the case, the `inventory` received a request with a JWT in the
-`Authorization` header, so you must propagate that header to the `system`
-service.
+The [hotspot=registerClientHeaders file=2]`@RegisterClientHeaders` annotation
+instructs the client to propagate the headers specified in the MicroProfile
+Config property [hotspot=propagateHeaders
+file=3]`org.eclipse.microprofile.rest.client.propagateHeaders`.
 
 Add the [hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
 Config property for the inventory service and specify the `Authorization` header.
@@ -381,9 +385,9 @@ The previous section showed how to implement role-based access control with the
 the JWT and makes an authorization decision.
 
 If you wish to manually access the claims of the JWT, perhaps to provide more
-granual access control, MicroProfile JWT provides you with "get style" accessors.
+granual access control, MicroProfile JWT provides you with "get" style accessors.
 
-Update the `inventory` service to use these accessors to read the `upn` (unique principal name, or user name) and `groups`
+Update the `inventory` service to use these provided accessors to read the `upn` (unique principal name, or user name) and `groups`
 claim of the incoming JWT. Show that this information was able to be retrived
 by exposing endpoints that provide this information back to the frontend. 
 

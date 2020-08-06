@@ -72,7 +72,7 @@ public class InventoryResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowed[]
-  @RolesAllowed({ "admin"})
+  @RolesAllowed({ "admin" })
   // end::rolesAllowed[]
   public InventoryList listContents() {
     return manager.list();

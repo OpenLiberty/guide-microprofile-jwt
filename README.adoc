@@ -74,7 +74,7 @@ The header contains the type of token, and the signing algorithm used.
 
 The payload contains the claims of a token. The claims are statements about the
 user and other information. Some examples of claims are `iss` (issuer), `exp`
-(expiration time), and `name`. Custom claims can be added to the token to include any other
+(expiration time), and `upn` (unique principal name, or just name). Custom claims can be added to the token to include any other
 information you would like to transmit.
 
 The signature is used to verify that the message wasn't changed along the way, and
@@ -345,14 +345,14 @@ As stated previously, when the `inventory` service requests properties from the
 
 The [hotspot=registerClientHeaders file=2]`@RegisterClientHeaders` annotation instructs the client to propagate the
 headers specified in the MicroProfile Config property
-`org.eclipse.microprofile.rest.client.propagateHeaders`.
+[hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders`.
 
 In the case, the `inventory` received a request with a JWT in the
 `Authorization` header, so you must propagate that header to the `system`
 service.
 
 Add the [hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
-Config property for the inventory service and specify the [hotspot=propagateHeaders file=3]`Authorization` header.
+Config property for the inventory service and specify the `Authorization` header.
 
 [role="code_command hotspot file=3", subs="quotes"]
 ----
@@ -360,7 +360,7 @@ Config property for the inventory service and specify the [hotspot=propagateHead
 `inventory/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
-The `inventory` service will now propagate the Authorization header, which contains the JWT, to the `system` service. 
+The `inventory` service will now propagate the `Authorization` header, which contains the JWT, to the `system` service. 
 
 
 // =================================================================================================
@@ -383,7 +383,7 @@ the JWT and makes an authorization decision.
 If you wish to manually access the claims of the JWT, perhaps to provide more
 granual access control, MicroProfile JWT provides you with "get style" accessors.
 
-Create a new service that uses these accessors to read the `name` and `groups`
+Create a new service that uses these accessors to read the `upn` (unique principal name, or user name) and `groups`
 claim of the incoming JWT. Show that this information was able to be retrived
 by exposing endpoints that provide this information back to the frontend. 
 
@@ -425,9 +425,9 @@ services. If you successfully implemented role-based access, you can see that if
 you log in as a `user` role without `admin`, you won't have access to the
 inventory size. 
 
-You can also see the values of the `name` and `groups` claims in the rows labels
-`Name:` and `Roles:`. Again, these are being read from the JWT and sent back to
-the frontend to be displayed.
+You can also see the values of the `name` and `groups` claims in the top two
+rows. Again, these are being read from the JWT and sent back to the frontend to
+be displayed.
 
 You can check that the backend systems are secured against unauthenticated
 requests by entering inventory URL,
@@ -439,7 +439,18 @@ In the frontend you should see your JWT displayed in the bottom row labeled `JSO
 
 To see the specific information that this JWT holds, you can enter it into the https://JWT.io[JWT.io website^], which includes a token reader.
 
-You will be able to see the different claims in the payload of your token:
+You can see the header, which contains information about the JWT:
+
+[source, role="no_copy"]
+----
+{
+  "kid": "NPzyG3ZMzljUwQgbzi44",
+  "typ": "JWT",
+  "alg": "RS256"
+}
+----
+
+And you can see the payload which contains the claims:
 
 [source, role="no_copy"]
 ----
@@ -453,6 +464,8 @@ You will be able to see the different claims in the payload of your token:
   "iat": 1596637089
 }
 ----
+
+You can read more about the specific of these claims in the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
 
 // =================================================================================================
 // Testing the application

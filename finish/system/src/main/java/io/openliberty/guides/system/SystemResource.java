@@ -26,7 +26,9 @@ public class SystemResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowed[]
   @RolesAllowed({ "admin", "user" })
+  // end::rolesAllowed[]
   public Properties getProperties() {
     return System.getProperties();
   }

@@ -4,13 +4,11 @@
     <feature>jaxrs-2.1</feature>
     <feature>jsonp-1.1</feature>
     <feature>cdi-2.0</feature>
-    <!-- tag::mpConfig[] -->
     <feature>mpConfig-1.4</feature>
-    <!-- end::mpConfig[] -->
-    <!-- tag::mpRestClient[] -->
     <feature>mpRestClient-1.4</feature>
-    <!-- end::mpRestClient[] -->
+    <!-- tag::mpJwt[] -->
     <feature>mpJwt-1.1</feature>
+    <!-- end::mpJwt[] -->
     <feature>appSecurity-3.0</feature>
     <feature>servlet-4.0</feature> 
     <feature>transportSecurity-1.0</feature>

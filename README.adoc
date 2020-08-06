@@ -190,6 +190,20 @@ mvn liberty:stop
 
 == Configuring MicroProfile JWT
 
+// File 0
+server.xml
+[source, xml, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/liberty/config/server.xml[]
+----
+
+// File 1
+microprofile-config.properties
+[source, text, linenums, role="code_column hide_tags=propagateHeaders"]
+----
+include::finish/inventory/src/main/webapp/META-INF/microprofile-config.properties[]
+----
+
 Navigate to the `start` directory.
 
 Execute the following command from the `frontend` directory to
@@ -223,7 +237,7 @@ change.
 First add the MicroProfile JWT feature to the server configuration file for
 the `inventory` service. 
 
-[role="code_command hotspot file=1", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Replace the inventory server configuration file.#
 `inventory/src/main/liberty/config/server.xml`
@@ -231,13 +245,7 @@ the `inventory` service.
 
 This has already been done for you in the `system` service.
 
-server.xml
-[source, xml, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/liberty/config/server.xml[]
-----
-
-The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
+The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
 
 Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `inventory` service.
@@ -250,11 +258,11 @@ Next, configure the `mpJwt` feature in the `microprofile-config.properties` file
 
 This has already been done for you in the `system` service.
 
-The `mp.jwt.verify.issuer` config property specifies what the expected value of
+The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
 the `iss` (issuer) claim is on an incoming JWT. Incoming JWTs with an issuer
 claim different from this expected value are not considered valid.
 
-The `mp.jwt.verify.publickey.location` config properties specifies the location
+The [hotspot=location file=1]`mp.jwt.verify.publickey.location` config properties specifies the location
 of the public key to be used to validate the an incoming JWT's signature. In
 this case, the `frontend` service, where our JWT is built, provides an endpoint
 to retrieve the public signing key.
@@ -266,35 +274,63 @@ to retrieve the public signing key.
 
 == Creating secure system and inventory services
 
+// File 0
+SystemResource.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[]
+----
+
+// File 1
+InventoryResource.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
+----
+
+// File 2
+SystemClient.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
+----
+
+// File 3
+microprofile-config.properties
+[source, text, linenums, role="code_column"]
+----
+include::finish/inventory/src/main/webapp/META-INF/microprofile-config.properties[]
+----
+
 Create the `SystemResource` class.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `SystemResource` class.#
-`inventory/src/main/java/io/openliberty/guides/system/SystemResource.java`
+`system/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
 This class has role-based access control. The role names that are used in the
-[hotspot=RolesAllowed]`@RolesAllowed` annotation are mapped to group names in
+[hotspot=rolesAllowed file=0]`@RolesAllowed` annotation are mapped to group names in
 the `groups` claim of the JWT, which results in an authorization decision
 wherever the security constraint is applied.
 
-The [hotspot=RolesAllowed]`@RolesAllowed({"admin, "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
+The [hotspot=rolesAllowed file=0]`@RolesAllowed({"admin, "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
 Therefore, this service is properly secured.
 
 Next, create the `InventoryResource` class.
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the `InventoryResource` class.#
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-In this class, the `@RolesAllowed` annotation is limited to `admin` meaning only authenticated users with the role of `admin` are able to access the `inventory` service
+In this class, the [hotspot=rolesAllowed file=1]`@RolesAllowed` annotation is limited to `admin` meaning only authenticated users with the role of `admin` are able to access the `inventory` service
 
 Create a RESTful client interface for the `system` service. 
 
-[role="code_command hotspot", subs="quotes"]
+[role="code_command hotspot file=2", subs="quotes"]
 ----
 #Create the `SystemClient` class.#
 `inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
@@ -307,7 +343,7 @@ no need to set up the client and connect with the remote service.
 As stated previously, when the `inventory` service requests properties from the
 `system` service, there must be a valid JWT included in the request.
 
-The `@RegisterClientHeaders` annotation instructs the client to propagate the
+The [hotspot=registerClientHeaders file=2]`@RegisterClientHeaders` annotation instructs the client to propagate the
 headers specified in the MicroProfile Config property
 `org.eclipse.microprofile.rest.client.propagateHeaders`.
 
@@ -315,10 +351,10 @@ In the case, the `inventory` received a request with a JWT in the
 `Authorization` header, so you must propagate that header to the `system`
 service.
 
-In the `org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
-Config property for the inventory service, specify the `Authorization` header.
+Add the [hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
+Config property for the inventory service and specify the [hotspot=propagateHeaders file=3]`Authorization` header.
 
-[role="code_command hotspot file=1", subs="quotes"]
+[role="code_command hotspot file=3", subs="quotes"]
 ----
 #Replace the microprofile-config.properties file.#
 `inventory/src/main/webapp/META-INF/microprofile-config.properties`
@@ -332,6 +368,13 @@ The `inventory` service will now propagate the Authorization header, which conta
 // =================================================================================================
 
 == Manually accessing JWT claims
+
+// File 0
+JwtResource.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
+----
 
 The previous section showed how to implement role-based access control with the
 `@RolesAllowed` annotation, which automatically reads from the `groups` claim of
@@ -356,10 +399,9 @@ JwtResource.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
 ----
 
-In this case you are using the `getName()` and `getGroups()` accessors of the
-`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of
-accessors for different claims, including how to access custom claims added when
-the JWT was built, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
+In this case you are using the [hotspot=getName file=0]`getName()` and [hotspot=getGroups file=0]`getGroups()` accessors of the
+[hotspot=jsonWebToken file=0]`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of
+accessors for different claims, including how to access custom claims, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
 
 // =================================================================================================
 // Building and running the application

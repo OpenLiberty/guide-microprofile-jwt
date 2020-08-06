@@ -24,24 +24,23 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 
-// tag::RegisterRestClient[]
 @RegisterRestClient(configKey = "systemClient", baseUri = "https://localhost:8443/system")
-// end::RegisterRestClient[]
+
 
 @Path("/properties")
-@RegisterClientHeaders //Add in guide, and other requirements for header propagation
-// tag::SystemClient[]
-// tag::AutoCloseable[]
+// tag::registerClientHeaders[]
+@RegisterClientHeaders 
+// end::registerClientHeaders[]
 public interface SystemClient extends AutoCloseable {
-// end::AutoCloseable[]
+
 
   @GET
-  // tag::Produces[]
+
   @Produces(MediaType.APPLICATION_JSON)
-  // end::Produces[]
-  // tag::getProperties[]
+
+
   public Properties getProperties() throws ProcessingException;
-  // end::getProperties[]
+
 }
-// end::SystemClient[]
-// end::client[]
+
+

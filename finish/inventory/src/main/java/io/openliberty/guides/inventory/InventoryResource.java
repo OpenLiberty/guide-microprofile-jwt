@@ -25,22 +25,19 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Context;
-
-// tag::RequestScoped[]
 @RequestScoped
-// end::RequestScoped[]
 @Path("/systems")
 public class InventoryResource {
 
-  // tag::Inject[]
   @Inject
   InventoryManager manager;
-  // end::Inject[]
 
   @GET
   @Path("/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowed[]
   @RolesAllowed({ "admin" })
+  // end::rolesAllowed[]
   public Response getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
     // Get properties
     Properties props = manager.get(hostname);
@@ -50,7 +47,6 @@ public class InventoryResource {
                      + "may not be running on " + hostname + "\" }")
                      .build();
     }
-
     // Add to inventory
     manager.add(hostname, props);
     return Response.ok(props).build();
@@ -58,7 +54,9 @@ public class InventoryResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowed[]
   @RolesAllowed({ "admin"})
+  // end::rolesAllowed[]
   public InventoryList listContents() {
     return manager.list();
   }

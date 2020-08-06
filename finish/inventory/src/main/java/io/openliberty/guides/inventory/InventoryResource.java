@@ -25,6 +25,9 @@ import io.openliberty.guides.inventory.model.InventoryList;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Context;
+// tag::jsonWebToken[]
+import org.eclipse.microprofile.jwt.JsonWebToken;
+// end::jsonWebToken[]
 @RequestScoped
 @Path("/systems")
 public class InventoryResource {
@@ -32,13 +35,16 @@ public class InventoryResource {
   @Inject
   InventoryManager manager;
 
+  @Inject
+  private JsonWebToken jwtPrincipal;
+
   @GET
-  @Path("/{hostname}")
+  @Path("/add/{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowed[]
-  @RolesAllowed({ "admin" })
+  @RolesAllowed({ "admin", "user" })
   // end::rolesAllowed[]
-  public Response getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
+  public Response addPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
     // Get properties
     Properties props = manager.get(hostname);
     if (props == null) {
@@ -51,6 +57,17 @@ public class InventoryResource {
     manager.add(hostname, props);
     return Response.ok(props).build();
   }
+  @GET
+  @Path("/get/{hostname}")
+  @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowed[]
+  @RolesAllowed({ "admin", "user" })
+  // end::rolesAllowed[]
+  public Properties getPropertiesForHost(@PathParam("hostname") String hostname, @Context HttpHeaders httpHeaders) {
+    // Get properties
+    Properties props = manager.get(hostname);
+    return props;
+  }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -60,4 +77,25 @@ public class InventoryResource {
   public InventoryList listContents() {
     return manager.list();
   }
+
+  // tag::getJwtUsername[]
+  @GET
+  @Path("/username")
+  public Response getJwtUsername() {
+    // tag::getName[]
+    return Response.ok(this.jwtPrincipal.getName()).build();
+    // end::getName[]
+  }
+  // end::getJwtUsername[]
+
+  // tag::getJwtGroups[]
+  @GET
+  @Path("/groups")
+  public Response getJwtGroups() {
+    // tag::getGroups[]
+    return Response.ok(this.jwtPrincipal.getGroups().toString()).build();
+    // end::getGroups[]
+  }
+  // end::getJwtGroups[]
+
 }

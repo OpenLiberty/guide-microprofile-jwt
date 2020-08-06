@@ -42,7 +42,7 @@ public class ApplicationBean {
   public String getOs() {
     String authHeader = getJwt();
     if (ServiceUtils.responseOk(authHeader)) {
-      JsonObject properties = ServiceUtils.getProperties(authHeader);
+      JsonObject properties = ServiceUtils.getProperties("localhost", authHeader);
       return properties.getString("os.name");
     }
     return "You are not authorized to access the system service.";

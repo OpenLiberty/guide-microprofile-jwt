@@ -283,7 +283,7 @@ include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource
 
 // File 1
 InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
+[source, java, linenums, role='code_column hide_tags=copyright,getJwtUsername,getJwtGroups']
 ----
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
@@ -370,10 +370,10 @@ The `inventory` service will now propagate the `Authorization` header, which con
 == Manually accessing JWT claims
 
 // File 0
-JwtResource.java
+InventoryResource.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
 The previous section showed how to implement role-based access control with the
@@ -383,17 +383,17 @@ the JWT and makes an authorization decision.
 If you wish to manually access the claims of the JWT, perhaps to provide more
 granual access control, MicroProfile JWT provides you with "get style" accessors.
 
-Create a new service that uses these accessors to read the `upn` (unique principal name, or user name) and `groups`
+Update the `inventory` service to use these accessors to read the `upn` (unique principal name, or user name) and `groups`
 claim of the incoming JWT. Show that this information was able to be retrived
 by exposing endpoints that provide this information back to the frontend. 
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `JwtResource` class.#
-`inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java`
+#Update the `InventoryResource` class.#
+`inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-JwtResource.java
+InventoryResource.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]

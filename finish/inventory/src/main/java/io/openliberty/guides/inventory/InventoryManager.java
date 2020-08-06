@@ -48,15 +48,11 @@ public class InventoryManager {
   @ConfigProperty(name = "system.http.port", defaultValue="8443")
   String DEFAULT_PORT;
 
-  // tag::Inject[]
+
   @Inject
-  // end::Inject[]
-  // tag::RestClient[]
   @RestClient
-  // end::RestClient[]
-  // tag::SystemClient[]
   private SystemClient defaultRestClient;
-  // end::SystemClient[]
+
 
   public Properties get(String hostname) {
 	Properties properties = null;
@@ -85,9 +81,7 @@ public class InventoryManager {
   private Properties getPropertiesWithDefaultHostName() {
 	return defaultRestClient.getProperties();
   }
-  // end::getPropertiesWithDefaultHostName[]
 
-  // tag::getPropertiesWithGivenHostName[]
   private Properties getPropertiesWithGivenHostName(String hostname) {
 	String customURIString = "https://" + hostname + ":" + DEFAULT_PORT + "/system";
     URI customURI = null;
@@ -103,8 +97,6 @@ public class InventoryManager {
     }
     return null;
   }
-
-  // tag::getPropertiesWithDefaultHostName[]
 
   private void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ExceptionUtils.getRootCause(ex);

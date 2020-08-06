@@ -39,9 +39,8 @@ public class ServiceUtils {
   private static final String INVENTORY_JWT_ENDPOINT = "/inventory/jwt";
   private static final String SYSTEM_PROPERTIES_ENDPOINT = "/system/properties";
 
-  public static JsonObject getProperties(String authHeader) {
-    String propUrl = buildUrl(SECURED_PROTOCOL, SYSTEM_HOSTNAME, SYSTEM_PORT,
-        SYSTEM_PROPERTIES_ENDPOINT);
+  public static JsonObject getProperties(String hostname, String authHeader) {
+    String propUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/get/" + hostname);;
     return getJsonFromUrl(propUrl, authHeader);
   }
 
@@ -52,19 +51,19 @@ public class ServiceUtils {
   }
 
   public static JsonObject addSystem(String hostname, String authHeader) {
-    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/" + hostname);
+    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/add/" + hostname);
     return getJsonFromUrl(invUrl, authHeader);
   }
 
   public static String getJwtRoles(String authHeader) {
     String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
-        INVENTORY_JWT_ENDPOINT + "/groups");
+        INVENTORY_HOSTS_ENDPOINT + "/groups");
     return getStringFromUrl(url, authHeader);
   }
 
   public static String getJwtUsername(String authHeader) {
     String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
-        INVENTORY_JWT_ENDPOINT + "/username");
+        INVENTORY_HOSTS_ENDPOINT + "/username");
     return getStringFromUrl(url, authHeader);
   }
 

@@ -65,7 +65,7 @@ propagated and verified during the communication between two services.
 A JSON Web Token is a self contained token designed to securely transmit information as a JSON object.
 The information in this JSON object is digitally signed and can be trusted and verified by the recipient. 
 
-A JWT contains 3 different parts, a header, a payload, and a signature with each
+A JWT contains 3 different parts, a header, a payload, and a signature, with each
 part being seperated by a dot (`.`). An encoded token takes the following form:
 
 `xxxxx.yyyyy.zzzzz`
@@ -86,15 +86,15 @@ In our case, we will be using JWTs to authenticate a user, allowing them to make
 authorized requests to backend services. 
 
 The user will sign into the frontend application using a username and password,
-at which point a JWT will be created and signed using a private key stored in
-the frontend. The frontend will then make requests to the backend services with
-the JWT included in the `Authorization` header of the request. The backend
-services, which are secured, will examine the JWT included with the request and
-use the frontends public key to verify the signature of the JWT to ensure that
-the request did in fact come from the authorized frontend and wasn't changed
-along the way. After a JWT has been validated, the information stored the claims
-of the JWT, such as the user's role, can be trusted and will be used to determine
-which services the requesting user has access to in the backend.
+at which point a JWT will be created by the frontend and signed using a private
+key. The frontend will then make requests to the backend services with the JWT
+included in the `Authorization` header of the request. The backend services,
+which are secured, will examine the JWT included with the request and use the
+frontends public key to verify the signature of the JWT to ensure that the
+request did in fact come from the authorized frontend. After a JWT has been
+validated, the information in the claims of the JWT, such as the user's
+role, can be trusted and will be used to determine which services the requesting
+user has access to in the backend.
 
 
 // =================================================================================================
@@ -161,7 +161,7 @@ access the inventory service`, as the role does not have sufficient privileges.
 Additionally, the `name` and `groups` claim of the JWT are read by the inventory
 service and are exposed to the frontend to be displayed.
 
-You can try accessing these services without a JWT by entering the inventoryURL,
+You can try accessing these services without a JWT by entering the inventory URL,
 https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
 or the system URL,
 https://localhost:8443/system/properties[https://localhost:8443/system/properties]
@@ -216,7 +216,7 @@ following goal to start the `system` service in `dev` mode:
 mvn liberty:dev
 ```
 
-When you run Open Liberty in dev mode, the server listens for file changes and
+When you run Open Liberty in `dev` mode, the server listens for file changes and
 automatically recompiles and deploys your updates whenever you save a new
 change.
 
@@ -251,11 +251,11 @@ Next, configure the `mpJwt` feature in the `microprofile-config.properties` file
 This has already been done for you in the `system` service.
 
 The `mp.jwt.verify.issuer` config property specifies what the expected value of
-the `iss` (issuer) claim on an incoming token is. Incoming tokens with an issuer
+the `iss` (issuer) claim is on an incoming JWT. Incoming JWTs with an issuer
 claim different from this expected value are not considered valid.
 
 The `mp.jwt.verify.publickey.location` config properties specifies the location
-of the public key to be used to validate the an incoming token's signature. In
+of the public key to be used to validate the an incoming JWT's signature. In
 this case, the `frontend` service, where our JWT is built, provides an endpoint
 to retrieve the public signing key.
 
@@ -274,7 +274,7 @@ Create the `SystemResource` class.
 `inventory/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
-This class has role-based access control. Role names that are used in the
+This class has role-based access control. The role names that are used in the
 [hotspot=RolesAllowed]`@RolesAllowed` annotation are mapped to group names in
 the `groups` claim of the JWT, which results in an authorization decision
 wherever the security constraint is applied.
@@ -359,7 +359,7 @@ include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResou
 In this case you are using the `getName()` and `getGroups()` accessors of the
 `org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of
 accessors for different claims, including how to access custom claims added when
-the JWT was built, check out the MP-JWT documentation [add link].
+the JWT was built, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
 
 // =================================================================================================
 // Building and running the application
@@ -369,11 +369,7 @@ the JWT was built, check out the MP-JWT documentation [add link].
 
 Because you are running the `system` and `inventory` in `dev` mode, the changes you made have been automatically picked up. You can now checkout your application in the browser.
 
-Use the following endpoint to get to the login page of your application:
-
-* http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]
-
-Use one of the following credentials to log in:
+Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Use one of the following credentials to log in:
 
 |===
 | *Username* | *Password* | *Role*
@@ -382,20 +378,24 @@ Use one of the following credentials to log in:
 | carl | carlpwd | user
 |===
 
-Once you log in, you can see some basic information retrieved from the backend
-services. Remember that if you log in as a `user` without the `admin` role, you
-cannot see the inventory size because you do not have permission.
+Once you log in, you can see some information retrieved from the backend
+services. If you successfully implemented role-based access, you can see that if
+you log in as a `user` role without `admin`, you won't have access to the
+inventory size. 
 
-As before, you can enter the inventory URL,
+You can also see the values of the `name` and `groups` claims in the rows labels
+`Name:` and `Roles:`. Again, these are being read from the JWT and sent back to
+the frontend to be displayed.
+
+You can check that the backend systems are secured against unauthenticated
+requests by entering inventory URL,
 https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
 or the system URL,
-https://localhost:8443/system/properties[https://localhost:8443/system/properties]
-directly into your browser to check that they are secured against users making a
-request without a valid JWT included.
+https://localhost:8443/system/properties[https://localhost:8443/system/properties].
 
-Once you are logged, you should see your JWT displayed in the bottom row labeled `JSON Web Token`.
+In the frontend you should see your JWT displayed in the bottom row labeled `JSON Web Token`.
 
-To see the information that this JWT holds, you can enter it into the JWT.io website[https://jwt.io^], which includes a token reader.
+To see the specific information that this JWT holds, you can enter it into the https://JWT.io[JWT.io website^], which includes a token reader.
 
 You will be able to see the different claims in the payload of your token:
 

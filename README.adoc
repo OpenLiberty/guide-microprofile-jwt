@@ -60,8 +60,6 @@ propagated and verified during the communication between two services.
 
 == JSON Web Tokens for authorization and authentication
 
-=== What is a JSON Web Token
-
 A JSON Web Token is a self contained token designed to securely transmit information as a JSON object.
 The information in this JSON object is digitally signed and can be trusted and verified by the recipient. 
 
@@ -79,8 +77,6 @@ information you would like to transmit.
 
 The signature is used to verify that the message wasn't changed along the way, and
 can verify that the sender of the JWT is who it says it is.
-
-=== JSON Web Tokens for Authorization and Authentication
 
 In our case, we will be using JWTs to authenticate a user, allowing them to make
 authorized requests to backend services. 

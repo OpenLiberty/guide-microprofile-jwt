@@ -13,25 +13,22 @@
 // tag::jwt[]
 package io.openliberty.guides.ui;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
-import io.openliberty.guides.ui.models.SystemModel;
-import io.openliberty.guides.ui.util.ServiceUtils;
 import io.openliberty.guides.ui.util.SessionUtils;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-@ManagedBean
-@ViewScoped
-public class ApplicationBean {
 
-  private String hostname;
+@ApplicationScoped
+@Named
+public class ApplicationBean{
+
+  @Inject
+  @RestClient
+  private SystemClient defaultRestClient;
 
   public String getJwt() {
     String jwtTokenString = SessionUtils.getJwtToken();
@@ -41,53 +38,28 @@ public class ApplicationBean {
 
   public String getOs() {
     String authHeader = getJwt();
-    if (ServiceUtils.responseOk(authHeader)) {
-      JsonObject properties = ServiceUtils.getProperties("localhost", authHeader);
-      return properties.getString("os.name");
-    }
-    return "You are not authorized to access the system service.";
+    // Likely need try and catch
+    String os = defaultRestClient.getOS(authHeader);
+    return os;
   }
 
-  public String getInventorySize() {
+    public String getUsername() {
+    System.out.println("ApplicationBean/getUsername");
     String authHeader = getJwt();
-    if (ServiceUtils.invOk(authHeader)) {
-      JsonObject properties = ServiceUtils.getInventory(authHeader);
-      return String.valueOf(properties.getInt("total"));
-    }
-    return "You are not authorized to access the inventory service.";
+    System.out.println(defaultRestClient);
+    return defaultRestClient.getUsername(authHeader);
   }
 
-  public List<SystemModel> getInventoryList() {
+  public String getJwtRoles() {
     String authHeader = getJwt();
-    if (ServiceUtils.invOk(authHeader)) {
-      JsonArray systems = ServiceUtils.getInventory(authHeader).getJsonArray("systems");
-      return systems.stream().map(s -> new SystemModel((JsonObject) s)).collect(Collectors.toList());
-    }
-
-    return Collections.emptyList();
+    String jwtRoles = defaultRestClient.getJwtRoles(authHeader);
+    return jwtRoles;
   }
 
-  public String getHostname() {
-    return hostname;
-  }
-
-  public void setHostname(String hostname) {
-    this.hostname = hostname;
-    String authHeader = getJwt();
-
-    if (ServiceUtils.invOk(authHeader)) {
-      ServiceUtils.addSystem(hostname, authHeader);
-    }
-  }
-
-  public String getUsername() {
-    String authHeader = getJwt();
-    return ServiceUtils.getJwtUsername(authHeader);
-  }
-
-  public String getUserRole() {
-    String authHeader = getJwt();
-    return ServiceUtils.getJwtRoles(authHeader);
-  }
+  // public String getJwtName() {
+  //   String authHeader = getJwt();
+  //   String jwtName = defaultRestClient.getJwtName(authHeader);
+  //   return jwtName;
+  // }
 }
 // end::jwt[]

@@ -17,15 +17,25 @@ import java.util.Set;
 import java.util.HashSet;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 
 import com.ibm.websphere.security.jwt.*;
+
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
 import io.openliberty.guides.ui.util.SessionUtils;
 
-@ManagedBean
-@ViewScoped
+// @ManagedBean
+// @ViewScoped
+@ApplicationScoped
+@Named
 public class LoginBean {
+
+    @RestClient
+  private SystemClient defaultRestClient;
 
     private String username;
     private String password;

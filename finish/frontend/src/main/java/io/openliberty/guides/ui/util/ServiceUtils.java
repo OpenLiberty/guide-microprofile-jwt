@@ -24,46 +24,49 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.net.URI;
+import java.util.List;
+import java.util.Set;
 
 public class ServiceUtils {
-  
-  private static final String SECURED_PROTOCOL = "https";
+
+  private static final String SECURED_PROTOCOL = "http";
   private static final String INVENTORY_HOSTNAME = System.getProperty("inventory.hostname");
   private static final String SYSTEM_HOSTNAME = System.getProperty("system.hostname");
   private static final int INVENTORY_PORT = Integer.valueOf(System.getProperty("inventory.https.port"));
-  private static final int SYSTEM_PORT = Integer.valueOf(System.getProperty("system.https.port"));
+  private static final int SYSTEM_PORT = 8080;// Integer.valueOf(System.getProperty("system.https.port"));
   private static final String INVENTORY_HOSTS_ENDPOINT = "/inventory/systems";
   private static final String INVENTORY_JWT_ENDPOINT = "/inventory/jwt";
-  private static final String SYSTEM_PROPERTIES_ENDPOINT = "/system/properties";
+  private static final String SYSTEM_PROPERTIES_ENDPOINT = "/system/properties/os";
 
   public static JsonObject getProperties(String hostname, String authHeader) {
-    String propUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/get/" + hostname);;
+    String propUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
+        INVENTORY_HOSTS_ENDPOINT + "/get/" + hostname);
+    ;
     return getJsonFromUrl(propUrl, authHeader);
   }
 
   public static JsonObject getInventory(String authHeader) {
-    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
-        INVENTORY_HOSTS_ENDPOINT);
+    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT);
     return getJsonFromUrl(invUrl, authHeader);
   }
 
   public static JsonObject addSystem(String hostname, String authHeader) {
-    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/add/" + hostname);
+    String invUrl = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
+        INVENTORY_HOSTS_ENDPOINT + "/add/" + hostname);
     return getJsonFromUrl(invUrl, authHeader);
   }
 
   public static String getJwtRoles(String authHeader) {
-    String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
-        INVENTORY_HOSTS_ENDPOINT + "/groups");
+    String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/groups");
     return getStringFromUrl(url, authHeader);
   }
 
   public static String getJwtUsername(String authHeader) {
-    String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT,
-        INVENTORY_HOSTS_ENDPOINT + "/username");
+    String url = buildUrl(SECURED_PROTOCOL, INVENTORY_HOSTNAME, INVENTORY_PORT, INVENTORY_HOSTS_ENDPOINT + "/username");
     return getStringFromUrl(url, authHeader);
   }
 

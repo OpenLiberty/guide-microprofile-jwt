@@ -47,6 +47,11 @@ MicroProfile JWT standards define the required format of JWT for authentication
 and authorization. The standards also map JWT token claims to various Java EE
 container APIs and make the set of claims available through getters.
 
+
+You will be working with 2 services, a frontend service and a backend `system`
+service. The frontend service logs a user in, and makes authorized requests to
+the secured `system` service using JWTs.
+
 The application that you will be working with is an `inventory` service, which
 stores the information about various JVMs that run on different systems.
 Whenever a request is made to the `inventory` service to retrieve the JVM system
@@ -83,6 +88,17 @@ authorized requests to backend services.
 
 The user will sign into the frontend application using a username and password,
 at which point a JWT will be created by the frontend and signed using a private
+key. The frontend will then make requests to the backend `system` service with the JWT
+included in the `Authorization` header of the requests. The `system` service,
+which is secured, will examine the JWT included with the request and use the
+frontends public key to verify the signature of the JWT to ensure that the
+request did in fact come from the authorized frontend. After a JWT has been
+validated, the information in the claims of the JWT, such as the user's role,
+can be trusted and will be used to determine which system properties the user
+has access to in the backend.
+
+The user will sign into the frontend application using a username and password,
+at which point a JWT will be created by the frontend and signed using a private
 key. The frontend will then make requests to the backend services with the JWT
 included in the `Authorization` header of the request. The backend services,
 which are secured, will examine the JWT included with the request and use the
@@ -111,22 +127,14 @@ build your own.
 
 To try out the application, first navigate to the `finish` directory.
 
-Execute the following command from the `frontend` directory to run a script that
-starts the frontend module in the background.
-
-[role='command']
-```
-./startFrontend.sh
-```
-
-Next, navigate out of the `frontend` directory and into the `inventory` directory and run the following goal:
+Run the following Maven goal to build the application and deploy it to Open Liberty:
 
 [role='command']
 ```
 mvn liberty:run
 ```
 
-In a new tab of your command-line session, navigate to the `system` directory and run the following goal:
+In a new tab of your command-line session, navigate to the `system` directory and run the following Maven goal:
 
 [role='command']
 ```
@@ -146,39 +154,30 @@ Log in with one of the following user information credentials:
 | carl | carlpwd | user
 |===
 
-You will be redirected to a page that displays some information. The frontend
-requests the inventory size and current OS from the `inventory` service. To get
-the current OS, the `inventory` make a request to the `system` service. Both of
-the `inventory` and `system` services are secured and require a valid JWT to be in the request's
-header. 
+You will be redirected to a page that displays some information that the
+frontend has requeted from the `system` service. If you log in as an `admin`
+user, the current OS will be shown. If you log in as a `user`, you will instead
+see the message `You are not authorized to access this system property`, as the
+`user` role does not have sufficient privileges.
 
-If you log in as an `admin` user, the current inventory size appears and
-can add systems to this inventory using the interface beneath the bottom row. If
-you log in as a `user`, you will instead see the message, `You are not
-authorized to access the inventory service`, as the role does not have
-sufficient privileges. 
+Additionally, the `groups` claim of the JWT are read by the system service nad
+requested by the frontend to be displayed.
 
-Additionally, the `upn` (unique principal name, or username) and `groups` claim
-of the JWT are read by the inventory service and are requested by the frontend
-to be displayed.
-
-You can try accessing these services without a JWT by entering the inventory URL,
-https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
-or the system URL,
-https://localhost:8443/system/properties[https://localhost:8443/system/properties]
-directly into your browser. You can see that you are not able to access them
+You can try accessing these services without a JWT by entering the system endpoint 
+https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+directly into your browser. You can see that you are not able to access it
 because you didn't supply a valid JWT with the request. The following error
-will appear in the command-line sessions of the services you tried to
-access:
+will appear in the command-line session of the `system service:
 
 [source, role="no_copy"]
 ----
 [ERROR] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
 ----
 
-When you are done with the application, stop both the `inventory` and `system`
+When you are done with the application, stop both the `frontend` and `system`
 services  by pressing CTRL+C in the command-line session where you ran them.
-Afterward, run the `liberty:stop` goal from the `frontend` directory.
+Alternatively, you can run the `liberty:stop` goal from the `frontend` and
+`system` directories in another shell session:
 
 [role='command']
 ```
@@ -195,66 +194,54 @@ mvn liberty:stop
 server.xml
 [source, xml, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/inventory/src/main/liberty/config/server.xml[]
+include::finish/system/src/main/liberty/config/server.xml[]
 ----
 
 // File 1
 microprofile-config.properties
 [source, text, linenums, role="code_column hide_tags=propagateHeaders"]
 ----
-include::finish/inventory/src/main/webapp/META-INF/microprofile-config.properties[]
+include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
-Navigate to the `start` directory.
+Navigate to the `start` directory to begin.
 
-Execute the following command from the `frontend` directory to
-run a script that starts the frontend module in the background.
-
-[role='command']
-```
-./startFrontend.sh
-```
-
-Next, navigate out of the `frontend` directory and into the `inventory`
-directory and run the following goal to start the `inventory` service in `dev` mode:
-
-[role='command']
-```
-mvn liberty:dev
-```
-
-In a new tab of your command-line session, navigate to the `system` directory and run the
-following goal to start the `system` service in `dev` mode:
-
-[role='command']
-```
-mvn liberty:dev
-```
-
-When you run Open Liberty in `dev` mode, the server listens for file changes and
+When you run Open Liberty in dev mode, the server listens for file changes and
 automatically recompiles and deploys your updates whenever you save a new
-change.
+change. Navigate to the `frontend` and run the following goal to start the
+`frontend` service in dev mode:
 
-First add the MicroProfile JWT feature to the server configuration file for
-the `inventory` service. 
+[role='command']
+```
+mvn liberty:dev
+```
+
+In a new tab of your command-line session, navigate to the `system` directory
+and run the following goal to start the `system` service in dev mode:
+
+[role='command']
+```
+mvn liberty:dev
+```
+
+First, add the MicroProfile JWT feature to the server configuration file for
+the `system` service. 
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Replace the inventory server configuration file.#
-`inventory/src/main/liberty/config/server.xml`
+#Replace the system server configuration file.#
+`system/src/main/liberty/config/server.xml`
 ----
-
-This has already been done for you in the `system` service.
 
 The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
 
-Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `inventory` service.
+Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the microprofile-config.properties file.#
-`inventory/src/main/webapp/META-INF/microprofile-config.properties`
+`system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
 This has already been done for you in the `system` service.
@@ -270,7 +257,7 @@ to retrieve the public signing key.
 
 
 // =================================================================================================
-// Creating secure system and inventory services
+// Creating secure system service
 // =================================================================================================
 
 == Creating secure system and inventory services
@@ -289,119 +276,96 @@ InventoryResource.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
-// File 2
-SystemClient.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java[]
-----
-
-// File 3
-microprofile-config.properties
-[source, text, linenums, role="code_column"]
-----
-include::finish/inventory/src/main/webapp/META-INF/microprofile-config.properties[]
-----
-
-Create the `SystemResource` class.
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the `SystemResource` class.#
-`system/src/main/java/io/openliberty/guides/system/SystemResource.java`
-----
-
 This class has role-based access control. The role names that are used in the
 [hotspot=rolesAllowed file=0]`@RolesAllowed` annotation are mapped to group names in
 the `groups` claim of the JWT, which results in an authorization decision
 wherever the security constraint is applied.
 
-The [hotspot=rolesAllowed file=0]`@RolesAllowed({"admin, "user"})` annotation allows only authenticated users with the role of `admin` or `user` to access the `system` service.
-Therefore, this service is properly secured.
+The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annoted with the
+[hotspot=rolesAllowedAdminUser file=0]`@RolesAllowed({"admin, "user"})`
+annotation. Only authenticated users with the role of `admin` or `user` to
+can access this endpoint.
 
-Next, create the `InventoryResource` class.
+The [hotspot=osEndpoint file=0]`/os` endpoint returns the system's OS. The
+[hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation is limited to
+`admin` meaning only authenticated users with the role of `admin` are able to
+access the endpoint.
 
-[role="code_command hotspot file=1", subs="quotes"]
+The `@RolesAllowed` annotation automatically reads from the `groups` claim of
+the JWT to make an authorization decision. If you wish to manually access the
+claims of the JWT, perhaps to provide more granual access control, MicroProfile
+JWT provides you with the [hotspot=claim file=0]`@Claim` annotation. In this
+case, the `"groups"` claim is injected into the [hotspot=rolesArray
+file=0]`roles` JSON array. These roles parsed from the `"groups"` claim of the
+JWT are then exposed back to the frontend at the [hotspot=rolesEndpoint
+file=0]`/jwtRoles` endpoint. To reade more about different claims and ways to access them, check out the 
+https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT
+documentation^].
+
+// =================================================================================================
+// Creating a client to access the secure server
+// =================================================================================================
+
+== Creating a client to access the secure server
+
+// File 0
+SystemClient.java
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
-#Create the `InventoryResource` class.#
-`inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
+include::finish/frontend/src/main/java/io/openliberty/guides/frontend/client/SystemClient.java[]
 ----
 
-In this class, the [hotspot=rolesAllowed file=1]`@RolesAllowed` annotation is limited to `admin` meaning only authenticated users with the role of `admin` are able to access the `inventory` service
+// File 1
+ApplicationBean.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java[]
+----
 
 Create a RESTful client interface for the `system` service. 
 
-[role="code_command hotspot file=2", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `SystemClient` class.#
-`inventory/src/main/java/io/openliberty/guides/inventory/client/SystemClient.java`
+`frontend/src/main/java/io/openliberty/guides/frontend/client/SystemClient.java`
 ----
+
+This interface declares methods for accessing each of the endpoints previously
+set up for the `system` service. 
 
 The MicroProfile Rest Client feature automatically builds and generates a client
-implementation based on what is defined in the `SystemClient` interface. There is
+implementation based on what is defined in the [hotspot=systemClient file=0]`SystemClient` interface. There is
 no need to set up the client and connect with the remote service.
 
-As stated previously, because the `system` service is secure, requests made to
-it must include a JWT in the header. In this case, the `inventory` receives
-requests with a JWT in the `Authorization` header, so you must propagate that
-header to the `system` service what making requests to it.
+As stated previously, because the `system` service is secured, requests made to
+it must include a valid JWT in the `Authorization` header. The
+[hotspot=headerParam1 hotspot=headerParam1 hotspot=headerParam1
+file=0]`@HeaderParam` annotation is used to specify that the value of the
+`String authorization` parameter of this method is to be sent in the `Authorization`
+header of requests made through the client. 
 
-The [hotspot=registerClientHeaders file=2]`@RegisterClientHeaders` annotation
-instructs the client to propagate the headers specified in the MicroProfile
-Config property [hotspot=propagateHeaders
-file=3]`org.eclipse.microprofile.rest.client.propagateHeaders`.
+Next, create the application bean that the frontend UI uses to request data.
 
-Add the [hotspot=propagateHeaders file=3]`org.eclipse.microprofile.rest.client.propagateHeaders` MicroProfile
-Config property for the inventory service and specify the `Authorization` header.
-
-[role="code_command hotspot file=3", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
-#Replace the microprofile-config.properties file.#
-`inventory/src/main/webapp/META-INF/microprofile-config.properties`
+#Create the `ApplicationBean` class.#
+`frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java`
 ----
 
-The `inventory` service will now propagate the `Authorization` header, which contains the JWT, to the `system` service. 
-
-
-// =================================================================================================
-// Manually accessing JWT claims
-// =================================================================================================
-
-== Manually accessing JWT claims
-
-// File 0
-InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
-----
-
-In the previous section you implemented role-based access control with the
-`@RolesAllowed` annotation, which automatically reads from the `groups` claim of
-the JWT and makes an authorization decision.
-
-If you wish to manually access the claims of the JWT, perhaps to provide more
-granual access control, MicroProfile JWT provides you with "get" style accessors.
-
-Update the `inventory` service to use these provided accessors to read the `upn` (unique principal name, or user name) and `groups`
-claim of the incoming JWT. Show that this information was able to be retrived
-by exposing endpoints that provide this information back to the frontend. 
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Update the `InventoryResource` class.#
-`inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
-----
-
-InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/JwtResource.java[]
-----
-
-In this case you are using the [hotspot=getName file=0]`getName()` and [hotspot=getGroups file=0]`getGroups()` accessors of the
-[hotspot=jsonWebToken file=0]`org.eclipse.microprofile.jwt.JsonWebToken` class. To see a full list of
-accessors for different claims, including how to access custom claims, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
+The application bean provides the methods used by the web app to populate the
+table in the UI. The web app code has already been given to you. The methods
+[hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`,
+and [hotspot=getJwtRoles file=1]`getJwtRoles()` each of call thier associated
+method of [hotspot=restClient file=1]`defaultRestClient`, an injected instance
+of the `SystemClient` class you created, which makes a request to the `system`
+service for data. Passed in as a paramter to these methods is
+[hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
+file=1]`authHeader`, or the authentication header, which is the JWT with `Bearer
+` prepended to it. The JWT is retreived from the session attributes using the
+[hotspot=getJwt file=1]`getJwt()` method. When the authentication header is
+passed into the `[hotspot=restClient file=1]`defaultRestClient` methods, it is
+added to the `Authorization` header of the associated requests made to the
+`system` service.
 
 // =================================================================================================
 // Building and running the application
@@ -409,7 +373,7 @@ accessors for different claims, including how to access custom claims, check out
 
 == Building and running the application
 
-Because you are running the `system` and `inventory` in `dev` mode, the changes you made have been automatically picked up. You can now checkout your application in the browser.
+Because you are running the `frontend` and `system` services in `dev` mode, the changes you made have been automatically picked up. You can now checkout your application in the browser.
 
 Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Use one of the following credentials to log in:
 
@@ -420,20 +384,19 @@ Navigate your browser to the front end web application endpoint: http://localhos
 | carl | carlpwd | user
 |===
 
-Once you log in, you can see some information retrieved from the backend
-services. If you successfully implemented role-based access, you can see that if
+Once you log in, you can see the information retrieved from the `system`
+service. If you successfully implemented role-based access, you can see that if
 you log in as a `user` role without `admin`, you won't have access to the
-inventory size. 
+OS. 
 
-You can also see the values of the `upn` and `groups` claims in the top two
-rows. Again, these are being read from the JWT and sent back to the frontend to
+You can also see the value of the `groups` claim in the row labeled `Roles:`
+Again, this are being read from the JWT and sent back to the frontend to
 be displayed.
 
-You can check that the backend systems are secured against unauthenticated
-requests by entering inventory URL,
-https://localhost:9443/inventory/systems[https://localhost:9443/inventory/systems],
-or the system URL,
-https://localhost:8443/system/properties[https://localhost:8443/system/properties].
+You can check that the `system` service is secured against unauthenticated
+requests by entering the system endpoint
+https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+directly into your browser. 
 
 In the frontend you should see your JWT displayed in the bottom row labeled `JSON Web Token`.
 
@@ -465,7 +428,7 @@ And you can see the payload which contains the claims:
 }
 ----
 
-You can read more about the specific of these claims in the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
+You can read more about these of these claims in the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^]
 
 // =================================================================================================
 // Testing the application

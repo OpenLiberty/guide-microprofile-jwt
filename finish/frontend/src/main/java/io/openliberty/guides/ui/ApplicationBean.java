@@ -27,38 +27,50 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 @Named
 public class ApplicationBean{
 
+  // tag::restClient[]
   @Inject
   @RestClient
   private SystemClient defaultRestClient;
-
+  // end::restClient[]
+  // tag::getJwt[]
   public String getJwt() {
     String jwtTokenString = SessionUtils.getJwtToken();
     String authHeader = "Bearer " + jwtTokenString;
     return authHeader;
   }
-
+  // end::getJwt[]
+  // tag::getOs[]
   public String getOs() {
+    // tag::authHeader1
     String authHeader = getJwt();
+    // end::authHeader1
     String os;
     try {
       os = defaultRestClient.getOS(authHeader);
     } catch(Exception e) {
       System.out.println(e);
-      return "User does not have access to OS property";
+      return "You are not authorized to access this system property";
     }
     return os;
   }
-
+  // end::getOs[]
+  // tag::getUsername[]
     public String getUsername() {
+    // tag::authHeader2
     String authHeader = getJwt();
+    // end::authHeader2
     System.out.println(defaultRestClient);
     return defaultRestClient.getUsername(authHeader);
   }
-
+  // end::getUsername[]
+  // tag::getJwtRoles[]
   public String getJwtRoles() {
+    // tag::authHeader3
     String authHeader = getJwt();
+    // end::authHeader3
     String jwtRoles = defaultRestClient.getJwtRoles(authHeader);
     return jwtRoles;
   }
+  // end::getJwtRoles[]
 }
 // end::jwt[]

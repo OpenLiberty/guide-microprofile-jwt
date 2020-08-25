@@ -28,31 +28,40 @@ import org.eclipse.microprofile.jwt.Claim;
 public class SystemResource {
 
   @Inject
+  // tag::claim
   @Claim("groups")
+  // end::claim
+  // tag::rolesArray
   private JsonArray roles;
-
+  // end::rolesArray
   @GET
-  @Path("/os")
-  @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowed[]
-  @RolesAllowed({ "admin" })
-  // end::rolesAllowed[]
-  public String getOS() {
-    return System.getProperties().getProperty("os.name");
-  }
-
-  @GET
+  // tag::usernameEndpoint
   @Path("/username")
+  // end::usernameEndpoint
   @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowed[]
+  // tag::rolesAllowedAdminUser[]
   @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowed[]
+  // end::rolesAllowedAdminUser[]
   public String getUsername() {
     return System.getProperties().getProperty("user.name");
   }
 
   @GET
+  // tag::osEndpoint
+  @Path("/os")
+  // end::osEndpoint
+  @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowedAdmin[]
+  @RolesAllowed({ "admin" })
+  // end::rolesAllowedAdmin[]
+  public String getOS() {
+    return System.getProperties().getProperty("os.name");
+  }
+
+  @GET
+  // tag::rolesEndpoint
   @Path("/jwtroles")
+  // end::rolesEndpoint
   @Produces(MediaType.APPLICATION_JSON)
   @RolesAllowed({ "admin", "user" })
   public String getRoles() {

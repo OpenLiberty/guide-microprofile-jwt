@@ -33,11 +33,11 @@ import java.util.Set;
 
 public class ServiceUtils {
 
-  private static final String SECURED_PROTOCOL = "http";
+  private static final String SECURED_PROTOCOL = "https";
   private static final String INVENTORY_HOSTNAME = System.getProperty("inventory.hostname");
   private static final String SYSTEM_HOSTNAME = System.getProperty("system.hostname");
   private static final int INVENTORY_PORT = Integer.valueOf(System.getProperty("inventory.https.port"));
-  private static final int SYSTEM_PORT = 8080;// Integer.valueOf(System.getProperty("system.https.port"));
+  private static final int SYSTEM_PORT = Integer.valueOf(System.getProperty("system.https.port"));
   private static final String INVENTORY_HOSTS_ENDPOINT = "/inventory/systems";
   private static final String INVENTORY_JWT_ENDPOINT = "/inventory/jwt";
   private static final String SYSTEM_PROPERTIES_ENDPOINT = "/system/properties/os";

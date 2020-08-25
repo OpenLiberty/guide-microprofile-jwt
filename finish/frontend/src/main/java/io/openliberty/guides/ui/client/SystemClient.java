@@ -13,7 +13,7 @@ import javax.ws.rs.HeaderParam;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@RegisterRestClient(baseUri = "http://localhost:8080/system")
+@RegisterRestClient(baseUri = "https://localhost:8443/system")
 @Path("/properties")
 @RequestScoped
 public interface SystemClient extends AutoCloseable{

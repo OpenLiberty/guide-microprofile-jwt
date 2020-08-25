@@ -39,13 +39,17 @@ public class ApplicationBean{
 
   public String getOs() {
     String authHeader = getJwt();
-    // Likely need try and catch
-    String os = defaultRestClient.getOS(authHeader);
+    String os;
+    try {
+      os = defaultRestClient.getOS(authHeader);
+    } catch(Exception e) {
+      System.out.println(e);
+      return "User does not have access to OS property";
+    }
     return os;
   }
 
     public String getUsername() {
-    System.out.println("ApplicationBean/getUsername");
     String authHeader = getJwt();
     System.out.println(defaultRestClient);
     return defaultRestClient.getUsername(authHeader);
@@ -56,11 +60,5 @@ public class ApplicationBean{
     String jwtRoles = defaultRestClient.getJwtRoles(authHeader);
     return jwtRoles;
   }
-
-  // public String getJwtName() {
-  //   String authHeader = getJwt();
-  //   String jwtName = defaultRestClient.getJwtName(authHeader);
-  //   return jwtName;
-  // }
 }
 // end::jwt[]

@@ -14,6 +14,7 @@ package io.openliberty.guides.system;
 
 import javax.json.JsonArray;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,6 +27,7 @@ import org.eclipse.microprofile.jwt.Claim;
 @Path("/properties")
 public class SystemResource {
 
+  @Inject
   @Claim("groups")
   private JsonArray roles;
 
@@ -33,7 +35,7 @@ public class SystemResource {
   @Path("/os")
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowed[]
-  @RolesAllowed({ "admin", "user" })
+  @RolesAllowed({ "admin" })
   // end::rolesAllowed[]
   public String getOS() {
     return System.getProperties().getProperty("os.name");
@@ -46,7 +48,6 @@ public class SystemResource {
   @RolesAllowed({ "admin", "user" })
   // end::rolesAllowed[]
   public String getUsername() {
-    System.out.println("SystemResource/getUsername");
     return System.getProperties().getProperty("user.name");
   }
 

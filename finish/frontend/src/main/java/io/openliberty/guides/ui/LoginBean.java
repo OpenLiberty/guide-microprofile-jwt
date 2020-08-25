@@ -19,20 +19,16 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 
 import com.ibm.websphere.security.jwt.*;
 
 import io.openliberty.guides.ui.client.SystemClient;
+import io.openliberty.guides.ui.util.SessionUtils;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import io.openliberty.guides.ui.util.SessionUtils;
 
-// @ManagedBean
-// @ViewScoped
 @ApplicationScoped
 @Named
 public class LoginBean {
@@ -63,7 +59,7 @@ public class LoginBean {
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
 
-        // do login
+        // Do login
         try {
             request.logout();
             request.login(this.username, this.password);
@@ -72,16 +68,16 @@ public class LoginBean {
             return "error.jsf";
         }
 
-        // to get remote user using getRemoteUser()
+        // To get remote user using getRemoteUser()
         String remoteUser = request.getRemoteUser();
         Set<String> roles = getRoles(request);
 
 
-        // update session
+        // Update session
         if (remoteUser != null && remoteUser.equals(username)){
 
             String jwt = buildJwt(username, roles);
-            // get the current session
+            // Get the current session
             HttpSession ses = request.getSession();
             if (ses == null) {
                 System.out.println("Session is timeout.");

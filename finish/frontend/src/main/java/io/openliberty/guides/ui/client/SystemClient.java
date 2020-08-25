@@ -1,10 +1,6 @@
 package io.openliberty.guides.ui.client;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Model;
-import javax.enterprise.inject.Typed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

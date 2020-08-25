@@ -12,18 +12,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-
-         <!-- Optional Microservice Configuration -->
-        <backend.hostname>localhost</backend.hostname>
-        <backend.http.port>5050</backend.http.port>
-        <backend.https.port>9443</backend.https.port>
-
-        <frontend.http.port>9090</frontend.http.port>
-        <frontend.https.port>9091</frontend.https.port>
-        <frontend.hostname>localhost</frontend.hostname>
-
-        <!-- JSON Web Token used for microservice authorization -->
-        <!-- <jwt.issuer>http://openliberty.io</jwt.issuer> -->
     </properties>
 
     <dependencyManagement>
@@ -73,10 +61,6 @@
                     <bootstrapProperties>
                         <server.http.port>9090</server.http.port>
                         <server.https.port>9091</server.https.port>
-                        <inventory.https.port>9443</inventory.https.port>
-                        <system.https.port>8443</system.https.port>
-                        <inventory.hostname>localhost</inventory.hostname>
-                        <system.hostname>localhost</system.hostname>
                         <application.name>frontend-1.0-SNAPSHOT.war.xml</application.name>
                         <jwt.issuer>http://openliberty.io</jwt.issuer>
                     </bootstrapProperties>

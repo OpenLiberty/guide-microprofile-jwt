@@ -141,7 +141,7 @@ In a new tab of your command-line session, navigate to the `system` directory an
 mvn liberty:run
 ```
 
-Navigate your browser to the front end web application endpoint:
+Navigate your browser to the frontend web application endpoint:
 http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
 you can log in to the application with the form-based login.
 
@@ -155,19 +155,19 @@ Log in with one of the following user information credentials:
 |===
 
 You will be redirected to a page that displays some information that the
-frontend has requeted from the `system` service. If you log in as an `admin`
-user, the current OS will be shown. If you log in as a `user`, you will instead
-see the message `You are not authorized to access this system property`, as the
-`user` role does not have sufficient privileges.
+frontend has requested from the `system` service, such as the system username.
+If you log in as an `admin` user, the current OS will also be shown. If you log in as
+a `user`, you will instead see the message `You are not authorized to access
+this system property`, as the `user` role does not have sufficient privileges.
 
-Additionally, the `groups` claim of the JWT are read by the system service nad
+Additionally, the `groups` claim of the JWT is read by the system service and
 requested by the frontend to be displayed.
 
 You can try accessing these services without a JWT by entering the system endpoint 
 https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
 directly into your browser. You can see that you are not able to access it
 because you didn't supply a valid JWT with the request. The following error
-will appear in the command-line session of the `system service:
+will appear in the command-line session of the `system` service:
 
 [source, role="no_copy"]
 ----
@@ -175,7 +175,7 @@ will appear in the command-line session of the `system service:
 ----
 
 When you are done with the application, stop both the `frontend` and `system`
-services  by pressing CTRL+C in the command-line session where you ran them.
+services  by pressing CTRL+C in the command-line sessions where you ran them.
 Alternatively, you can run the `liberty:stop` goal from the `frontend` and
 `system` directories in another shell session:
 
@@ -260,7 +260,7 @@ to retrieve the public signing key.
 // Creating secure system service
 // =================================================================================================
 
-== Creating secure system and inventory services
+== Creating secure system service
 
 // File 0
 SystemResource.java
@@ -269,17 +269,17 @@ SystemResource.java
 include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource.java[]
 ----
 
-// File 1
-InventoryResource.java
-[source, java, linenums, role='code_column hide_tags=copyright,getJwtUsername,getJwtGroups']
+[role="code_command hotspot file=0", subs="quotes"]
 ----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
+#Create the `SystemResource` class.#
+`system/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
 This class has role-based access control. The role names that are used in the
-[hotspot=rolesAllowed file=0]`@RolesAllowed` annotation are mapped to group names in
-the `groups` claim of the JWT, which results in an authorization decision
-wherever the security constraint is applied.
+[hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2
+hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation are mapped to group
+names in the `groups` claim of the JWT, which results in an authorization
+decision wherever the security constraint is applied.
 
 The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annoted with the
 [hotspot=rolesAllowedAdminUser file=0]`@RolesAllowed({"admin, "user"})`
@@ -298,28 +298,28 @@ JWT provides you with the [hotspot=claim file=0]`@Claim` annotation. In this
 case, the `"groups"` claim is injected into the [hotspot=rolesArray
 file=0]`roles` JSON array. These roles parsed from the `"groups"` claim of the
 JWT are then exposed back to the frontend at the [hotspot=rolesEndpoint
-file=0]`/jwtRoles` endpoint. To reade more about different claims and ways to access them, check out the 
+file=0]`/jwtRoles` endpoint. To read more about different claims and ways to access them, check out the 
 https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT
 documentation^].
 
 // =================================================================================================
-// Creating a client to access the secure server
+// Creating a client to access the secure system service
 // =================================================================================================
 
-== Creating a client to access the secure server
+== Creating a client to access the secure system service
 
 // File 0
 SystemClient.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/frontend/src/main/java/io/openliberty/guides/frontend/client/SystemClient.java[]
+include::finish/frontend/src/main/java/io/openliberty/guides/ui/client/SystemClient.java[]
 ----
 
 // File 1
 ApplicationBean.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java[]
+include::finish/frontend/src/main/java/io/openliberty/guides/ui/ApplicationBean.java[]
 ----
 
 Create a RESTful client interface for the `system` service. 
@@ -331,7 +331,7 @@ Create a RESTful client interface for the `system` service.
 ----
 
 This interface declares methods for accessing each of the endpoints previously
-set up for the `system` service. 
+set up in the `system` service. 
 
 The MicroProfile Rest Client feature automatically builds and generates a client
 implementation based on what is defined in the [hotspot=systemClient file=0]`SystemClient` interface. There is
@@ -341,7 +341,7 @@ As stated previously, because the `system` service is secured, requests made to
 it must include a valid JWT in the `Authorization` header. The
 [hotspot=headerParam1 hotspot=headerParam1 hotspot=headerParam1
 file=0]`@HeaderParam` annotation is used to specify that the value of the
-`String authorization` parameter of this method is to be sent in the `Authorization`
+`String authorization` parameter of this method is to be uses in the `Authorization`
 header of requests made through the client. 
 
 Next, create the application bean that the frontend UI uses to request data.
@@ -389,7 +389,7 @@ service. If you successfully implemented role-based access, you can see that if
 you log in as a `user` role without `admin`, you won't have access to the
 OS. 
 
-You can also see the value of the `groups` claim in the row labeled `Roles:`
+You can also see the value of the `groups` claim in the row labeled `Roles:`.
 Again, this are being read from the JWT and sent back to the frontend to
 be displayed.
 

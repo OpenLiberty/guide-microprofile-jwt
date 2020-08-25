@@ -39,9 +39,9 @@ public class SystemResource {
   @Path("/username")
   // end::usernameEndpoint
   @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowedAdminUser[]
+  // tag::rolesAllowedAdminUser1[]
   @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowedAdminUser[]
+  // end::rolesAllowedAdminUser1[]
   public String getUsername() {
     return System.getProperties().getProperty("user.name");
   }
@@ -63,7 +63,9 @@ public class SystemResource {
   @Path("/jwtroles")
   // end::rolesEndpoint
   @Produces(MediaType.APPLICATION_JSON)
+  // tag::rolesAllowedAdminUser2[]
   @RolesAllowed({ "admin", "user" })
+  // end::rolesAllowedAdminUser2[]
   public String getRoles() {
     return roles.toString();
   }

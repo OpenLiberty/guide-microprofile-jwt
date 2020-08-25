@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.openliberty.guides.ui.util.SessionUtils;
+import io.openliberty.guides.ui.client.SystemClient;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 

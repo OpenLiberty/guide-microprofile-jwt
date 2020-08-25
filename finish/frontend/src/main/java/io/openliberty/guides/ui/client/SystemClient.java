@@ -1,6 +1,7 @@
-package io.openliberty.guides.ui;
+package io.openliberty.guides.ui.client;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Typed;
@@ -14,7 +15,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient(baseUri = "http://localhost:8080/system")
 @Path("/properties")
-@ApplicationScoped
+@RequestScoped
 public interface SystemClient extends AutoCloseable{
  
     @GET
@@ -38,3 +39,28 @@ public interface SystemClient extends AutoCloseable{
     public String getJwtRoles(@HeaderParam("Authorization") String authorization);
 
 }
+// @Path("/properties")
+// @RequestScoped
+// public interface SystemClient{
+
+//     // public String getOS(@HeaderParam("Authorization") String authorization){
+//     //     return "test";
+//     // }
+
+//     // public String getUsername(@HeaderParam("Authorization") String authorization){
+//     //     return "test";
+//     // }
+
+//     // public String getJwtName(@HeaderParam("Authorization") String authorization){
+//     //     return "test";
+//     // }
+
+//     // public String getJwtRoles(@HeaderParam("Authorization") String authorization){
+//     //     return "test";
+//     // }
+
+//     public String getOS(@HeaderParam("Authorization") String authorization);
+//     public String getUsername(@HeaderParam("Authorization") String authorization);
+//     public String getJwtName(@HeaderParam("Authorization") String authorization);
+//     public String getJwtRoles(@HeaderParam("Authorization") String authorization);
+// }

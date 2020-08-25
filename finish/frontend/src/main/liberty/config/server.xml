@@ -11,6 +11,8 @@
         <feature>servlet-4.0</feature>
         <feature>mpJwt-1.1</feature>
         <feature>mpConfig-1.4</feature>
+        <feature>mpRestClient-1.4</feature>
+
     </featureManager>
 
     <httpEndpoint httpPort="${server.http.port}" httpsPort="${server.https.port}" 

@@ -48,16 +48,9 @@ and authorization. The standards also map JWT token claims to various Java EE
 container APIs and make the set of claims available through getters.
 
 
-You will be working with 2 services, a frontend service and a backend `system`
+You will be working with 2 services, a frontend service and a secure, backend `system`
 service. The frontend service logs a user in, and makes authorized requests to
-the secured `system` service using JWTs.
-
-The application that you will be working with is an `inventory` service, which
-stores the information about various JVMs that run on different systems.
-Whenever a request is made to the `inventory` service to retrieve the JVM system
-properties of a particular host, the `inventory` service communicates with the
-`system` service on that host to get these system properties. The JWT token gets
-propagated and verified during the communication between two services.
+the secure `system` service for JVM system properties using JWTs.
 
 // =================================================================================================
 //  JSON Web Tokens for authorization and authentication
@@ -77,37 +70,25 @@ The header contains the type of token, and the signing algorithm used.
 
 The payload contains the claims of a token. The claims are statements about the
 user and other information. Some examples of claims are `iss` (issuer), `exp`
-(expiration time), and `upn` (unique principal name, or just name). Custom claims can be added to the token to include any other
+(expiration time), and `groups` (the groups or roles of the user). Custom claims can be added to the token to include any other
 information you would like to transmit.
 
 The signature is used to verify that the message wasn't changed along the way, and
 can verify that the sender of the JWT is who it says it is.
 
 In our case, we will be using JWTs to authenticate a user, allowing them to make
-authorized requests to backend services. 
+authorized requests to the backend `system` service. 
 
 The user will sign into the frontend application using a username and password,
 at which point a JWT will be created by the frontend and signed using a private
 key. The frontend will then make requests to the backend `system` service with the JWT
 included in the `Authorization` header of the requests. The `system` service,
 which is secured, will examine the JWT included with the request and use the
-frontends public key to verify the signature of the JWT to ensure that the
+frontends public key to verify the signature of the JWT. This ensures that the
 request did in fact come from the authorized frontend. After a JWT has been
 validated, the information in the claims of the JWT, such as the user's role,
 can be trusted and will be used to determine which system properties the user
 has access to in the backend.
-
-The user will sign into the frontend application using a username and password,
-at which point a JWT will be created by the frontend and signed using a private
-key. The frontend will then make requests to the backend services with the JWT
-included in the `Authorization` header of the request. The backend services,
-which are secured, will examine the JWT included with the request and use the
-frontends public key to verify the signature of the JWT to ensure that the
-request did in fact come from the authorized frontend. After a JWT has been
-validated, the information in the claims of the JWT, such as the user's
-role, can be trusted and will be used to determine which services the requesting
-user has access to in the backend.
-
 
 // =================================================================================================
 // Getting started
@@ -175,7 +156,7 @@ will appear in the command-line session of the `system` service:
 ----
 
 When you are done with the application, stop both the `frontend` and `system`
-services  by pressing CTRL+C in the command-line sessions where you ran them.
+services by pressing CTRL+C in the command-line sessions where you ran them.
 Alternatively, you can run the `liberty:stop` goal from the `frontend` and
 `system` directories in another shell session:
 
@@ -208,7 +189,7 @@ Navigate to the `start` directory to begin.
 
 When you run Open Liberty in dev mode, the server listens for file changes and
 automatically recompiles and deploys your updates whenever you save a new
-change. Navigate to the `frontend` and run the following goal to start the
+change. Navigate to the `frontend` directory and run the following goal to start the
 `frontend` service in dev mode:
 
 [role='command']
@@ -235,7 +216,6 @@ the `system` service.
 
 The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
-
 Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
@@ -243,8 +223,6 @@ Next, configure the `mpJwt` feature in the `microprofile-config.properties` file
 #Create the microprofile-config.properties file.#
 `system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
-
-This has already been done for you in the `system` service.
 
 The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
 the `iss` (issuer) claim is on an incoming JWT. Incoming JWTs with an issuer
@@ -259,6 +237,8 @@ to retrieve the public signing key.
 // =================================================================================================
 // Creating secure system service
 // =================================================================================================
+
+Create a secure service that provides system properties to the frontend.
 
 == Creating secure system service
 
@@ -291,14 +271,14 @@ The [hotspot=osEndpoint file=0]`/os` endpoint returns the system's OS. The
 `admin` meaning only authenticated users with the role of `admin` are able to
 access the endpoint.
 
-The `@RolesAllowed` annotation automatically reads from the `groups` claim of
-the JWT to make an authorization decision. If you wish to manually access the
-claims of the JWT, perhaps to provide more granual access control, MicroProfile
-JWT provides you with the [hotspot=claim file=0]`@Claim` annotation. In this
-case, the `"groups"` claim is injected into the [hotspot=rolesArray
-file=0]`roles` JSON array. These roles parsed from the `"groups"` claim of the
-JWT are then exposed back to the frontend at the [hotspot=rolesEndpoint
-file=0]`/jwtRoles` endpoint. To read more about different claims and ways to access them, check out the 
+While the `@RolesAllowed` annotation automatically reads from the `groups` claim
+of the JWT to make an authorization decision, you can also manually access the
+claims of the JWT using the [hotspot=claim file=0]`@Claim` annotation. This can
+be useful in providing more granual access control. In this case, the
+`"groups"` claim is injected into the [hotspot=rolesArray file=0]`roles` JSON
+array. These roles parsed from the `"groups"` claim of the JWT are then exposed
+back to the frontend at the [hotspot=rolesEndpoint file=0]`/jwtRoles` endpoint.
+To read more about different claims and ways to access them, check out the
 https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT
 documentation^].
 
@@ -337,12 +317,13 @@ The MicroProfile Rest Client feature automatically builds and generates a client
 implementation based on what is defined in the [hotspot=systemClient file=0]`SystemClient` interface. There is
 no need to set up the client and connect with the remote service.
 
-As stated previously, because the `system` service is secured, requests made to
-it must include a valid JWT in the `Authorization` header. The
-[hotspot=headerParam1 hotspot=headerParam1 hotspot=headerParam1
-file=0]`@HeaderParam` annotation is used to specify that the value of the
-`String authorization` parameter of this method is to be uses in the `Authorization`
-header of requests made through the client. 
+As discussed, the `system` service is secured and requests made to it must
+include a valid JWT in the `Authorization` header. The [hotspot=headerParam1
+hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotation is
+used to specify that the value of the `String authorization` parameter of these
+methods is used as the `Authorization` header of requests made to the `system`
+service through this client. The JWT will be passed into these methods by the
+application bean, which you will create now.
 
 Next, create the application bean that the frontend UI uses to request data.
 
@@ -357,15 +338,15 @@ table in the UI. The web app code has already been given to you. The methods
 [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`,
 and [hotspot=getJwtRoles file=1]`getJwtRoles()` each of call thier associated
 method of [hotspot=restClient file=1]`defaultRestClient`, an injected instance
-of the `SystemClient` class you created, which makes a request to the `system`
-service for data. Passed in as a paramter to these methods is
-[hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
-file=1]`authHeader`, or the authentication header, which is the JWT with `Bearer
-` prepended to it. The JWT is retreived from the session attributes using the
-[hotspot=getJwt file=1]`getJwt()` method. When the authentication header is
-passed into the `[hotspot=restClient file=1]`defaultRestClient` methods, it is
-added to the `Authorization` header of the associated requests made to the
-`system` service.
+of the `SystemClient` class you created. Each of these methods make a request to
+the `system` service for data. Passed in as a paramter to these
+[hotspot=restClient file=1]`defaultRestClient` methods is [hotspot=authHeader1
+hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader`, or the
+authentication header, which is the JWT with `Bearer` prepended to it. The JWT
+is retreived from the session attributes using the [hotspot=getJwt
+file=1]`getJwt()` method. When the authentication header is passed into the
+[hotspot=restClient file=1]`defaultRestClient` methods, it is added to the
+`Authorization` header of the associated requests made to the `system` service.
 
 // =================================================================================================
 // Building and running the application

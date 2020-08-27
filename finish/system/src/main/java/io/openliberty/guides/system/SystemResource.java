@@ -34,6 +34,7 @@ public class SystemResource {
   // tag::rolesArray
   private JsonArray roles;
   // end::rolesArray
+  
   @GET
   // tag::usernameEndpoint
   @Path("/username")

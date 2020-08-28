@@ -371,7 +371,7 @@ you log in as a `user` role without `admin`, you won't have access to the
 OS. 
 
 You can also see the value of the `groups` claim in the row labeled `Roles:`.
-Again, this are being read from the JWT and sent back to the frontend to
+These are being read from the JWT and sent back to the frontend to
 be displayed.
 
 You can check that the `system` service is secured against unauthenticated

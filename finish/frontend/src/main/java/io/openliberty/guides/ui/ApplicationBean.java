@@ -41,9 +41,9 @@ public class ApplicationBean{
   // end::getJwt[]
   // tag::getOs[]
   public String getOs() {
-    // tag::authHeader1
+    // tag::authHeader1[]
     String authHeader = getJwt();
-    // end::authHeader1
+    // end::authHeader1[]
     String os;
     try {
       os = defaultRestClient.getOS(authHeader);
@@ -56,18 +56,18 @@ public class ApplicationBean{
   // end::getOs[]
   // tag::getUsername[]
     public String getUsername() {
-    // tag::authHeader2
+    // tag::authHeader2[]
     String authHeader = getJwt();
-    // end::authHeader2
+    // end::authHeader2[]
     System.out.println(defaultRestClient);
     return defaultRestClient.getUsername(authHeader);
   }
   // end::getUsername[]
   // tag::getJwtRoles[]
   public String getJwtRoles() {
-    // tag::authHeader3
+    // tag::authHeader3[]
     String authHeader = getJwt();
-    // end::authHeader3
+    // end::authHeader3[]
     String jwtRoles = defaultRestClient.getJwtRoles(authHeader);
     return jwtRoles;
   }

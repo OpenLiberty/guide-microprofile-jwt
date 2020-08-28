@@ -31,8 +31,8 @@ public interface SystemClient extends AutoCloseable{
     @GET
     @Path("/jwtroles")
     @Produces(MediaType.APPLICATION_JSON)
-    // tag::headerParam2[]
+    // tag::headerParam3[]
     public String getJwtRoles(@HeaderParam("Authorization") String authorization);
-    // end::headerParam2[]
+    // end::headerParam3[]
 }
 // end::systemClient[]

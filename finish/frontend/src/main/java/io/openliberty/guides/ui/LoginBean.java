@@ -94,7 +94,7 @@ public class LoginBean {
                          .claim("upn", userName)
                          // tag::groups[]
                          .claim("groups", roles.toArray(new String[roles.size()])) 
-                         // tag::groups[]
+                         // end::groups[]
                          .buildJwt()
                          .compact();
         // end::jwtBuilder[]

@@ -28,17 +28,17 @@ import org.eclipse.microprofile.jwt.Claim;
 public class SystemResource {
 
   @Inject
-  // tag::claim
+  // tag::claim[]
   @Claim("groups")
-  // end::claim
-  // tag::rolesArray
+  // end::claim[]
+  // tag::rolesArray[]
   private JsonArray roles;
-  // end::rolesArray
-  
+  // end::rolesArray[]
+
   @GET
-  // tag::usernameEndpoint
+  // tag::usernameEndpoint[]
   @Path("/username")
-  // end::usernameEndpoint
+  // end::usernameEndpoint[]
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowedAdminUser1[]
   @RolesAllowed({ "admin", "user" })
@@ -48,9 +48,9 @@ public class SystemResource {
   }
 
   @GET
-  // tag::osEndpoint
+  // tag::osEndpoint[]
   @Path("/os")
-  // end::osEndpoint
+  // end::osEndpoint[]
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowedAdmin[]
   @RolesAllowed({ "admin" })
@@ -60,9 +60,9 @@ public class SystemResource {
   }
 
   @GET
-  // tag::rolesEndpoint
+  // tag::rolesEndpoint[]
   @Path("/jwtroles")
-  // end::rolesEndpoint
+  // end::rolesEndpoint[]
   @Produces(MediaType.APPLICATION_JSON)
   // tag::rolesAllowedAdminUser2[]
   @RolesAllowed({ "admin", "user" })

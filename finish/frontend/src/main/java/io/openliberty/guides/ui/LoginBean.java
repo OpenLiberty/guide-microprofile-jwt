@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import java.util.Set;
@@ -21,14 +20,16 @@ import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+// tag::securityJwt[]
 import com.ibm.websphere.security.jwt.*;
+// end::securityJwt[]
 
 import io.openliberty.guides.ui.client.SystemClient;
 import io.openliberty.guides.ui.util.SessionUtils;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-
+// tag::loginBean[]
 @ApplicationScoped
 @Named
 public class LoginBean {
@@ -55,11 +56,9 @@ public class LoginBean {
     public String getPassword() {
         return password;
     }
-
+    // tag::doLogin[]
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
-
-        // Do login
         try {
             request.logout();
             request.login(this.username, this.password);
@@ -67,37 +66,40 @@ public class LoginBean {
             System.out.println("Login failed.");
             return "error.jsf";
         }
-
-        // To get remote user using getRemoteUser()
         String remoteUser = request.getRemoteUser();
         Set<String> roles = getRoles(request);
-
-
-        // Update session
         if (remoteUser != null && remoteUser.equals(username)){
-
+            
             String jwt = buildJwt(username, roles);
-            // Get the current session
+            
             HttpSession ses = request.getSession();
             if (ses == null) {
                 System.out.println("Session is timeout.");
             } else {
+                // tag::setAttribute[]
                 ses.setAttribute("jwt", jwt);
+                // end::setAttribute[]
             }
         } else {
             System.out.println("Update Sessional JWT Failed.");
         }
         return "application.jsf?faces-redirect=true";
     }
-
+    // end::doLogin[]
+    // tag::buildJwt[]
   private String buildJwt(String userName, Set<String> roles) throws Exception {
+      // tag::jwtBuilder[]
         return JwtBuilder.create("jwtFrontEndBuilder")
                          .claim(Claims.SUBJECT, userName)
-                         .claim("upn", userName) // MP-JWT defined subject claim
-                         .claim("groups", roles.toArray(new String[roles.size()])) // MP-JWT builds an array from this
+                         .claim("upn", userName)
+                         // tag::groups[]
+                         .claim("groups", roles.toArray(new String[roles.size()])) 
+                         // tag::groups[]
                          .buildJwt()
                          .compact();
+        // end::jwtBuilder[]
     }
+    // end::buildJwt[]
 
     private Set<String> getRoles(HttpServletRequest request) {
         Set<String> roles = new HashSet<String>();
@@ -108,4 +110,4 @@ public class LoginBean {
         return roles;
     }
 }
-// end::jwt[]
+// end::loginBean[]

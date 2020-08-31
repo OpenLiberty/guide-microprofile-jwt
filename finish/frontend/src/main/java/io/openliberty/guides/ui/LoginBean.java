@@ -88,8 +88,9 @@ public class LoginBean {
     // end::doLogin[]
     // tag::buildJwt[]
   private String buildJwt(String userName, Set<String> roles) throws Exception {
-      // tag::jwtBuilder[]
+        // tag::jwtBuilder[]
         return JwtBuilder.create("jwtFrontEndBuilder")
+        // end::jwtBuilder[]
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName)
                          // tag::groups[]
@@ -97,7 +98,7 @@ public class LoginBean {
                          // end::groups[]
                          .buildJwt()
                          .compact();
-        // end::jwtBuilder[]
+        
     }
     // end::buildJwt[]
 

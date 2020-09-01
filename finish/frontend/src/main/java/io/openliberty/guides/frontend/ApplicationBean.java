@@ -60,7 +60,6 @@ public class ApplicationBean {
         // tag::authHeader2[]
         String authHeader = getJwt();
         // end::authHeader2[]
-        System.out.println(defaultRestClient);
         return defaultRestClient.getUsername(authHeader);
     }
     // end::getUsername[]

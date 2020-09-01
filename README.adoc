@@ -160,7 +160,8 @@ will appear in the command-line session of the `system` service:
 
 When you are done with the application, stop both the `frontend` and `system`
 services by pressing CTRL+C in the command-line sessions where you ran them.
-Alternatively, you can run the following goals from the `finish` directory.
+Alternatively, you can run the following goals from the `finish` directory in
+another command-line session:
 
 [role='command']
 ```

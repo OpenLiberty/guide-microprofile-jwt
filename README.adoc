@@ -96,11 +96,7 @@ has access to in the backend.
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 
-// =================================================================================================
-// Try what you'll build
-// =================================================================================================
-
-== Try what you'll build
+=== Try what you'll build
 
 The `finish` directory contains the finished JWT security implementation for the
 services in the application. You can try the finished application before you
@@ -115,12 +111,19 @@ Run the following Maven goal from the `frontend` directory to build the applicat
 mvn liberty:run
 ```
 
-In a new tab of your command-line session, navigate to the `system` directory and run the following Maven goal:
+Open another command-line session, navigate to the `system` directory and run the following Maven goal:
 
 [role='command']
 ```
 mvn liberty:run
 ```
+
+After you see the following message in both command-line sessions, both of your services are ready:
+
+[source, role="no_copy"]
+----
+The defaultServer server is ready to run a smarter planet.
+----
 
 Navigate your browser to the frontend web application endpoint:
 http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
@@ -197,7 +200,7 @@ change. Navigate to the `frontend` directory and run the following goal to start
 mvn liberty:dev
 ```
 
-In a new tab of your command-line session, navigate to the `system` directory
+Open another command-line session, navigate to the `system` directory
 and run the following goal to start the `system` service in dev mode:
 
 [role='command']

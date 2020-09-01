@@ -56,9 +56,11 @@ public class LoginBean {
     public String getPassword() {
         return password;
     }
+
     // tag::doLogin[]
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
+        
         try {
             request.logout();
             request.login(this.username, this.password);
@@ -66,12 +68,11 @@ public class LoginBean {
             System.out.println("Login failed.");
             return "error.jsf";
         }
+
         String remoteUser = request.getRemoteUser();
         Set<String> roles = getRoles(request);
         if (remoteUser != null && remoteUser.equals(username)){
-            
             String jwt = buildJwt(username, roles);
-            
             HttpSession ses = request.getSession();
             if (ses == null) {
                 System.out.println("Session is timeout.");
@@ -87,6 +88,7 @@ public class LoginBean {
     }
     // end::doLogin[]
     // tag::buildJwt[]
+    
   private String buildJwt(String userName, Set<String> roles) throws Exception {
         // tag::jwtBuilder[]
         return JwtBuilder.create("jwtFrontEndBuilder")

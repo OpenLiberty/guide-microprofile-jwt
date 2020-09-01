@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.openliberty.guides</groupId>
-    <artifactId>guide-microprofile-rest-client</artifactId>
+    <artifactId>guide-microprofile-jwt</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 

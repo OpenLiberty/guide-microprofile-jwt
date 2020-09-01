@@ -49,7 +49,6 @@ public class ApplicationBean {
         try {
             os = defaultRestClient.getOS(authHeader);
         } catch(Exception e) {
-            System.out.println(e);
             return "You are not authorized to access this system property";
         }
         return os;

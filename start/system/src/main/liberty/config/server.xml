@@ -8,9 +8,6 @@
     <feature>mpRestClient-1.4</feature>
     <feature>appSecurity-3.0</feature>
     <feature>servlet-4.0</feature>
-    <!-- tag::mpJwt[] -->
-    <feature>mpJwt-1.1</feature>
-    <!-- end::mpJwt[] -->
   </featureManager>
 
   <variable name="default.http.port" defaultValue="8080"/>
@@ -19,7 +16,7 @@
   <!-- This is the keystore that will be used by SSL and by JWT.
          The keystore is built using the maven keytool plugin -->
     <keyStore id="defaultKeyStore" password="secret"/>
-  
+
   <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}"
                 id="defaultHttpEndpoint"/>
 

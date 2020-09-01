@@ -160,12 +160,12 @@ will appear in the command-line session of the `system` service:
 
 When you are done with the application, stop both the `frontend` and `system`
 services by pressing CTRL+C in the command-line sessions where you ran them.
-Alternatively, you can run the `liberty:stop` goal from the `frontend` and
-`system` directories in another shell session:
+Alternatively, you can run the following goals from the `finish` directory.
 
 [role='command']
 ```
-mvn liberty:stop
+mvn -pl system liberty:stop
+mvn -pl frontend liberty:stop
 ```
 
 // =================================================================================================

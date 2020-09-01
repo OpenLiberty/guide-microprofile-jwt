@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.ui;
+package io.openliberty.guides.frontend;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -24,10 +24,10 @@ import javax.inject.Named;
 import com.ibm.websphere.security.jwt.*;
 // end::securityJwt[]
 
-import io.openliberty.guides.ui.client.SystemClient;
-import io.openliberty.guides.ui.util.SessionUtils;
-
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import io.openliberty.guides.frontend.client.SystemClient;
+import io.openliberty.guides.frontend.util.SessionUtils;
 
 // tag::loginBean[]
 @ApplicationScoped

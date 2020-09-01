@@ -11,7 +11,7 @@
  *******************************************************************************/
 // end::copyright[]
 // tag::jwt[]
-package io.openliberty.guides.ui.util;
+package io.openliberty.guides.frontend.util;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;

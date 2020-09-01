@@ -1,4 +1,4 @@
-package io.openliberty.guides.ui.models;
+package io.openliberty.guides.frontend.models;
 
 import javax.json.JsonObject;
 

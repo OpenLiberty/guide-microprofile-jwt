@@ -1,4 +1,4 @@
-package io.openliberty.guides.ui.client;
+package io.openliberty.guides.frontend.client;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
@@ -28,6 +28,7 @@ public interface SystemClient extends AutoCloseable{
     // tag::headerParam2[]
     public String getUsername(@HeaderParam("Authorization") String authorization);
     // end::headerParam2[]
+    
     @GET
     @Path("/jwtroles")
     @Produces(MediaType.APPLICATION_JSON)

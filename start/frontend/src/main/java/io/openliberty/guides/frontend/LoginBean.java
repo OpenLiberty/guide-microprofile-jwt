@@ -1,3 +1,4 @@
+// tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,8 @@
  * Contributors:
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
-package io.openliberty.guides.ui;
+// end::copyright[]
+package io.openliberty.guides.frontend;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -18,13 +20,16 @@ import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+// tag::securityJwt[]
 import com.ibm.websphere.security.jwt.*;
-
-import io.openliberty.guides.ui.client.SystemClient;
-import io.openliberty.guides.ui.util.SessionUtils;
+// end::securityJwt[]
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import io.openliberty.guides.frontend.client.SystemClient;
+import io.openliberty.guides.frontend.util.SessionUtils;
+
+// tag::loginBean[]
 @ApplicationScoped
 @Named
 public class LoginBean {
@@ -52,6 +57,7 @@ public class LoginBean {
         return password;
     }
 
+    // tag::doLogin[]
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
         
@@ -71,22 +77,32 @@ public class LoginBean {
             if (ses == null) {
                 System.out.println("Session is timeout.");
             } else {
+                // tag::setAttribute[]
                 ses.setAttribute("jwt", jwt);
+                // end::setAttribute[]
             }
         } else {
             System.out.println("Update Sessional JWT Failed.");
         }
         return "application.jsf?faces-redirect=true";
     }
-
+    // end::doLogin[]
+    // tag::buildJwt[]
+    
   private String buildJwt(String userName, Set<String> roles) throws Exception {
+        // tag::jwtBuilder[]
         return JwtBuilder.create("jwtFrontEndBuilder")
+        // end::jwtBuilder[]
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName)
+                         // tag::groups[]
                          .claim("groups", roles.toArray(new String[roles.size()])) 
+                         // end::groups[]
                          .buildJwt()
-                         .compact();   
+                         .compact();
+        
     }
+    // end::buildJwt[]
 
     private Set<String> getRoles(HttpServletRequest request) {
         Set<String> roles = new HashSet<String>();
@@ -97,3 +113,4 @@ public class LoginBean {
         return roles;
     }
 }
+// end::loginBean[]

@@ -10,16 +10,16 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.ui;
+package io.openliberty.guides.frontend;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import io.openliberty.guides.ui.util.SessionUtils;
-import io.openliberty.guides.ui.client.SystemClient;
-
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import io.openliberty.guides.frontend.client.SystemClient;
+import io.openliberty.guides.frontend.util.SessionUtils;
 
 
 @ApplicationScoped

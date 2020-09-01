@@ -303,21 +303,21 @@ documentation^].
 SystemClient.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/frontend/src/main/java/io/openliberty/guides/ui/client/SystemClient.java[]
+include::finish/frontend/src/main/java/io/openliberty/guides/frontend/client/SystemClient.java[]
 ----
 
 // File 1
 ApplicationBean.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/frontend/src/main/java/io/openliberty/guides/ui/ApplicationBean.java[]
+include::finish/frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java[]
 ----
 
 // File 2
 LoginBean.java
 [source, java, linenums, role='code_column hide_tags=copyright']
 ----
-include::finish/frontend/src/main/java/io/openliberty/guides/ui/LoginBean.java[]
+include::finish/frontend/src/main/java/io/openliberty/guides/frontend/LoginBean.java[]
 ----
 
 Create a RESTful client interface for the `system` service. 

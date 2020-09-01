@@ -1,4 +1,3 @@
-// tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -9,23 +8,30 @@
  * Contributors:
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
-// end::copyright[]
-// tag::jwt[]
 package io.openliberty.guides.ui;
 
 import java.util.Set;
 import java.util.HashSet;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import com.ibm.websphere.security.jwt.*;
+
+import io.openliberty.guides.ui.client.SystemClient;
 import io.openliberty.guides.ui.util.SessionUtils;
 
-@ManagedBean
-@ViewScoped
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+@ApplicationScoped
+@Named
 public class LoginBean {
+
+    @Inject
+    @RestClient
+    private SystemClient defaultRestClient;
 
     private String username;
     private String password;
@@ -48,8 +54,7 @@ public class LoginBean {
 
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
-
-        // do login
+        
         try {
             request.logout();
             request.login(this.username, this.password);
@@ -58,16 +63,10 @@ public class LoginBean {
             return "error.jsf";
         }
 
-        // to get remote user using getRemoteUser()
         String remoteUser = request.getRemoteUser();
         Set<String> roles = getRoles(request);
-
-
-        // update session
         if (remoteUser != null && remoteUser.equals(username)){
-
             String jwt = buildJwt(username, roles);
-            // get the current session
             HttpSession ses = request.getSession();
             if (ses == null) {
                 System.out.println("Session is timeout.");
@@ -83,10 +82,10 @@ public class LoginBean {
   private String buildJwt(String userName, Set<String> roles) throws Exception {
         return JwtBuilder.create("jwtFrontEndBuilder")
                          .claim(Claims.SUBJECT, userName)
-                         .claim("upn", userName) // MP-JWT defined subject claim
-                         .claim("groups", roles.toArray(new String[roles.size()])) // MP-JWT builds an array from this
+                         .claim("upn", userName)
+                         .claim("groups", roles.toArray(new String[roles.size()])) 
                          .buildJwt()
-                         .compact();
+                         .compact();   
     }
 
     private Set<String> getRoles(HttpServletRequest request) {
@@ -98,4 +97,3 @@ public class LoginBean {
         return roles;
     }
 }
-// end::jwt[]

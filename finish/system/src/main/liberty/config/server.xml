@@ -6,11 +6,11 @@
     <feature>cdi-2.0</feature>
     <feature>mpConfig-1.4</feature>
     <feature>mpRestClient-1.4</feature>
+    <feature>appSecurity-3.0</feature>
+    <feature>servlet-4.0</feature>
     <!-- tag::mpJwt[] -->
     <feature>mpJwt-1.1</feature>
     <!-- end::mpJwt[] -->
-    <feature>appSecurity-3.0</feature>
-    <feature>servlet-4.0</feature>
   </featureManager>
 
   <variable name="default.http.port" defaultValue="8080"/>

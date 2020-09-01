@@ -63,50 +63,13 @@
     <h:panelGrid class="table" columns="2" border="3">
            <h:panelGroup>Name:</h:panelGroup>
            <h:panelGroup>#{applicationBean.username}</h:panelGroup>
-           <h:panelGroup>Roles:</h:panelGroup>
-           <h:panelGroup>#{applicationBean.userRole}</h:panelGroup>
            <h:panelGroup>Current OS:</h:panelGroup>
            <h:panelGroup>#{applicationBean.os}</h:panelGroup>
-           <h:panelGroup>Inventory Size:</h:panelGroup>
-           <h:panelGroup id="invSize">#{applicationBean.inventorySize}</h:panelGroup>
+           <h:panelGroup>Roles:</h:panelGroup>
+           <h:panelGroup>#{applicationBean.jwtRoles}</h:panelGroup>
            <h:panelGroup>JSON Web Token:</h:panelGroup>
            <h:panelGroup>#{applicationBean.jwt}</h:panelGroup>
     </h:panelGrid>
-
-    <div id="flexContainer">
-      <h:panelGroup id="systemTable">
-        <h2>Systems</h2>
-        <table>
-          <tr>
-            <th>Hostname</th>
-            <th>Username</th>
-            <th>OS Name</th>
-          </tr>
-          <ui:repeat var="sys" value="#{applicationBean.inventoryList}">
-            <tr>
-              <td>
-                <h:outputText value="#{sys.hostname}" />
-              </td>
-              <td>
-                <h:outputText value="#{sys.username}" />
-              </td>
-              <td>
-                  <h:outputText value="#{sys.osName}" />
-              </td>
-            </tr>
-          </ui:repeat>
-        </table>
-      </h:panelGroup>
-
-      <h:form id="addSystemForm">
-        <h2>Add System</h2>
-        <h:inputText pt:placeholder="hostname" id="hostname" value="#{applicationBean.hostname}"></h:inputText>
-        <h:commandButton value="Add System">
-          <f:ajax execute="hostname" render="invSize systemTable" />
-        </h:commandButton>
-      </h:form>
-    </div>
-
-
+    
 </body>
 </html>

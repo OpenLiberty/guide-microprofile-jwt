@@ -208,6 +208,13 @@ and run the following goal to start the `system` service in dev mode:
 mvn liberty:dev
 ```
 
+After you see the following message, your application server in dev mode is ready:
+
+[source, role="no_copy"]
+----
+Press the Enter key to run tests on demand.
+----
+
 Add the MicroProfile JWT feature to the server configuration file for
 the `system` service. 
 

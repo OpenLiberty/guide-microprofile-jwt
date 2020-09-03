@@ -12,19 +12,12 @@
 // end::comment[]
 package it.io.openliberty.guides.system;
 
-import java.util.Set;
-import java.util.HashSet;
-import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
-import org.junit.jupiter.api.Test;
-import com.ibm.websphere.security.jwt.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +34,6 @@ public class SystemEndpointIT {
     @Test 
     public void testSecureEndpoint() {
         Client client = ClientBuilder.newClient();
-        client.register(JsrJsonpProvider.class);
         Response response = client.target(urlOS).request().get();
         assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlOS);
         response.close();
@@ -85,7 +77,6 @@ public class SystemEndpointIT {
 
     private Response makeRequest(String url, String authHeader) {
         Client client = ClientBuilder.newClient();
-        client.register(JsrJsonpProvider.class);
         Builder builder = client.target(url).request();
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         builder.header(HttpHeaders.AUTHORIZATION, authHeader);

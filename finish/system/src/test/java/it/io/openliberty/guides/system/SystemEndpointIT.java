@@ -49,7 +49,6 @@ public class SystemEndpointIT {
 
     @Test
     public void testOSEndpoint() {
-
         Response response = makeRequest(urlOS, authHeaderAdmin);
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlOS);
         assertEquals(System.getProperty("os.name"), response.readEntity(String.class), "The system property for the local and remote JVM should match");
@@ -62,7 +61,6 @@ public class SystemEndpointIT {
 
     @Test
     public void testUsernameEndpoint() {
-
         Response response = makeRequest(urlUsername, authHeaderAdmin);
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
 
@@ -74,7 +72,6 @@ public class SystemEndpointIT {
 
     @Test
     public void testRolesEndpoint() {
-
         Response response = makeRequest(urlRoles, authHeaderAdmin);
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
         assertEquals("[\"admin\",\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);

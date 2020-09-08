@@ -18,7 +18,6 @@
     <httpEndpoint httpPort="${server.http.port}" httpsPort="${server.https.port}" 
                   id="defaultHttpEndpoint" />
 
-    <!-- The keystore for SSL is built using the maven keytool plugin -->
     <keyStore id="defaultKeyStore" password="secret" />
 
     <basicRegistry id="basic" realm="WebRealm">

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import it.io.openliberty.guides.system.utils.jwtBuilder;
+import it.io.openliberty.guides.system.utils.JwtBuilder;
 
 public class SystemEndpointIT {
 
@@ -36,8 +36,8 @@ public class SystemEndpointIT {
 
     @BeforeAll
     private static void testJWT() throws Exception{
-        authHeaderAdmin = "Bearer " + new jwtBuilder().createAdminJwt("testUser");
-        authHeaderUser = "Bearer " + new jwtBuilder().createUserJwt("testUser");
+        authHeaderAdmin = "Bearer " + new JwtBuilder().createAdminJwt("testUser");
+        authHeaderUser = "Bearer " + new JwtBuilder().createUserJwt("testUser");
     }
 
     @Test 

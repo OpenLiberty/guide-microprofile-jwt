@@ -49,6 +49,7 @@ public class jwtBuilder {
     public String createAdminJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("admin");
+        groups.add("user");
         return createJwt(username, groups);
     }
 
@@ -74,6 +75,8 @@ public class jwtBuilder {
 
         String claimsEnc = Base64Utility.encode(claimsObj.toString().getBytes(), true);
         String headerClaimsEnc = headerEnc + "." + claimsEnc;
+
+        headerClaimsEnc = headerClaimsEnc.replace("=", "");
 
         // Open the keystore that the server will use to validate the JWT
         KeyStore ks = KeyStore.getInstance("PKCS12");

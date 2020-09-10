@@ -239,12 +239,6 @@ The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what
 the `iss` (issuer) claim is on an incoming JWT. Incoming JWTs with an issuer
 claim different from this expected value are not considered valid.
 
-The [hotspot=location file=1]`mp.jwt.verify.publickey.location` config properties specifies the location
-of the public key to be used to validate the an incoming JWT's signature. In
-this case, the `frontend` service, where our JWT is built, provides an endpoint
-to retrieve the public signing key.
-
-
 // =================================================================================================
 // Creating secure system service
 // =================================================================================================
@@ -453,7 +447,72 @@ You can read more about these of these claims in the https://github.com/eclipse/
 
 == Testing the application
 
-To-do
+// File 0
+SystemEndpointIT.java
+[source, java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java[]
+----
+
+You can manually check that the system service is secure by making requests to
+each of the endpoints with and without valid JWTs, however automated tests are a
+much better approach since they are more reliable and trigger a failure if a
+change introduces a defect.  
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `SystemEndpointIT` class.#
+`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java`
+----
+
+The tests `testOSEndpoint()`[hotspot=os file=0],
+`testUsernameEndpoint()`[hotspot=username file=0], and
+`testRolesEndpoint()`[hotspot=roles file=0] test the `/os`, `/username`, and
+`/roles` endpoints, respectively.
+
+
+Each tests makes 3 requests to its associated endpoint: one with a JWT with the
+`admin`[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
+file=0] role, one with a JWT with the just the `user`[hotspot=userRequest1
+hotspot=userRequest2 hotspot=userRequest3 file=0] role, and a third with `no
+JWT`[hotspot=nojwtRequest1 hotspot=nojwtRequest1 hotspot=nojwtRequest1 file=0]
+at all. The responses of these requests are checked for correctness based on the
+role-based access rules for that endpoint. The `admin` requests should be
+successful on all endpoints, the `user` requests should be denied by `/os`
+endpoint but go through on the `/username` and `/jwtroles`, and the requests
+that don't have a JWT should be denied access to all endpoints.
+
+=== Running the tests
+
+Since you started Open Liberty in dev mode, press the enter/return key from the
+`system` directory to run the tests. You will see the following output:
+
+[source, role="no_copy"]
+----
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running it.io.openliberty.guides.system.SystemEndpointIT
+[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.648 s - in it.io.openliberty.guides.system.SystemEndpointIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+----
+
+When you are finished testing the application, stop both the `frontend` and `system`
+services by pressing CTRL+C in the command-line sessions where you ran them.
+Alternatively, you can run the following goals from the `start` directory in
+another command-line session:
+
+[role='command']
+```
+mvn -pl system liberty:stop
+mvn -pl frontend liberty:stop
+```
 
 // =================================================================================================
 // Great work! You're done!

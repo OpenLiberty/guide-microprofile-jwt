@@ -41,49 +41,73 @@ public class SystemEndpointIT {
     }
 
     @Test
+    // tag::os[]
     public void testOSEndpoint() {
+        // tag::adminRequest1[]
         Response response = makeRequest(urlOS, authHeaderAdmin);
+        // tag::adminRequest1[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlOS);
         assertEquals(System.getProperty("os.name"), response.readEntity(String.class), "The system property for the local and remote JVM should match");
 
+        // tag::userRequest1[]
         response = makeRequest(urlOS, authHeaderUser);
+        // end::userRequest1[]
         assertEquals(403, response.getStatus(), "Incorrect response code from " + urlOS);
 
+        // tag::nojwtRequest1[]
         response = makeRequest(urlOS, null);
-        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlOS);
+        // end::nojwtRequest1[]
+        assertEquals(401, response.getStatus(), "Incorrect response code from " + urlOS);
 
         response.close();
     }
+    // end::os[]
 
     @Test
+    // tag::username[]
     public void testUsernameEndpoint() {
+        // tag::adminRequest2[]
         Response response = makeRequest(urlUsername, authHeaderAdmin);
+        // tag::adminRequest2[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
-
+        
+        // tag::userRequest2[]
         response = makeRequest(urlUsername, authHeaderUser);
+        // end::userRequest2[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
 
+        // tag::nojwtRequest2[]
         response = makeRequest(urlUsername, null);
-        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlUsername);
+        // end::nojwtRequest2[]
+        assertEquals(401, response.getStatus(), "Incorrect response code from " + urlUsername);
 
         response.close();
     }
+    // end::username[]
 
     @Test
+    // tag::roles[]
     public void testRolesEndpoint() {
+        // tag::adminRequest3[]
         Response response = makeRequest(urlRoles, authHeaderAdmin);
+        // end::adminRequest3[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
         assertEquals("[\"admin\",\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);
 
+        // tag::userRequest3[]
         response = makeRequest(urlRoles, authHeaderUser);
+        // end::userRequest3[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
         assertEquals("[\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);
 
+        // tag::nojwtRequest3[]
         response = makeRequest(urlRoles, null);
-        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlRoles);
+        // end::nojwtRequest3[]
+        assertEquals(401, response.getStatus(), "Incorrect response code from " + urlRoles);
 
         response.close();
     }
+    // end::roles[]
 
     private Response makeRequest(String url, String authHeader) {
         Client client = ClientBuilder.newClient();

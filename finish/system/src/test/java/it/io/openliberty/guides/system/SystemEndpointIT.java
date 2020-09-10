@@ -20,16 +20,25 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import it.io.openliberty.guides.system.utils.jwtBuilder;
 
 public class SystemEndpointIT {
 
-    String authHeaderAdmin = "Bearer eyJraWQiOiJZVU9RVHJQRHVuTlEyQUYxSWdRbiIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJ0b2tlbl90eXBlIjoiQmVhcmVyIiwic3ViIjoiYm9iIiwidXBuIjoiYm9iIiwiZ3JvdXBzIjpbImFkbWluIiwidXNlciJdLCJpc3MiOiJodHRwOi8vb3BlbmxpYmVydHkuaW8iLCJleHAiOjM3NTk5MTUzMDk2LCJpYXQiOjE1OTkxNTY2OTZ9.iDSwkCj_hMa3uWCa77oDbge34nTDpW4fvFWnLdA6Ai0dVloAZwP7DXHNBHGfb3_ezNBOYb3-B4Ah-yIyo8eXFZ_y65YHQnGByMrR3RIQrO3RHG_7hyZmU8gOabATIe_9g1xj8c11wJrUwXkqC78wU8-Ou-u50OpP27Ox4RMBi2b9nwCHD1Chk8xh5LWmMoQbp081Uf73zN-3YUbNpzLxZP9ZQ98DygwLneT_numbHXzbzqA0bLcry5grkBb8KSfd57cK4zUWY49523Qd5fsPLqw3rLQTYi17H438waF83dsuF9cjdimgRDlcqdiPqkRmbwsIbewjsmDgUwNYOUB1Hw";
-    String authHeaderUser = "Bearer eyJraWQiOiJZVU9RVHJQRHVuTlEyQUYxSWdRbiIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJ0b2tlbl90eXBlIjoiQmVhcmVyIiwic3ViIjoiYWxpY2UiLCJ1cG4iOiJhbGljZSIsImdyb3VwcyI6WyJ1c2VyIl0sImlzcyI6Imh0dHA6Ly9vcGVubGliZXJ0eS5pbyIsImV4cCI6Mzc1OTkxNTMxMjIsImlhdCI6MTU5OTE1NjcyMn0.GcRHU-IAhdwo3L1cwLytvrI0WVq8l-WUuYHnGq1lDV5i_-yexcE3xFbNscjVhPz9yvo58L40t6_vY93NmDOQo-uYGhBJ9fcJBNYGfzIW8-1GvAHbm_7246y4L0_KXfeoqKtiDdk_1pJpKka81CIQj3lYRrRXZWKFY6VYEppmZu-DkvQ2jCR7fCxvv475aVHWTwKNnablirJHlhEafbBSZaDQIOgOUaBtSKRUrQP-PFXobnmlhgkEyh1I8qp6X7v9LOONymo8YMp5_124rQy-JOT2bbHmspcZy_ycGnjcwUQPdCpKVze_moJ9a5f6cUyXaESi4JqI9ku4ULSTR_rz5A";
+    static String authHeaderAdmin;
+    static String authHeaderUser;
 
     String urlOS = "http://localhost:8080/system/properties/os";
     String urlUsername = "http://localhost:8080/system/properties/username";
     String urlRoles = "http://localhost:8080/system/properties/jwtroles";
+
+    @BeforeAll
+    private static void testJWT() throws Exception{
+        authHeaderAdmin = "Bearer " + new jwtBuilder().createAdminJwt("testUser");
+        authHeaderUser = "Bearer " + new jwtBuilder().createUserJwt("testUser");
+    }
 
     @Test 
     public void testSecureEndpoint() {

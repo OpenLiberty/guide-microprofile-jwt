@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import it.io.openliberty.guides.system.utils.JwtBuilder;
+import it.io.openliberty.guides.system.util.JwtBuilder;
 
 public class SystemEndpointIT {
 

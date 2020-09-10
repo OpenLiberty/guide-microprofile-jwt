@@ -12,35 +12,85 @@
 // end::comment[]
 package it.io.openliberty.guides.system;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Response;
-import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import it.io.openliberty.guides.system.util.JwtBuilder;
 
 public class SystemEndpointIT {
 
- @Test
- public void testGetProperties() {
-     String port = System.getProperty("http.port");
-     String url = "http://localhost:" + port + "/";
+    static String authHeaderAdmin;
+    static String authHeaderUser;
 
-     Client client = ClientBuilder.newClient();
-     client.register(JsrJsonpProvider.class);
+    String urlOS = "http://localhost:8080/system/properties/os";
+    String urlUsername = "http://localhost:8080/system/properties/username";
+    String urlRoles = "http://localhost:8080/system/properties/jwtroles";
 
-     WebTarget target = client.target(url + "system/properties");
-     Response response = target.request().get();
+    @BeforeAll
+    private static void testJWT() throws Exception{
+        authHeaderAdmin = "Bearer " + new JwtBuilder().createAdminJwt("testUser");
+        authHeaderUser = "Bearer " + new JwtBuilder().createUserJwt("testUser");
+    }
 
-     assertEquals(200, response.getStatus(), "Incorrect response code from " + url);
+    @Test 
+    public void testSecureEndpoint() {
+        Client client = ClientBuilder.newClient();
+        Response response = client.target(urlOS).request().get();
+        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlOS);
+        response.close();
+    }
 
-     JsonObject obj = response.readEntity(JsonObject.class);
+    @Test
+    public void testOSEndpoint() {
+        Response response = makeRequest(urlOS, authHeaderAdmin);
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlOS);
+        assertEquals(System.getProperty("os.name"), response.readEntity(String.class), "The system property for the local and remote JVM should match");
 
-     assertEquals(System.getProperty("os.name"), obj.getString("os.name"),
-                  "The system property for the local and remote JVM should match");
+        response = makeRequest(urlOS, authHeaderUser);
+        assertEquals(403, response.getStatus(), "Incorrect response code from " + urlOS);
 
-     response.close();
- }
+        response.close();
+    }
+
+    @Test
+    public void testUsernameEndpoint() {
+        Response response = makeRequest(urlUsername, authHeaderAdmin);
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
+
+        response = makeRequest(urlUsername, authHeaderUser);
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
+
+        response.close();
+    }
+
+    @Test
+    public void testRolesEndpoint() {
+        Response response = makeRequest(urlRoles, authHeaderAdmin);
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
+        assertEquals("[\"admin\",\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);
+
+        response = makeRequest(urlRoles, authHeaderUser);
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
+        assertEquals("[\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);
+
+        response.close();
+    }
+
+    private Response makeRequest(String url, String authHeader) {
+        Client client = ClientBuilder.newClient();
+        Builder builder = client.target(url).request();
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+        Response response = builder.get();
+        return response;
+    }
+    
 }

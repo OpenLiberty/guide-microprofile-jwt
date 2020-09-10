@@ -35,17 +35,9 @@ public class SystemEndpointIT {
     String urlRoles = "http://localhost:8080/system/properties/jwtroles";
 
     @BeforeAll
-    private static void testJWT() throws Exception{
+    private static void buildJWTs() throws Exception{
         authHeaderAdmin = "Bearer " + new JwtBuilder().createAdminJwt("testUser");
         authHeaderUser = "Bearer " + new JwtBuilder().createUserJwt("testUser");
-    }
-
-    @Test 
-    public void testSecureEndpoint() {
-        Client client = ClientBuilder.newClient();
-        Response response = client.target(urlOS).request().get();
-        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlOS);
-        response.close();
     }
 
     @Test
@@ -57,6 +49,9 @@ public class SystemEndpointIT {
         response = makeRequest(urlOS, authHeaderUser);
         assertEquals(403, response.getStatus(), "Incorrect response code from " + urlOS);
 
+        response = makeRequest(urlOS, null);
+        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlOS);
+
         response.close();
     }
 
@@ -67,6 +62,9 @@ public class SystemEndpointIT {
 
         response = makeRequest(urlUsername, authHeaderUser);
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlUsername);
+
+        response = makeRequest(urlUsername, null);
+        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlUsername);
 
         response.close();
     }
@@ -81,6 +79,9 @@ public class SystemEndpointIT {
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlRoles);
         assertEquals("[\"user\"]", response.readEntity(String.class), "Token groups claim incorrect " + urlRoles);
 
+        response = makeRequest(urlRoles, null);
+        assertEquals(401, response.getStatus(), "Unauthorized access granted at " + urlRoles);
+
         response.close();
     }
 
@@ -88,7 +89,9 @@ public class SystemEndpointIT {
         Client client = ClientBuilder.newClient();
         Builder builder = client.target(url).request();
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
-        builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+        if (authHeader != null) {
+            builder.header(HttpHeaders.AUTHORIZATION, authHeader);
+        }
         Response response = builder.get();
         return response;
     }

@@ -471,7 +471,7 @@ The tests `testOSEndpoint()`[hotspot=os file=0],
 `/roles` endpoints, respectively.
 
 
-Each tests makes 3 requests to its associated endpoint: one with a JWT with the
+Each test makes 3 requests to its associated endpoint: one with a JWT with the
 `admin`[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
 file=0] role, one with a JWT with the just the `user`[hotspot=userRequest1
 hotspot=userRequest2 hotspot=userRequest3 file=0] role, and a third with `no

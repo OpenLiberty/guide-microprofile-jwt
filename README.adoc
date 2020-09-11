@@ -470,16 +470,16 @@ file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
 test the `/os`, `/username`, and `/roles` endpoints, respectively.
 
 
-Each test makes 3 requests to its associated endpoint: one with a JWT with the
+Each test makes three requests to its associated endpoint: one with a JWT with the
 [hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
-file=0]`admin` role, one with a JWT with the just the [hotspot=userRequest1
+file=0]`admin` role, another with a JWT with the just the [hotspot=userRequest1
 hotspot=userRequest2 hotspot=userRequest3 file=0]`user` role, and a third with
 [hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3 file=0]`no
-JWT` at all. The responses of these requests are checked for correctness based
+JWT` at all. The responses to these requests are checked for correctness based
 on the role-based access rules for that endpoint. The `admin` requests should be
 successful on all endpoints, the `user` requests should be denied by `/os`
-endpoint but go through on the `/username` and `/jwtroles`, and the requests
-that don't have a JWT should be denied access to all endpoints.
+endpoint but go through on the `/username` and `/jwtroles` endpoints, and the requests
+that don't include a JWT should be denied access to all endpoints.
 
 === Running the tests
 

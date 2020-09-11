@@ -465,10 +465,9 @@ change introduces a defect.
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java`
 ----
 
-The tests `testOSEndpoint()`[hotspot=os file=0],
-`testUsernameEndpoint()`[hotspot=username file=0], and
-`testRolesEndpoint()`[hotspot=roles file=0] test the `/os`, `/username`, and
-`/roles` endpoints, respectively.
+The tests [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username
+file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
+test the `/os`, `/username`, and `/roles` endpoints, respectively.
 
 
 Each test makes 3 requests to its associated endpoint: one with a JWT with the

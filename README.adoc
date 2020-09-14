@@ -48,9 +48,11 @@ and authorization. The standards also map JWT token claims to various Java EE
 container APIs and make the set of claims available through getters.
 
 
-You will be working with two services, a frontend service and a secure, backend `system`
-service. The frontend service logs a user in, and makes authorized requests to
-the secure `system` service for JVM system properties using JWTs.
+You will be working with two services, a frontend service and a secure backend `system`
+service. The frontend service logs a user in, builds a JWT, and makes authorized requests to
+the secure `system` service for JVM system properties.
+
+image::JWT_Diagram.png[JWT frontend system, align="center"]
 
 // =================================================================================================
 //  JSON Web Tokens for authorization and authentication

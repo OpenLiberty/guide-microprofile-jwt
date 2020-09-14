@@ -54,7 +54,7 @@ You will be working with two services, a frontend service and a secure backend
 authorized requests to the secure `system` service for JVM system properties.
 The following diagram depicts the application that is used in this guide:
 
-image::JWT_diagram.png[JWT frontend system, align="center"]
+image::assets/JWT_diagram.png[JWT frontend system, align="center"]
 
 // =================================================================================================
 //  JSON Web Tokens for authorization and authentication

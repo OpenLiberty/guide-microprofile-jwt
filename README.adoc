@@ -351,7 +351,7 @@ Create the application bean that the frontend UI uses to request data.
 ----
 
 The application bean is used to populate the table in the frontend by making
-requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
+requests for data through [hotspot=restClient file=1]`defaultRestClient`, an
 injected instance of the [hotspot=systemClient file=0]`SystemClient` class you
 created. The methods [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
 file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` call

@@ -35,11 +35,13 @@ public class SystemEndpointIT {
 
     @BeforeAll
     private static void setup() throws Exception{
-        String urlBase = "http://" + System.getProperty("hostname") + ":" + System.getProperty("http.port") + "/system/properties";
+        String urlBase = "http://" + System.getProperty("hostname")
+                 + ":" + System.getProperty("http.port")
+                 + "/system/properties";
         urlOS = urlBase + "/os";
         urlUsername = urlBase + "/username";
         urlRoles = urlBase + "/jwtroles";
-        
+
         authHeaderAdmin = "Bearer " + new JwtBuilder().createAdminJwt("testUser");
         authHeaderUser = "Bearer " + new JwtBuilder().createUserJwt("testUser");
     }

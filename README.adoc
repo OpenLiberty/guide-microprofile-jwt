@@ -370,14 +370,14 @@ add it to the `Authorization` header of the associated requests made to the
 The application bean is used to populate the table in the frontend by making
 requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
 injected instance of the [hotspot=systemClient file=0]`SystemClient` class you
-created. The methods[hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
+created. The methods [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
 file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` call
 their associated method of the [hotspot=systemClient file=0]`SystemClient` class
 with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
-file=1]`authHeader`, passed in as a parameter. The [hotspot=authHeader1
+file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is the JWT with
-`Bearer` prepended to it and is added to the `Authorization` header of the
-requests made by the [hotspot=restClient file=1]`defaultRestClient`.
+`Bearer` prepended to it and is included in the `Authorization` header of the
+subsequent requests made by the [hotspot=restClient file=1]`defaultRestClient`.
 
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session

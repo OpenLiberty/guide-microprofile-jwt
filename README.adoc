@@ -350,23 +350,6 @@ Create the application bean that the frontend UI uses to request data.
 `frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java`
 ----
 
-The application bean provides the methods used by the web application to populate the
-table in the UI. The web application code has already been given to you. The methods
-[hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`,
-and [hotspot=getJwtRoles file=1]`getJwtRoles()` each call thier associated
-method of [hotspot=restClient file=1]`defaultRestClient`, an injected instance
-of the [hotspot=systemClient file=0]`SystemClient` class you created. Each of
-these methods make a request to the `system` service for data. Passed in as a
-paramter to these [hotspot=restClient file=1]`defaultRestClient` methods is
-[hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
-file=1]`authHeader`, or the authentication header, which is the JWT with
-`Bearer` prepended to it. As explained above, when the [hotspot=authHeader1
-hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is passed into the
-[hotspot=systemClient file=0]`SystemClient` methods, the [hotspot=headerParam1
-hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotation will
-add it to the `Authorization` header of the associated requests made to the
-`system` service.
-
 The application bean is used to populate the table in the frontend by making
 requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
 injected instance of the [hotspot=systemClient file=0]`SystemClient` class you

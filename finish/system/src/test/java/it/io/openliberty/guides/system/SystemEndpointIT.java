@@ -1,6 +1,6 @@
-//tag::comment[]
+//tag::copyright[]
 /*******************************************************************************
-* Copyright (c) 2017, 2020 IBM Corporation and others.
+* Copyright (c) 2020 IBM Corporation and others.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v1.0
 * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
 * Contributors:
 *     IBM Corporation - initial API and implementation
 *******************************************************************************/
-// end::comment[]
+// end::copyright[]
 package it.io.openliberty.guides.system;
 
 import javax.ws.rs.client.Client;
@@ -29,13 +29,17 @@ public class SystemEndpointIT {
 
     static String authHeaderAdmin;
     static String authHeaderUser;
-
-    String urlOS = "http://localhost:8080/system/properties/os";
-    String urlUsername = "http://localhost:8080/system/properties/username";
-    String urlRoles = "http://localhost:8080/system/properties/jwtroles";
+    static String urlOS;
+    static String urlUsername;
+    static String urlRoles;
 
     @BeforeAll
-    private static void buildJWTs() throws Exception{
+    private static void setup() throws Exception{
+        String urlBase = "http://" + System.getProperty("hostname") + ":" + System.getProperty("http.port") + "/system/properties";
+        urlOS = urlBase + "/os";
+        urlUsername = urlBase + "/username";
+        urlRoles = urlBase + "/jwtroles";
+        
         authHeaderAdmin = "Bearer " + new JwtBuilder().createAdminJwt("testUser");
         authHeaderUser = "Bearer " + new JwtBuilder().createUserJwt("testUser");
     }
@@ -47,7 +51,8 @@ public class SystemEndpointIT {
         Response response = makeRequest(urlOS, authHeaderAdmin);
         // end::adminRequest1[]
         assertEquals(200, response.getStatus(), "Incorrect response code from " + urlOS);
-        assertEquals(System.getProperty("os.name"), response.readEntity(String.class), "The system property for the local and remote JVM should match");
+        assertEquals(System.getProperty("os.name"), response.readEntity(String.class),
+                "The system property for the local and remote JVM should match");
 
         // tag::userRequest1[]
         response = makeRequest(urlOS, authHeaderUser);

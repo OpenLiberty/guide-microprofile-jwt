@@ -16,9 +16,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- Liberty configuration -->
+        <liberty.var.default.hostname>localhost</liberty.var.default.hostname>
         <liberty.var.default.http.port>8080</liberty.var.default.http.port>
         <liberty.var.default.https.port>8443</liberty.var.default.https.port>
-
         <jwt.issuer>http://openliberty.io</jwt.issuer>
     </properties>
 
@@ -99,6 +99,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <systemPropertyVariables>
+                        <hostname>${liberty.var.default.hostname}</hostname>
                         <http.port>${liberty.var.default.http.port}</http.port>
                     </systemPropertyVariables>
                 </configuration>

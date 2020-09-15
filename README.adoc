@@ -15,7 +15,7 @@
 :page-tags: ["MicroProfile", "Security"]
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-related-guides: ['rest-intro', 'cdi-intro']
+:page-related-guides: ["social-login', 'rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Securing Java microservices with Eclipse MicroProfile JSON Web Token (MicroProfile JWT)
@@ -34,10 +34,9 @@ You'll explore how to control user and role access to microservices with MicroPr
 
 == What you'll learn
 
-You will add MicroProfile JWT to validate security tokens in the `system` and
-`inventory` microservices. You will use a token-based authentication mechanism
-to authenticate, authorize, and verify user identities based on a security
-token.
+You will add MicroProfile JWT to validate security tokens in the `system`
+microservice. You will use a token-based authentication mechanism to
+authenticate, authorize, and verify user identities based on security tokens.
 
 For microservices, a token-based authentication mechanism offers a lightweight
 way for security controls and security tokens to propagate user identities
@@ -48,9 +47,8 @@ MicroProfile JWT standards define the required format of JWT for authentication
 and authorization. The standards also map JWT token claims to various Java EE
 container APIs and make the set of claims available through getters.
 
-
-You will be working with two services, a frontend service and a secure backend
-`system` service. The frontend service logs a user in, builds a JWT, and makes
+You will be working with two services, a `frontend` service and a secure backend
+`system` service. The `frontend` service logs a user in, builds a JWT, and makes
 authorized requests to the secure `system` service for JVM system properties.
 The following diagram depicts the application that is used in this guide:
 
@@ -68,27 +66,28 @@ The information in this JSON object is digitally signed and can be trusted and v
 A JWT contains 3 different parts, a header, a payload, and a signature, with each
 part being seperated by a dot (`.`). An encoded token takes the following form:
 
-`xxxxx.yyyyy.zzzzz`
+`hhhhh.ppppp.sssss`
 
 The header contains the type of token, and the signing algorithm used.
 
 The payload contains the claims of a token. The claims are statements about the
 user and other information. Some examples of claims are `iss` (issuer), `exp`
-(expiration time), and `groups` (the groups or roles of the user). Custom claims can be added to the token to include any other
-information you would like to transmit.
+(expiration time), and `groups` (the groups or roles of the user). Custom claims
+can be added to the token to include any other information you would like to
+transmit.
 
 The signature is used to verify that the message wasn't changed along the way, and
 can verify that the sender of the JWT is who it says it is.
 
-In our case, we will be using JWTs to authenticate a user, allowing them to make
+In this case, we will be using JWTs to authenticate a user, allowing them to make
 authorized requests to the backend `system` service. 
 
-The user will sign into the frontend application using a username and password,
+The user will sign into the `frontend` service using a username and password,
 at which point a JWT will be created by the frontend and signed using a private
 key. The frontend will then make requests to the backend `system` service with the JWT
 included in the `Authorization` header of the requests. The `system` service,
 which is secured, will examine the JWT included with the request and use the
-frontends public key to verify the signature of the JWT. This ensures that the
+frontend's public key to verify the signature of the JWT. This ensures that the
 request did in fact come from the authorized frontend. After a JWT has been
 validated, the information in the claims of the JWT, such as the user's role,
 can be trusted and will be used to determine which system properties the user
@@ -106,16 +105,16 @@ The `finish` directory contains the finished JWT security implementation for the
 services in the application. You can try the finished application before you
 build your own.
 
-To try out the application, first navigate to the `finish` directory.
+To try out the application, first navigate to the `finish/frontend` directory.
 
-Run the following Maven goal from the `frontend` directory to build the application and deploy it to Open Liberty:
+Run the following Maven goal to build the application and deploy it to Open Liberty:
 
 [role='command']
 ```
 mvn liberty:run
 ```
 
-Open another command-line session, navigate to the `system` directory and run the following Maven goal:
+Open another command-line session, navigate to the `finish/system` directory and run the following Maven goal:
 
 [role='command']
 ```
@@ -193,11 +192,10 @@ microprofile-config.properties
 include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
-Navigate to the `start` directory to begin.
 
 When you run Open Liberty in dev mode, the server listens for file changes and
 automatically recompiles and deploys your updates whenever you save a new
-change. Navigate to the `frontend` directory and run the following goal to start the
+change. Navigate to the `start/frontend` directory and run the following goal to start the
 `frontend` service in dev mode:
 
 [role='command']
@@ -205,7 +203,7 @@ change. Navigate to the `frontend` directory and run the following goal to start
 mvn liberty:dev
 ```
 
-Open another command-line session, navigate to the `system` directory
+Open another command-line session, navigate to the `start/system` directory
 and run the following goal to start the `system` service in dev mode:
 
 [role='command']
@@ -219,6 +217,8 @@ After you see the following message, your application server in dev mode is read
 ----
 Press the Enter key to run tests on demand.
 ----
+
+Navigate to the `start` directory.
 
 Add the MicroProfile JWT feature to the server configuration file for
 the `system` service. 
@@ -240,7 +240,7 @@ Next, configure the `mpJwt` feature in the `microprofile-config.properties` file
 ----
 
 The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
-the `iss` (issuer) claim is on an incoming JWT. Incoming JWTs with an issuer
+the issuer claim is on an incoming JWT. Incoming JWTs with an issuer
 claim different from this expected value are not considered valid.
 
 // =================================================================================================
@@ -249,7 +249,7 @@ claim different from this expected value are not considered valid.
 
 == Creating secure system service
 
-Create a secure service that provides system properties to the frontend.
+Create a secure service that provides system properties to the frontend `service`.
 
 // File 0
 SystemResource.java
@@ -350,8 +350,8 @@ Create the application bean that the frontend UI uses to request data.
 `frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java`
 ----
 
-The application bean provides the methods used by the web app to populate the
-table in the UI. The web app code has already been given to you. The methods
+The application bean provides the methods used by the web application to populate the
+table in the UI. The web application code has already been given to you. The methods
 [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`,
 and [hotspot=getJwtRoles file=1]`getJwtRoles()` each call thier associated
 method of [hotspot=restClient file=1]`defaultRestClient`, an injected instance
@@ -367,18 +367,29 @@ hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotation will
 add it to the `Authorization` header of the associated requests made to the
 `system` service.
 
+The application bean is used to populate the table in the frontend by making
+requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
+injected instance of the [hotspot=systemClient file=0]`SystemClient` class you
+created. The methods[hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
+file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` call
+their associated method of the [hotspot=systemClient file=0]`SystemClient` class
+with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
+file=1]`authHeader`, passed in as a parameter. The [hotspot=authHeader1
+hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is the JWT with
+`Bearer` prepended to it and is added to the `Authorization` header of the
+requests made by the [hotspot=restClient file=1]`defaultRestClient`.
+
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session
 attributed by the provided [hotspot=loginBean file=2]`LoginBean` class. When the
 user logs into the frontend, the [hotspot=doLogin file=2]`doLogin()` method is
 called which builds the JWT and [hotspot=setAttribute file=2]`setAttribute()`
-stores it as an `HttpSession` attribute. The JWT is built by the
-[hotspot=buildJwt file=2]`buildJwt()` method which uses the [hotspot=jwtBuilder
-file=2]`JwtBuilder` class included in the [hotspot=securityJwt
-file=2]`com.ibm.websphere.security.jwt` package. You can see that the
-[hotspot=groups file=2]`claim()` method is being used to set the `groups` claim
-of the token. This is the claim that is used to provide the role based access
-that you have implemented. 
+stores it as an `HttpSession` attribute. The JWT is built using the
+[hotspot=jwtBuilder file=2]`JwtBuilder`APIs in the [hotspot=buildJwt
+file=2]`buildJwt()` method. You can see that the [hotspot=groups
+file=2]`claim()` method is being used to set the `groups` claim of the token.
+This is the claim that is used to provide the role based access that you have
+implemented. 
 
 
 
@@ -417,7 +428,7 @@ In the frontend you should see your JWT displayed in the bottom row labeled `JSO
 
 To see the specific information that this JWT holds, you can enter it into the https://JWT.io[JWT.io website^], which includes a token reader.
 
-You can see the header, which contains information about the JWT:
+The token reader will show you the header, which contains information about the JWT:
 
 [source, role="no_copy"]
 ----
@@ -428,7 +439,7 @@ You can see the header, which contains information about the JWT:
 }
 ----
 
-And you can see the payload which contains the claims:
+And it will also show you the payload, which contains the claims:
 
 [source, role="no_copy"]
 ----
@@ -488,7 +499,8 @@ that don't include a JWT should be denied access to all endpoints.
 === Running the tests
 
 Since you started Open Liberty in dev mode, press the enter/return key from the
-`system` directory to run the tests. You will see the following output:
+command-line session of the `system` service to run the tests. You will see the
+following output:
 
 [source, role="no_copy"]
 ----
@@ -505,6 +517,9 @@ Since you started Open Liberty in dev mode, press the enter/return key from the
 [INFO] 
 [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
+
+The three errors in the output are expected and result from the `system` service successfully
+rejecting the requests that didn't include a JWT.
 
 When you are finished testing the application, stop both the `frontend` and `system`
 services by pressing CTRL+C in the command-line sessions where you ran them.

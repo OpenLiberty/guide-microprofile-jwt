@@ -14,15 +14,15 @@ package io.openliberty.guides.frontend;
 
 import java.util.Set;
 import java.util.HashSet;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-// tag::securityJwt[]
-import com.ibm.websphere.security.jwt.*;
-// end::securityJwt[]
+import com.ibm.websphere.security.jwt.JwtBuilder;
+import com.ibm.websphere.security.jwt.Claims;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 

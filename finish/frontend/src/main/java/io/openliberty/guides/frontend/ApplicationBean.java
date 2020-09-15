@@ -42,12 +42,12 @@ public class ApplicationBean {
     
     // tag::getOs[]
     public String getOs() {
-        // tag::authHeader1[]
         String authHeader = getJwt();
-        // end::authHeader1[]
         String os;
         try {
+            // tag::authHeader1[]
             os = defaultRestClient.getOS(authHeader);
+            // end::authHeader1[]
         } catch(Exception e) {
             return "You are not authorized to access this system property";
         }
@@ -57,20 +57,19 @@ public class ApplicationBean {
 
     // tag::getUsername[]
     public String getUsername() {
-        // tag::authHeader2[]
         String authHeader = getJwt();
-        // end::authHeader2[]
+        // tag::authHeader2[]
         return defaultRestClient.getUsername(authHeader);
+        // end::authHeader2[]
     }
     // end::getUsername[]
 
     // tag::getJwtRoles[]
     public String getJwtRoles() {
-        // tag::authHeader3[]
         String authHeader = getJwt();
+        // tag::authHeader3[]
+        return defaultRestClient.getJwtRoles(authHeader);
         // end::authHeader3[]
-        String jwtRoles = defaultRestClient.getJwtRoles(authHeader);
-        return jwtRoles;
     }
     // end::getJwtRoles[]
 

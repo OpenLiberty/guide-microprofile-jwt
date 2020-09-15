@@ -377,7 +377,7 @@ with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
 file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is the JWT with
 `Bearer` prepended to it and is included in the `Authorization` header of the
-subsequent requests made by the [hotspot=restClient file=1]`defaultRestClient`.
+subsequent requests made by the [hotspot=restClient file=1]`SystemClient instance`.
 
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session

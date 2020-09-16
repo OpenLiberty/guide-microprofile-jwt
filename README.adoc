@@ -79,7 +79,7 @@ transmit.
 The signature is used to verify that the message wasn't changed along the way, and
 can verify that the sender of the JWT is who it says it is.
 
-In this case, we will be using JWTs to authenticate a user, allowing them to make
+In this case, the application will be using JWTs to authenticate a user, allowing them to make
 authorized requests to the backend `system` service. 
 
 The user will sign into the `frontend` service using a username and password,
@@ -287,7 +287,7 @@ claims of the JWT using the [hotspot=claim file=0]`@Claim` annotation. In this
 case, the `groups` claim is injected into the [hotspot=rolesArray
 file=0]`roles` JSON array. The roles parsed from the `groups` claim of the
 JWT are then exposed back to the frontend at the [hotspot=rolesEndpoint
-file=0]`/jwtRoles` endpoint. To read more about different claims and ways to
+file=0]`/jwtroles` endpoint. To read more about different claims and ways to
 access them, check out the
 https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT
 documentation^].
@@ -319,7 +319,7 @@ LoginBean.java
 include::finish/frontend/src/main/java/io/openliberty/guides/frontend/LoginBean.java[]
 ----
 
-Create a RESTful client interface for the `system` service. 
+Create a RESTful client interface for the `frontend` service. 
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -336,11 +336,11 @@ no need to set up the client and connect with the remote service.
 
 As discussed, the `system` service is secured and requests made to it must
 include a valid JWT in the `Authorization` header. The [hotspot=headerParam1
-hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotation is
-used to specify that the value of the `String authorization` parameter of these
-methods is used as the `Authorization` header of requests made to the `system`
-service through this client. The JWT will be passed into these methods by the
-application bean, which you will create now.
+hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotation
+accomplishes this by specifying that the value of the `String authHeader`
+parameter, which contains the JWT, be used as the value for the `Authorization`
+header. This header is included in all of the requests that are made to the
+`system` service through this client.
 
 Create the application bean that the frontend UI uses to request data.
 
@@ -351,16 +351,18 @@ Create the application bean that the frontend UI uses to request data.
 ----
 
 The application bean is used to populate the table in the frontend by making
-requests for data through [hotspot=restClient file=1]`defaultRestClient`, an
+requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
 injected instance of the [hotspot=systemClient file=0]`SystemClient` class you
 created. The methods [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
 file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` call
 their associated method of the [hotspot=systemClient file=0]`SystemClient` class
 with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
 file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
-hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is the JWT with
-`Bearer` prepended to it and is included in the `Authorization` header of the
-subsequent requests made by the [hotspot=restClient file=1]`SystemClient instance`.
+hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is a string that
+consists of the JWT with `Bearer` prepended to it. The [hotspot=authHeader1
+hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is included in the
+`Authorization` header of the subsequent requests made by the
+[hotspot=restClient file=1]`defaultRestClient`.
 
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session
@@ -368,7 +370,7 @@ attributed by the provided [hotspot=loginBean file=2]`LoginBean` class. When the
 user logs into the frontend, the [hotspot=doLogin file=2]`doLogin()` method is
 called which builds the JWT and [hotspot=setAttribute file=2]`setAttribute()`
 stores it as an `HttpSession` attribute. The JWT is built using the
-[hotspot=jwtBuilder file=2]`JwtBuilder`APIs in the [hotspot=buildJwt
+[hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt
 file=2]`buildJwt()` method. You can see that the [hotspot=groups
 file=2]`claim()` method is being used to set the `groups` claim of the token.
 This is the claim that is used to provide the role based access that you have

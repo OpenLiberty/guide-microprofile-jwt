@@ -31,21 +31,21 @@ public interface SystemClient extends AutoCloseable{
     @Path("/os")
     @Produces(MediaType.APPLICATION_JSON)
     // tag::headerParam1[]
-    public String getOS(@HeaderParam("Authorization") String authorization);
+    public String getOS(@HeaderParam("Authorization") String authHeader);
     // end::headerParam1[]
 
     @GET
     @Path("/username")
     @Produces(MediaType.APPLICATION_JSON)
     // tag::headerParam2[]
-    public String getUsername(@HeaderParam("Authorization") String authorization);
+    public String getUsername(@HeaderParam("Authorization") String authHeader);
     // end::headerParam2[]
     
     @GET
     @Path("/jwtroles")
     @Produces(MediaType.APPLICATION_JSON)
     // tag::headerParam3[]
-    public String getJwtRoles(@HeaderParam("Authorization") String authorization);
+    public String getJwtRoles(@HeaderParam("Authorization") String authHeader);
     // end::headerParam3[]
 }
 // end::systemClient[]

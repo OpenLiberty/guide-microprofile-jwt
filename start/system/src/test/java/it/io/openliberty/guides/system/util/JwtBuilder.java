@@ -29,9 +29,7 @@ import java.security.Signature;
 import java.util.HashSet;
 import java.util.Set;
 import javax.json.Json;
-// import javax.json.JsonArray;
-// import javax.json.JsonArrayBuilder;
-// import javax.json.JsonObject;
+
 import org.apache.cxf.common.util.Base64Utility;
 import java.nio.charset.StandardCharsets;
 

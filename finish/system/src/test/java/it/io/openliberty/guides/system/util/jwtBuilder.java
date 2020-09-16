@@ -12,6 +12,15 @@
 // end::copyright[]
 package it.io.openliberty.guides.system.util;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.KeyStoreOptions;
+import io.vertx.ext.auth.PubSecKeyOptions;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.auth.jwt.JWTAuthOptions;
+import io.vertx.ext.auth.jwt.JWTOptions;
+import io.vertx.core.json.JsonArray;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -21,16 +30,20 @@ import java.security.Signature;
 import java.util.HashSet;
 import java.util.Set;
 import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+// import javax.json.JsonArray;
+// import javax.json.JsonArrayBuilder;
+// import javax.json.JsonObject;
 import org.apache.cxf.common.util.Base64Utility;
+import java.nio.charset.StandardCharsets;
 
 public class JwtBuilder {
 
     private static final String JWT_ALGORITHM = "SHA256withRSA";
     private static final String JWT_ISSUER = "http://openliberty.io";
-    private static final String keystorePath = "/security/key.p12";
+    private static final String keystorePath = "security/key.p12";
+    private static final String keyPath = "/security/private_key.pem";
+
+    Vertx vertx = Vertx.vertx();
 
     public String createUserJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
@@ -45,68 +58,44 @@ public class JwtBuilder {
         return createJwt(username, groups);
     }
 
-    public String createJwt(String username, Set<String> groups) throws GeneralSecurityException, IOException {
-        // Create and Base64 encode the header portion of the JWT
-        JsonObject headerObj = Json.createObjectBuilder()
-        .add("alg", "RS256")  // Algorithm used
-        .add("typ", "JWT")    // Type of token
-        .build();
+    public String createJwt(String username, Set<String> groups) throws IOException {
+        String privateKey = getPrivateKey();
 
-        String headerEnc = Base64Utility.encode(headerObj.toString().getBytes(), true);
+        JWTAuthOptions config = new JWTAuthOptions()
+            .addPubSecKey(new PubSecKeyOptions()
+            .setAlgorithm("RS256")
+            .setSecretKey(privateKey));
 
-        // Create and Base64 encode the claims portion of the JWT
-        JsonObject claimsObj = Json.createObjectBuilder()
-            .add("exp", (System.currentTimeMillis() / 1000) + 300)  // Expire time
-            .add("iat", (System.currentTimeMillis() / 1000))        // Issued time
-            .add("jti", Long.toHexString(System.nanoTime()))        // Unique value
-            .add("sub", username)                                   // Subject
-            .add("upn", username)                                   // Subject again
-            .add("iss", JWT_ISSUER)                                 // Issuer
-            .add("groups", getGroupArray(groups))                   // Group list
-            .build();
-
-        String claimsEnc = Base64Utility.encode(claimsObj.toString().getBytes(), true);
-        String headerClaimsEnc = headerEnc + "." + claimsEnc;
-
-        headerClaimsEnc = headerClaimsEnc.replace("=", "");
-
-        // Open the keystore that the server will use to validate the JWT
-        KeyStore ks = KeyStore.getInstance("PKCS12");
-        InputStream ksStream = this.getClass().getResourceAsStream(JwtBuilder.keystorePath);
-
-        if (ksStream == null){
-            System.err.println("Keystore not found!");
-        }
+        JWTAuth provider = JWTAuth.create(vertx, config);
         
-        char[] password = new String("secret").toCharArray();
-        ks.load(ksStream, password);
-        
-        // Get the private key to use to sign the JWT.  Normally we would not do this but
-        // we are pretending to be the backend service here.
-        KeyStore.ProtectionParameter keyPassword = new KeyStore.PasswordProtection(password);
-        KeyStore.PrivateKeyEntry privateKeyEntry =
-        (KeyStore.PrivateKeyEntry) ks.getEntry("default", keyPassword);
-        PrivateKey privateKey = privateKeyEntry.getPrivateKey();
-        
-        // Sign the JWT
-        Signature sig = Signature.getInstance(JWT_ALGORITHM);
-        sig.initSign(privateKey);
-        sig.update(headerClaimsEnc.getBytes());
-        String sigEnc = Base64Utility.encode(sig.sign(), true);
+        io.vertx.core.json.JsonObject claimsObj = new JsonObject()
+            .put("exp", (System.currentTimeMillis() / 1000) + 300)  // Expire time
+            .put("iat", (System.currentTimeMillis() / 1000))        // Issued time
+            .put("jti", Long.toHexString(System.nanoTime()))        // Unique value
+            .put("sub", username)                                   // Subject
+            .put("upn", username)                                   // Subject again
+            .put("iss", "http://openliberty.io")
+            .put("groups", getGroupArray(groups)); 
 
-        String jwtEnc = headerClaimsEnc + "." + sigEnc;
+        String token = provider.generateToken(claimsObj, new JWTOptions().setAlgorithm("RS256"));
 
-        // Return the complete JWT (header, claims, signature).
-        return jwtEnc;
+        return token;
     }
 
-    private static JsonArray getGroupArray(Set<String> groups) {
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+    private String getPrivateKey() throws IOException{
+        InputStream keyStream = this.getClass().getResourceAsStream(JwtBuilder.keyPath);
+        String privateKey = new String(keyStream.readAllBytes(), StandardCharsets.UTF_8);
+        return privateKey;
+    }
+
+    private JsonArray getGroupArray(Set<String> groups) {
+        JsonArray arr = new JsonArray(); 
         if (groups != null) {
             for (String group : groups) {
-                arrayBuilder.add(group);
+                arr.add(group);
             }
         }
-        return arrayBuilder.build();
+        return arr;
     }
+    
 }

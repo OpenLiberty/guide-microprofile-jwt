@@ -12,15 +12,6 @@
 // end::copyright[]
 package it.io.openliberty.guides.system.util;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.KeyStoreOptions;
-import io.vertx.ext.auth.PubSecKeyOptions;
-import io.vertx.ext.auth.jwt.JWTAuth;
-import io.vertx.ext.auth.jwt.JWTAuthOptions;
-import io.vertx.ext.auth.jwt.JWTOptions;
-import io.vertx.core.json.JsonArray;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -30,11 +21,17 @@ import java.security.Signature;
 import java.util.HashSet;
 import java.util.Set;
 import javax.json.Json;
-// import javax.json.JsonArray;
-// import javax.json.JsonArrayBuilder;
-// import javax.json.JsonObject;
+
 import org.apache.cxf.common.util.Base64Utility;
 import java.nio.charset.StandardCharsets;
+
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.PubSecKeyOptions;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.auth.jwt.JWTAuthOptions;
+import io.vertx.ext.auth.jwt.JWTOptions;
+import io.vertx.core.json.JsonArray;
 
 public class JwtBuilder {
 
@@ -60,7 +57,6 @@ public class JwtBuilder {
 
     public String createJwt(String username, Set<String> groups) throws IOException {
         String privateKey = getPrivateKey();
-
         JWTAuthOptions config = new JWTAuthOptions()
             .addPubSecKey(new PubSecKeyOptions()
             .setAlgorithm("RS256")

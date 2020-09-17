@@ -36,7 +36,7 @@ public class JwtBuilder {
 	private final String keystorePath = System.getProperty("user.dir") + 
 			"/target/liberty/wlp/usr/servers/defaultServer/resources/security/key.p12";
 
-    Vertx vertx = Vertx.vertx();
+    private Vertx vertx = Vertx.vertx();
 
     public String createUserJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
@@ -51,7 +51,7 @@ public class JwtBuilder {
         return createJwt(username, groups);
     }
 
-    public String createJwt(String username, Set<String> groups) throws IOException {
+    private String createJwt(String username, Set<String> groups) throws IOException {
         JWTAuthOptions config = new JWTAuthOptions()
             .addPubSecKey(new PubSecKeyOptions()
             .setAlgorithm("RS256")

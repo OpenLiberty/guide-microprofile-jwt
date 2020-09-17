@@ -12,33 +12,29 @@
 // end::copyright[]
 package it.io.openliberty.guides.system.util;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.Key;
+import java.security.KeyStore;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.cxf.common.util.Base64Utility;
+
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.PubSecKeyOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
-import io.vertx.ext.auth.jwt.JWTOptions;
+import io.vertx.ext.auth.JWTOptions;
 import io.vertx.core.json.JsonArray;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.util.HashSet;
-import java.util.Set;
-import javax.json.Json;
-
-import org.apache.cxf.common.util.Base64Utility;
-import java.nio.charset.StandardCharsets;
 
 public class JwtBuilder {
 
-    private static final String JWT_ALGORITHM = "SHA256withRSA";
-    private static final String JWT_ISSUER = "http://openliberty.io";
-    private static final String keystorePath = "security/key.p12";
-    private static final String keyPath = "/security/private_key.pem";
+	private final String keystorePath = System.getProperty("user.dir") + 
+			"/target/liberty/wlp/usr/servers/defaultServer/resources/security/key.p12";
 
     Vertx vertx = Vertx.vertx();
 
@@ -56,12 +52,10 @@ public class JwtBuilder {
     }
 
     public String createJwt(String username, Set<String> groups) throws IOException {
-        String privateKey = getPrivateKey();
-
         JWTAuthOptions config = new JWTAuthOptions()
             .addPubSecKey(new PubSecKeyOptions()
             .setAlgorithm("RS256")
-            .setSecretKey(privateKey));
+            .setSecretKey(getPrivateKey()));
 
         JWTAuth provider = JWTAuth.create(vertx, config);
         
@@ -78,11 +72,20 @@ public class JwtBuilder {
 
         return token;
     }
-
+    
     private String getPrivateKey() throws IOException{
-        InputStream keyStream = this.getClass().getResourceAsStream(JwtBuilder.keyPath);
-        String privateKey = new String(keyStream.readAllBytes(), StandardCharsets.UTF_8);
-        return privateKey;
+        try {
+            KeyStore keystore = KeyStore.getInstance("PKCS12");
+            InputStream ksStream = new FileInputStream(keystorePath);
+            char[] password = new String("secret").toCharArray();
+            keystore.load(ksStream, password);
+            Key key = keystore.getKey("default", password);
+            String encoded = Base64Utility.encode(key.getEncoded(), true);
+            return encoded;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private JsonArray getGroupArray(Set<String> groups) {

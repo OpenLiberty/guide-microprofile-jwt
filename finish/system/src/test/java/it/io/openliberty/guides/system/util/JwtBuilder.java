@@ -14,7 +14,6 @@ package it.io.openliberty.guides.system.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.KeyStore;
@@ -28,13 +27,14 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.PubSecKeyOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
-import io.vertx.ext.auth.JWTOptions;
+import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.core.json.JsonArray;
 
 public class JwtBuilder {
 
-	private final String keystorePath = System.getProperty("user.dir") + 
-			"/target/liberty/wlp/usr/servers/defaultServer/resources/security/key.p12";
+    private final String keystorePath = System.getProperty("user.dir") 
+                                        + "/target/liberty/wlp/usr/servers/"
+                                        + "defaultServer/resources/security/key.p12";
 
     private Vertx vertx = Vertx.vertx();
 
@@ -76,12 +76,10 @@ public class JwtBuilder {
     private String getPrivateKey() throws IOException{
         try {
             KeyStore keystore = KeyStore.getInstance("PKCS12");
-            InputStream ksStream = new FileInputStream(keystorePath);
             char[] password = new String("secret").toCharArray();
-            keystore.load(ksStream, password);
+            keystore.load(new FileInputStream(keystorePath), password);
             Key key = keystore.getKey("default", password);
-            String encoded = Base64Utility.encode(key.getEncoded(), true);
-            return encoded;
+            return Base64Utility.encode(key.getEncoded(), true);
         } catch (Exception e) {
             e.printStackTrace();
         }

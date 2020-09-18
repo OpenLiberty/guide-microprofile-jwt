@@ -17,26 +17,18 @@ import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import com.ibm.websphere.security.jwt.JwtBuilder;
 import com.ibm.websphere.security.jwt.Claims;
 
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-
-import io.openliberty.guides.frontend.client.SystemClient;
 import io.openliberty.guides.frontend.util.SessionUtils;
 
 // tag::loginBean[]
 @ApplicationScoped
 @Named
 public class LoginBean {
-
-    @Inject
-    @RestClient
-    private SystemClient defaultRestClient;
 
     private String username;
     private String password;

@@ -193,10 +193,10 @@ include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
 
-When you run Open Liberty in dev mode, the server listens for file changes and
-automatically recompiles and deploys your updates whenever you save a new
-change. Navigate to the `start/frontend` directory and run the following goal to start the
-`frontend` service in dev mode:
+When you run Open Liberty in development mode, known as dev mode, the server
+listens for file changes and automatically recompiles and deploys your updates
+whenever you save a new change. Navigate to the `start/frontend` directory and
+run the following goal to start the `frontend` service in dev mode:
 
 [role='command']
 ```

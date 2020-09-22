@@ -53,7 +53,7 @@
              <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.2.3</version>
                 <configuration>
                     <appArchive>${project.build.directory}/UIService.war</appArchive>
                     <configFile>src/main/liberty/config/server.xml</configFile>

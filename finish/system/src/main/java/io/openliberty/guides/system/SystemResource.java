@@ -27,47 +27,47 @@ import org.eclipse.microprofile.jwt.Claim;
 @Path("/properties")
 public class SystemResource {
 
-  @Inject
-  // tag::claim[]
-  @Claim("groups")
-  // end::claim[]
-  // tag::rolesArray[]
-  private JsonArray roles;
-  // end::rolesArray[]
+    @Inject
+    // tag::claim[]
+    @Claim("groups")
+    // end::claim[]
+    // tag::rolesArray[]
+    private JsonArray roles;
+    // end::rolesArray[]
 
-  @GET
-  // tag::usernameEndpoint[]
-  @Path("/username")
-  // end::usernameEndpoint[]
-  @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowedAdminUser1[]
-  @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowedAdminUser1[]
-  public String getUsername() {
-    return System.getProperties().getProperty("user.name");
-  }
+    @GET
+    // tag::usernameEndpoint[]
+    @Path("/username")
+    // end::usernameEndpoint[]
+    @Produces(MediaType.APPLICATION_JSON)
+    // tag::rolesAllowedAdminUser1[]
+    @RolesAllowed({ "admin", "user" })
+    // end::rolesAllowedAdminUser1[]
+    public String getUsername() {
+        return System.getProperties().getProperty("user.name");
+    }
 
-  @GET
-  // tag::osEndpoint[]
-  @Path("/os")
-  // end::osEndpoint[]
-  @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowedAdmin[]
-  @RolesAllowed({ "admin" })
-  // end::rolesAllowedAdmin[]
-  public String getOS() {
-    return System.getProperties().getProperty("os.name");
-  }
+    @GET
+    // tag::osEndpoint[]
+    @Path("/os")
+    // end::osEndpoint[]
+    @Produces(MediaType.APPLICATION_JSON)
+    // tag::rolesAllowedAdmin[]
+    @RolesAllowed({ "admin" })
+    // end::rolesAllowedAdmin[]
+    public String getOS() {
+        return System.getProperties().getProperty("os.name");
+    }
 
-  @GET
-  // tag::rolesEndpoint[]
-  @Path("/jwtroles")
-  // end::rolesEndpoint[]
-  @Produces(MediaType.APPLICATION_JSON)
-  // tag::rolesAllowedAdminUser2[]
-  @RolesAllowed({ "admin", "user" })
-  // end::rolesAllowedAdminUser2[]
-  public String getRoles() {
-    return roles.toString();
-  }
+    @GET
+    // tag::rolesEndpoint[]
+    @Path("/jwtroles")
+    // end::rolesEndpoint[]
+    @Produces(MediaType.APPLICATION_JSON)
+    // tag::rolesAllowedAdminUser2[]
+    @RolesAllowed({ "admin", "user" })
+    // end::rolesAllowedAdminUser2[]
+    public String getRoles() {
+        return roles.toString();
+    }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2019 IBM Corporation and others.
+// Copyright (c) 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -15,7 +15,7 @@
 :page-tags: ["MicroProfile", "Security"]
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-related-guides: ["social-login', 'rest-intro', 'cdi-intro']
+:page-related-guides: ['social-login', 'rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Securing Java microservices with Eclipse MicroProfile JSON Web Token (MicroProfile JWT)
@@ -34,9 +34,8 @@ You'll explore how to control user and role access to microservices with MicroPr
 
 == What you'll learn
 
-You will add MicroProfile JWT to validate security tokens in the `system`
-microservice. You will use a token-based authentication mechanism to
-authenticate, authorize, and verify user identities based on security tokens.
+You will add token-based authentication mechanisms to authenticate, authorize,
+and verify users by implementing MicroProfile JWT in the `system` microservice.
 
 For microservices, a token-based authentication mechanism offers a lightweight
 way for security controls and security tokens to propagate user identities
@@ -70,14 +69,14 @@ part being seperated by a dot (`.`). An encoded token takes the following form:
 
 The header contains the type of token, and the signing algorithm used.
 
-The payload contains the claims of a token. The claims are statements about the
+The payload contains the claims of a token. Claims are statements about the
 user and other information. Some examples of claims are `iss` (issuer), `exp`
 (expiration time), and `groups` (the groups or roles of the user). Custom claims
 can be added to the token to include any other information you would like to
 transmit.
 
-The signature is used to verify that the message wasn't changed along the way, and
-can verify that the sender of the JWT is who it says it is.
+The signature is used to verify that the message wasn’t changed along the way
+and verifies that the sender of the JWT are who they claim to be.
 
 In this case, the application will be using JWTs to authenticate a user, allowing them to make
 authorized requests to the backend `system` service. 
@@ -152,9 +151,9 @@ requested by the frontend to be displayed.
 
 You can try accessing these services without a JWT by entering the system endpoint 
 https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
-directly into your browser. You can see that you are not able to access it
-because you didn't supply a valid JWT with the request. The following error
-will appear in the command-line session of the `system` service:
+directly into your browser. You will get a blank screen and won't be given
+access because you didn't supply a valid JWT with the request. The following
+error will appear in the command-line session of the `system` service:
 
 [source, role="no_copy"]
 ----
@@ -270,7 +269,7 @@ hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotations are mapped to group
 names in the `groups` claim of the JWT, which results in an authorization
 decision wherever the security constraint is applied.
 
-The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annoted with the
+The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annotated with the
 [hotspot=rolesAllowedAdminUser1 file=0]`@RolesAllowed({"admin, "user"})`
 annotation. Only authenticated users with the role of `admin` or `user` to
 can access this endpoint.
@@ -366,7 +365,7 @@ hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is included in the
 
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session
-attributed by the provided [hotspot=loginBean file=2]`LoginBean` class. When the
+attributed by the provided [hotspot file=2]`LoginBean` class. When the
 user logs into the frontend, the [hotspot=doLogin file=2]`doLogin()` method is
 called which builds the JWT and [hotspot=setAttribute file=2]`setAttribute()`
 stores it as an `HttpSession` attribute. The JWT is built using the
@@ -398,7 +397,7 @@ Navigate your browser to the front end web application endpoint: http://localhos
 Once you log in, you can see the information retrieved from the `system`
 service. If you successfully implemented role-based access, you can see that if
 you log in as a `user` role without `admin`, you won't have access to the
-OS. 
+OS property. 
 
 You can also see the value of the `groups` claim in the row labeled `Roles:`.
 These are being read from the JWT and sent back to the frontend to

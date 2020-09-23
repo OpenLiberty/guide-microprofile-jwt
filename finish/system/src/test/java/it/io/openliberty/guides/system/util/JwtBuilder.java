@@ -73,7 +73,7 @@ public class JwtBuilder {
         return token;
     }
     
-    private String getPrivateKey() throws IOException{
+    private String getPrivateKey() throws IOException {
         try {
             KeyStore keystore = KeyStore.getInstance("PKCS12");
             char[] password = new String("secret").toCharArray();

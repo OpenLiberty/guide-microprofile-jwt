@@ -39,8 +39,7 @@
         </group>
     </basicRegistry>
 
-    <application location="frontend-1.0-SNAPSHOT.war.xml" type="war" id="frontend-1.0-SNAPSHOT.war.xml"
-                 name="frontend-1.0-SNAPSHOT.war.xml" context-root="/">
+    <application location="frontend.war" context-root="/">
         <application-bnd>
             <security-role name="admin">
                 <group name="myAdmins" />

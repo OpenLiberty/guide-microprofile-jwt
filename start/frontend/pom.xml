@@ -42,16 +42,6 @@
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.2.3</version>
-                <configuration>
-                    <appArchive>${project.build.directory}/UIService.war</appArchive>
-                    <configFile>src/main/liberty/config/server.xml</configFile>
-                    <bootstrapProperties>
-                        <server.http.port>9090</server.http.port>
-                        <server.https.port>9091</server.https.port>
-                        <application.name>frontend-1.0-SNAPSHOT.war.xml</application.name>
-                        <jwt.issuer>http://openliberty.io</jwt.issuer>
-                    </bootstrapProperties>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,9 +1,10 @@
 language: java
 before_script:
 - unset _JAVA_OPTIONS
-- cd finish
+- cd finish/system
+- chmod +x ../../scripts/travisTest.sh
 script:
-- mvn -q clean install
+- ../scripts/travisTest.sh
 after_script:
 - logsPath=$(find . -name "console.log" | sed "s/console.log//g");
 - build=$(grep "Open Liberty" $logsPath/console.log | cut -d" " -f5 | cut -d")" -f1 );
@@ -11,16 +12,17 @@ after_script:
 - number=$(echo "$build" | cut -d'/' -f2); 
 - ol_jv=$(grep -i "version" $logsPath/console.log);
 - jv=$(printf '%s\n' "${ol_jv//$' on '/$'\n'}" | sed '2q;d'); 
-- echo -e "\n"; \
-  echo -e "\033[1;34m Open Liberty release:\033[0m\033[1;36m $release \033[0m \n"; \
-  echo -e "\033[1;34m Open Liberty build number:\033[0m\033[1;36m $number \033[0m \n"; \
-  echo -e "\033[1;34m Java version:\033[0m\033[1;36m $jv \033[0m \n";
+- echo -e "\n"\
+  "\033[1;34m Open Liberty release:\033[0m\033[1;36m $release \033[0m \n"\
+  "\033[1;34m Open Liberty build number:\033[0m\033[1;36m $number \033[0m \n"\
+  "\033[1;34m Java version:\033[0m\033[1;36m $jv \033[0m \n"
 - cd $logsPath;
 - repo_name=$(echo "$TRAVIS_REPO_SLUG" | sed -e "s/\//-/g"); 
-- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then result="passed"; else result="failed"; fi; 
-- serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$result.zip";
-- zip -r "$serverlogsarchive" .;
-- curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/";
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then RESULT="passed"; else RESULT="failed"; fi;
+- echo -e "\033[1;34m result:\033[0m\033[1;36m $RESULT \033[0m \n"
+- serverlogsarchive="$repo_name-$TRAVIS_BUILD_NUMBER-$RESULT.zip";
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then echo skipped to zip $serverlogsarchive; else zip -r "$serverlogsarchive" .; fi;
+- if [ "$TRAVIS_TEST_RESULT" -eq 0 ]; then echo skipped upload; else curl -H "$JFROG_TOKEN" -T "$serverlogsarchive" "https://na.artifactory.swg-devops.com/artifactory/hyc-openliberty-guides-files-generic-local/"; fi;
 notifications:
   slack:
     template:
@@ -30,7 +32,7 @@ notifications:
     - 'Author: %{author}'
     - 'Summary: %{result} in %{duration}'
     rooms:
-      secure: dvQRcSPZHPtrg3zxtBHbBVWd79GhuGJNPRqUJunTm/+47QiS0ArjOE41j9U2ti9ehgUIDXHsIoiZ/tbsp0sHb0JfD86McSDhRr/QM9B495Y9c0bNYSJdFW0gzGzyqlzjuHoWbnLihxdrrpS/mELkR8Rnm4gqaj+ZYuUiER9nXiazTkl7dvIYs5Zg+U89EGEypwui+2tfOxWIUypybM4TrccbldzHMiv+oXxdkXMIP+ap3LMsyMPMDY6uCmh4HXfemkNNb4UDc4+++UXWPFW7s53k5MPKaGFUUO2gypiu3pIn06+ESIp03v916qTZBk58TZBvwXQFLgJ3uLpqPlC8YTqwxe2Sh1PzEaQQ4dWywN0vXMidTcL8GOAEs0H/lrc+y9v89FPmvD9U3mGY6kW098X3XObf8cheYHcDsJA5JQRylE7a6c0wgO3OU3uQ3VP95hyMKuAqM1IftFSvEfyRZfJdSMoza6iAqg1TnytSxs6hTE8nDkZo/OcojBH2G7UfsKFX03HhGl7gaJB/12jpCgZ17gLz/5RhjgA7mIJ9LppfpdPEjCBnv2Qscftsy/e40Jx0iuCZq2pbbJpNp8zf+LfmJjsP3QCwPEKEY8kZNeLaHbZjYrMWAnrg44nygwO+zu7Rj5IkD9vuVmlHVRBq+TYWwuMNDgDkkJs7Mn7cQIw=
+      secure: mr3KuuI35DXbCA/ifU3wzsLYEbLriK6CAjdRrkt+ksfdeVHOMc8PvvCFcJovi9xSz/Oh/DWKBdqLwJ+bb1XUBUY1O5V0wTjczfIzIyXOiNy8pCrzwgGkmVVKCgkS1B+U4QX4+6vPl1yO8jThVEH4u4vpwcOIUQwWF23rRQa1rwiVlEorkloUvahYK4jeJ4K5/qU1f+ajX4bzkaTEGYY1sOFRyy6tUlAXupVAGjtyvZZRshiHmVzT+vNkR3OK9ImrOBg+tp1axSSSPuvNxSeqySjmgue3yL+F+hFiNfj6+FDwJm8r6O06aj0kbiuZBkulJuL76OPm6XajkmNdjbfxHlctUOwWLcz0dNT+6U24Ig+bdLOCxTGhQ8nzd3JDXauZdS9zyGoxqYbes4OvvJcrbkSOBYLILzPRDDpvEI8VE/VKxGtnkjf86K1dvbqvtDFeqIc9PFz+FGIIESQBi0nUPIOz6KLAKkBlR75XM133gJion97q3Qj85tSk7BJ7tX4rkSPjzxUsJ/gbMyk5ttHon2xdUFPObIXIZEGMJChQc+tMjmVEdrfjk4Rxm1ohz3FlXLmqMF+htaZWu8rtG1lUrZhdDjnyK8RrC1BHENDXHLCUTeo5ijQQD/PSypUSKemh3Zt8VZXznbjBORvGDDANjrtqhgOOKUCxuk3tlfjkipo=
     on_success: never
     on_failure: always
 branches:

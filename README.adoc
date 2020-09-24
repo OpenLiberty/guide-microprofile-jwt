@@ -456,7 +456,7 @@ include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpo
 You can manually check that the system service is secure by making requests to
 each of the endpoints with and without valid JWTs, however automated tests are a
 much better approach since they are more reliable and trigger a failure if a
-change introduces a defect.  
+breaking change is introduced.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----

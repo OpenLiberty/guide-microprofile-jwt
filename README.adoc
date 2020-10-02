@@ -100,8 +100,9 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-The `finish` directory in the root of this guide contains the finished
-application. Give it a try before you proceed.
+The `finish` directory contains the finished JWT security implementation for the
+services in the application. Try the finished application before you
+build your own.
 
 To try out the application, first navigate to the `finish/frontend` directory
 and run the following Maven goal to build the application and deploy it to Open

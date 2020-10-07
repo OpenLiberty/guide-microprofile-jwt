@@ -104,9 +104,8 @@ The `finish` directory contains the finished JWT security implementation for the
 services in the application. Try the finished application before you
 build your own.
 
-To try out the application, first navigate to the `finish/frontend` directory
-and run the following Maven goal to build the application and deploy it to Open
-Liberty:
+To try out the application, run the following commands to navigate to the `finish/system` directory and
+deploy the `system` service to Open Liberty:
 
 [role='command']
 ```
@@ -114,7 +113,8 @@ cd finish/frontend
 mvn liberty:run
 ```
 
-Open another command-line session, navigate to the `finish/system` directory and run the following Maven goal:
+Open another command-line session and run the following commands to navigate to the `finish/frontend` directory and
+deploy the `system` service to Open Liberty:
 
 [role='command']
 ```
@@ -193,24 +193,24 @@ microprofile-config.properties
 include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
+Navigate to the `start` directory to begin.
 
 When you run Open Liberty in development mode, known as dev mode, the server
 listens for file changes and automatically recompiles and deploys your updates
-whenever you save a new change. Navigate to the `start/frontend` directory and
-run the following goal to start the `frontend` service in dev mode:
+whenever you save a new change. Run the following commands to navigate to the
+`frontend` directory and start the `frontend` service in dev mode:
 
 [role='command']
 ```
-cd `start/frontend`
+cd start/frontend
 mvn liberty:dev
 ```
 
-Open another command-line session, navigate to the `start/system` directory
-and run the following goal to start the `system` service in dev mode:
-
+Open another command-line session and run the following commands to navigate to the
+`system` directory and start the `system` service in dev mode:
 [role='command']
 ```
-cd `start/system`
+cd start/system
 mvn liberty:dev
 ```
 
@@ -220,8 +220,6 @@ After you see the following message, your application server in dev mode is read
 ----
 Press the Enter key to run tests on demand.
 ----
-
-Navigate to the `start` directory.
 
 Add the MicroProfile JWT feature to the server configuration file for
 the `system` service. 
@@ -362,7 +360,7 @@ their associated method of the [hotspot=systemClient file=0]`SystemClient` class
 with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
 file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is a string that
-consists of the JWT with `Bearer` prefixed to it. The [hotspot=authHeader1
+consists of the JWT with `Bearer` prepended to it. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is included in the
 `Authorization` header of the subsequent requests made by the
 [hotspot=restClient file=1]`defaultRestClient`.

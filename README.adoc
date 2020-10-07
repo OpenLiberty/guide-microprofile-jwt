@@ -101,22 +101,24 @@ include::{common-includes}/gitclone.adoc[]
 === Try what you'll build
 
 The `finish` directory contains the finished JWT security implementation for the
-services in the application. You can try the finished application before you
+services in the application. Try the finished application before you
 build your own.
 
-To try out the application, first navigate to the `finish/frontend` directory.
-
-Run the following Maven goal to build the application and deploy it to Open Liberty:
+To try out the application, run the following commands to navigate to the `finish/frontend` directory and
+deploy the `frontend` service to Open Liberty:
 
 [role='command']
 ```
+cd finish/frontend
 mvn liberty:run
 ```
 
-Open another command-line session, navigate to the `finish/system` directory and run the following Maven goal:
+Open another command-line session and run the following commands to navigate to the `finish/system` directory and
+deploy the `system` service to Open Liberty:
 
 [role='command']
 ```
+cd finish/system
 mvn liberty:run
 ```
 
@@ -191,22 +193,24 @@ microprofile-config.properties
 include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
 ----
 
+Navigate to the `start` directory to begin.
 
 When you run Open Liberty in development mode, known as dev mode, the server
 listens for file changes and automatically recompiles and deploys your updates
-whenever you save a new change. Navigate to the `start/frontend` directory and
-run the following goal to start the `frontend` service in dev mode:
+whenever you save a new change. Run the following commands to navigate to the
+`frontend` directory and start the `frontend` service in dev mode:
 
 [role='command']
 ```
+cd frontend
 mvn liberty:dev
 ```
 
-Open another command-line session, navigate to the `start/system` directory
-and run the following goal to start the `system` service in dev mode:
-
+Open another command-line session and run the following commands to navigate to the
+`system` directory and start the `system` service in dev mode:
 [role='command']
 ```
+cd system
 mvn liberty:dev
 ```
 
@@ -216,8 +220,6 @@ After you see the following message, your application server in dev mode is read
 ----
 Press the Enter key to run tests on demand.
 ----
-
-Navigate to the `start` directory.
 
 Add the MicroProfile JWT feature to the server configuration file for
 the `system` service. 

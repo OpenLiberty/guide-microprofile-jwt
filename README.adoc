@@ -358,7 +358,7 @@ their associated method of the [hotspot=systemClient file=0]`SystemClient` class
 with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
 file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is a string that
-consists of the JWT with `Bearer` prepended to it. The [hotspot=authHeader1
+consists of the JWT with `Bearer` prefixed to it. The [hotspot=authHeader1
 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is included in the
 `Authorization` header of the subsequent requests made by the
 [hotspot=restClient file=1]`defaultRestClient`.

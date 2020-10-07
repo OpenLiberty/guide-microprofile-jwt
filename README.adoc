@@ -104,8 +104,8 @@ The `finish` directory contains the finished JWT security implementation for the
 services in the application. Try the finished application before you
 build your own.
 
-To try out the application, run the following commands to navigate to the `finish/system` directory and
-deploy the `system` service to Open Liberty:
+To try out the application, run the following commands to navigate to the `finish/frontend` directory and
+deploy the `frontend` service to Open Liberty:
 
 [role='command']
 ```
@@ -113,7 +113,7 @@ cd finish/frontend
 mvn liberty:run
 ```
 
-Open another command-line session and run the following commands to navigate to the `finish/frontend` directory and
+Open another command-line session and run the following commands to navigate to the `finish/system` directory and
 deploy the `system` service to Open Liberty:
 
 [role='command']
@@ -202,7 +202,7 @@ whenever you save a new change. Run the following commands to navigate to the
 
 [role='command']
 ```
-cd start/frontend
+cd frontend
 mvn liberty:dev
 ```
 
@@ -210,7 +210,7 @@ Open another command-line session and run the following commands to navigate to 
 `system` directory and start the `system` service in dev mode:
 [role='command']
 ```
-cd start/system
+cd system
 mvn liberty:dev
 ```
 

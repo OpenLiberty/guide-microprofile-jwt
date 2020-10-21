@@ -120,9 +120,15 @@ Log in with one of the following usernames and its corresponding password:
 [width=75%]
 |===
 | *Username* | *Password* | *Role*
-| bob | bobpwd | admin, user
-| alice | alicepwd | user
-| carl | carlpwd | user
+| bob 
+| bobpwd 
+| admin, user
+| alice 
+| alicepwd 
+| user
+| carl 
+| carlpwd 
+| user
 |===
 
 You will be redirected to a page that displays some information that the
@@ -376,9 +382,15 @@ Navigate your browser to the front end web application endpoint: http://localhos
 [width=75%]
 |===
 | *Username* | *Password* | *Role*
-| bob | bobpwd | admin, user
-| alice | alicepwd | user
-| carl | carlpwd | user
+| bob 
+| bobpwd 
+| admin, user
+| alice 
+| alicepwd 
+| user
+| carl 
+| carlpwd 
+| user
 |===
 
 Once you log in, you can see the information retrieved from the `system`

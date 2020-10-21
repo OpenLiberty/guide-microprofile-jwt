@@ -70,7 +70,7 @@ determine which system properties the user has access to.
 
 To learn more about JSON Web Tokens, check out the
 https://jwt.io/introduction/[JWT.io website] and to learn more about how they
-can be used for user authentication and authorization, check out Open Liberty
+can be used for user authentication and authorization, check out the Open Liberty
 https://openliberty.io/docs/latest/single-sign-on.html[Single
 Sign-on documentation].
 
@@ -192,7 +192,7 @@ Press the Enter key to run tests on demand.
 
 The `system` service provides endpoints for the frontend `service` to use to
 request system properties. This service is secure and requires a valid JWT to be
-included in the request. The claims in the JWT are used to determine what
+included in requests made to it. The claims in the JWT are used to determine what
 properties the user has access to.
 
 Create the secure `system` service.

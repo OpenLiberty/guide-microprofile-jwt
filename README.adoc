@@ -117,7 +117,7 @@ you can log in to the application with the form-based login.
 
 Log in with one of the following usernames and its corresponding password:
 
-[options="header"]
+[cols="35, 35, 35", options="header"]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user
@@ -373,7 +373,7 @@ Because you are running the `frontend` and `system` services in `dev` mode, the 
 
 Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 
-[options="header"]
+[cols="35, 35, 35", options="header"]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user

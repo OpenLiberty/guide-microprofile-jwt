@@ -117,7 +117,7 @@ you can log in to the application with the form-based login.
 
 Log in with one of the following usernames and its corresponding password:
 
-[cols="35, 200, 200", options="header"]
+[cols="200, 200, 200", options="header"]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user

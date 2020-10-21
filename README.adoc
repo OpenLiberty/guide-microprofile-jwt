@@ -117,18 +117,12 @@ you can log in to the application with the form-based login.
 
 Log in with one of the following usernames and its corresponding password:
 
-[width=75%]
+[options="header"]
 |===
 | *Username* | *Password* | *Role*
-| bob 
-| bobpwd 
-| admin, user
-| alice 
-| alicepwd 
-| user
-| carl 
-| carlpwd 
-| user
+| bob | bobpwd | admin, user
+| alice | alicepwd | user
+| carl | carlpwd | user
 |===
 
 You will be redirected to a page that displays some information that the
@@ -379,18 +373,12 @@ Because you are running the `frontend` and `system` services in `dev` mode, the 
 
 Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 
-[width=75%]
+[options="header"]
 |===
 | *Username* | *Password* | *Role*
-| bob 
-| bobpwd 
-| admin, user
-| alice 
-| alicepwd 
-| user
-| carl 
-| carlpwd 
-| user
+| bob | bobpwd | admin, user
+| alice | alicepwd | user
+| carl | carlpwd | user
 |===
 
 Once you log in, you can see the information retrieved from the `system`

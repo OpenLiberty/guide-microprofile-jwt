@@ -46,6 +46,9 @@ way for security controls and security tokens to propagate user identities
 across different services. JSON Web Token is becoming the most common
 token format because it follows well-defined and known standards.
 
+In this guide, the application will be using JWTs to authenticate a user,
+allowing them to make authorized requests to a secure backend service. 
+
 MicroProfile JWT standards define the required format of JWT for authentication
 and authorization. The standards also map JWT token claims to various Java EE
 container APIs and make the set of claims available through getters.
@@ -57,24 +60,19 @@ The following diagram depicts the application that is used in this guide:
 
 image::JWT_Diagram.png[JWT frontend and system services, width=490, height=654, align="center"]
 
-The user will sign into the `frontend` service using a username and a password, at
-which point a JWT will be created. The frontend will then make requests to the
-backend `system` service with the JWT included in the requests. The `system`
-service, which is secured, will verify the JWT included with the request to
-ensure that the request did in fact come from the authorized frontend. After the
-JWT has been validated, the information in the claims, such as the
-user's role, can be trusted and will be used to determine which system
-properties the user has access to.
+The user will sign into the `frontend` service using a username and a password,
+at which point a JWT will be created. The `frontend` service will then make
+requests, with the JWT included, to the backend `system` service. The secure
+`system` service will verify the JWT to ensure that the request did in fact come
+from the authorized frontend. After the JWT has been validated, the information
+in the claims, such as the user's role, can be trusted and will be used to
+determine which system properties the user has access to.
 
-To learn more about Json Web Tokens, check out the
-https://jwt.io/introduction/[JWT.io website] and to learn more about JWT
+To learn more about JSON Web Tokens, check out the
+https://jwt.io/introduction/[JWT.io website] and to learn more about how they
 can be used for user authentication and authorization, check out Open Liberty
-documentation on https://openliberty.io/docs/latest/single-sign-on.html[Single
-Sign-on].
-
-// Add this?
-// In this case, the application will be using JWTs to authenticate a user, allowing them to make
-// authorized requests to the backend `system` service. 
+https://openliberty.io/docs/latest/single-sign-on.html[Single
+Sign-on documentation].
 
 // =================================================================================================
 // Getting started
@@ -119,7 +117,7 @@ you can log in to the application with the form-based login.
 
 Log in with one of the following usernames and its corresponding password:
 
-[%autowidth]
+[width=75%]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user
@@ -312,7 +310,7 @@ consists of the JWT with `Bearer` prefixed to it. The `authHeader` is included i
 
 The JWT for these requests is retreived from the session attributes using the
 [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session
-attributed by the provided [hotspot file=2]`LoginBean` class. When the
+attributes by the provided [hotspot file=2]`LoginBean` class. When the
 user logs into the frontend, the [hotspot=doLogin file=2]`doLogin()` method is
 called which builds the JWT and [hotspot=setAttribute file=2]`setAttribute()`
 stores it as an `HttpSession` attribute. The JWT is built using the
@@ -375,7 +373,7 @@ Because you are running the `frontend` and `system` services in `dev` mode, the 
 
 Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 
-[%autowidth]
+[width=75%]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user

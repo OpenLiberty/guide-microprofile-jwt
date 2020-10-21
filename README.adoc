@@ -37,9 +37,13 @@ You'll explore how to control user and role access to microservices with MicroPr
 You will add token-based authentication mechanisms to authenticate, authorize,
 and verify users by implementing MicroProfile JWT in the `system` microservice.
 
+A JSON Web Token (JWT) is a self contained token designed to securely transmit
+information as a JSON object. The information in this JSON object is digitally
+signed and can be trusted and verified by the recipient. 
+
 For microservices, a token-based authentication mechanism offers a lightweight
 way for security controls and security tokens to propagate user identities
-across different services. JSON Web Token (JWT) is becoming the most common
+across different services. JSON Web Token is becoming the most common
 token format because it follows well-defined and known standards.
 
 MicroProfile JWT standards define the required format of JWT for authentication
@@ -53,44 +57,24 @@ The following diagram depicts the application that is used in this guide:
 
 image::JWT_Diagram.png[JWT frontend and system services, width=490, height=654, align="center"]
 
-// =================================================================================================
-//  JSON Web Tokens for authorization and authentication
-// =================================================================================================
+The user will sign into the `frontend` service using a username and a password, at
+which point a JWT will be created. The frontend will then make requests to the
+backend `system` service with the JWT included in the requests. The `system`
+service, which is secured, will verify the JWT included with the request to
+ensure that the request did in fact come from the authorized frontend. After the
+JWT has been validated, the information in the claims, such as the
+user's role, can be trusted and will be used to determine which system
+properties the user has access to.
 
-== JSON Web Tokens for authorization and authentication
+To learn more about Json Web Tokens, check out the
+https://jwt.io/introduction/[JWT.io website] and to learn more about JWT
+can be used for user authentication and authorization, check out Open Liberty
+documentation on https://openliberty.io/docs/latest/single-sign-on.html[Single
+Sign-on].
 
-A JSON Web Token is a self contained token designed to securely transmit information as a JSON object.
-The information in this JSON object is digitally signed and can be trusted and verified by the recipient. 
-
-A JWT contains 3 different parts, a header, a payload, and a signature, with each
-part being seperated by a dot (`.`). An encoded token takes the following form:
-
-`hhhhh.ppppp.sssss`
-
-The header contains the type of token, and the signing algorithm used.
-
-The payload contains the claims of a token. Claims are statements about the
-user and other information. Some examples of claims are `iss` (issuer), `exp`
-(expiration time), and `groups` (the groups or roles of the user). Custom claims
-can be added to the token to include any other information you would like to
-transmit.
-
-The signature is used to verify that the message wasn’t changed along the way
-and verifies that the sender of the JWT are who they claim to be.
-
-In this case, the application will be using JWTs to authenticate a user, allowing them to make
-authorized requests to the backend `system` service. 
-
-The user will sign into the `frontend` service using a username and password,
-at which point a JWT will be created by the frontend and signed using a private
-key. The frontend will then make requests to the backend `system` service with the JWT
-included in the `Authorization` header of the requests. The `system` service,
-which is secured, will examine the JWT included with the request and use the
-frontend's public key to verify the signature of the JWT. This ensures that the
-request did in fact come from the authorized frontend. After a JWT has been
-validated, the information in the claims of the JWT, such as the user's role,
-can be trusted and will be used to determine which system properties the user
-has access to in the backend.
+// Add this?
+// In this case, the application will be using JWTs to authenticate a user, allowing them to make
+// authorized requests to the backend `system` service. 
 
 // =================================================================================================
 // Getting started
@@ -133,8 +117,9 @@ Navigate your browser to the frontend web application endpoint:
 http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
 you can log in to the application with the form-based login.
 
-Log in with one of the following user information credentials:
+Log in with one of the following usernames and its corresponding password:
 
+[%autowidth]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user
@@ -174,24 +159,10 @@ mvn -pl frontend liberty:stop
 ```
 
 // =================================================================================================
-// Configuring MicroProfile JWT
+// Creating the secure system service
 // =================================================================================================
 
-== Configuring MicroProfile JWT
-
-// File 0
-server.xml
-[source, xml, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/system/src/main/liberty/config/server.xml[]
-----
-
-// File 1
-microprofile-config.properties
-[source, text, linenums, role="code_column hide_tags=propagateHeaders"]
-----
-include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
-----
+== Creating the secure system service
 
 Navigate to the `start` directory to begin.
 
@@ -221,36 +192,12 @@ After you see the following message, your application server in dev mode is read
 Press the Enter key to run tests on demand.
 ----
 
-Add the MicroProfile JWT feature to the server configuration file for
-the `system` service. 
+The `system` service provides endpoints for the frontend `service` to use to
+request system properties. This service is secure and requires a valid JWT to be
+included in the request. The claims in the JWT are used to determine what
+properties the user has access to.
 
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the system server configuration file.#
-`system/src/main/liberty/config/server.xml`
-----
-
-The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
-
-Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `system` service.
-
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Create the microprofile-config.properties file.#
-`system/src/main/webapp/META-INF/microprofile-config.properties`
-----
-
-The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
-the issuer claim is on an incoming JWT. Incoming JWTs with an issuer
-claim different from this expected value are not considered valid.
-
-// =================================================================================================
-// Creating secure system service
-// =================================================================================================
-
-== Creating secure system service
-
-Create a secure service that provides system properties to the frontend `service`.
+Create the secure `system` service.
 
 // File 0
 SystemResource.java
@@ -356,12 +303,10 @@ requests for data through the [hotspot=restClient file=1]`defaultRestClient`, an
 injected instance of the [hotspot=systemClient file=0]`SystemClient` class you
 created. The methods [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
 file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` call
-their associated method of the [hotspot=systemClient file=0]`SystemClient` class
+their associated method of the `SystemClient` class
 with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
-file=1]`authHeader` passed in as a parameter. The [hotspot=authHeader1
-hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is a string that
-consists of the JWT with `Bearer` prefixed to it. The [hotspot=authHeader1
-hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` is included in the
+file=1]`authHeader` passed in as a parameter. The `authHeader` is a string that
+consists of the JWT with `Bearer` prefixed to it. The `authHeader` is included in the
 `Authorization` header of the subsequent requests made by the
 [hotspot=restClient file=1]`defaultRestClient`.
 
@@ -377,7 +322,48 @@ file=2]`claim()` method is being used to set the `groups` claim of the token.
 This is the claim that is used to provide the role based access that you have
 implemented. 
 
+// =================================================================================================
+// Configuring MicroProfile JWT
+// =================================================================================================
 
+== Configuring MicroProfile JWT
+
+// File 0
+server.xml
+[source, xml, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/main/liberty/config/server.xml[]
+----
+
+// File 1
+microprofile-config.properties
+[source, text, linenums, role="code_column hide_tags=propagateHeaders"]
+----
+include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
+----
+
+Add the MicroProfile JWT feature to the server configuration file for
+the `system` service. 
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the system server configuration file.#
+`system/src/main/liberty/config/server.xml`
+----
+
+The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
+
+Next, configure the `mpJwt` feature in the `microprofile-config.properties` file for the `system` service.
+
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the microprofile-config.properties file.#
+`system/src/main/webapp/META-INF/microprofile-config.properties`
+----
+
+The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
+the issuer claim is on an incoming JWT. Incoming JWTs with an issuer
+claim different from this expected value are not considered valid.
 
 // =================================================================================================
 // Building and running the application
@@ -387,8 +373,9 @@ implemented.
 
 Because you are running the `frontend` and `system` services in `dev` mode, the changes you made have been automatically picked up. You can now checkout your application in the browser.
 
-Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Use one of the following credentials to log in:
+Navigate your browser to the front end web application endpoint: http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 
+[%autowidth]
 |===
 | *Username* | *Password* | *Role*
 | bob | bobpwd | admin, user
@@ -525,9 +512,5 @@ mvn -pl frontend liberty:stop
 == Great work! You're done!
 
 You learned how to use MicroProfile JWT to validate JWTs and authorize users to secure your microservices in Open Liberty.
-
-Next, you can try one of the related MicroProfile guides. They demonstrate technologies that you can learn and expand on what you built here.
-
-
 
 include::{common-includes}/attribution.adoc[subs="attributes"]

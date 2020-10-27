@@ -342,26 +342,26 @@ include::finish/system/src/main/liberty/config/server.xml[]
 
 Configure the `mpJwt` feature in the `microprofile-config.properties` file for the `system` service.
 
-[role="code_command hotspot file=1", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the microprofile-config.properties file.#
 `system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
-The [hotspot=issuer file=1]`mp.jwt.verify.issuer` config property specifies what the expected value of
+The [hotspot=issuer file=0]`mp.jwt.verify.issuer` config property specifies what the expected value of
 the issuer claim is on an incoming JWT. Incoming JWTs with an issuer
 claim different from this expected value are not considered valid.
 
 Next, add the MicroProfile JWT feature to the server configuration file for
 the `system` service. 
 
-[role="code_command hotspot file=0", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Replace the system server configuration file.#
 `system/src/main/liberty/config/server.xml`
 ----
 
-The [hotspot=mpJwt file=0]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
+The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required for MicroProfile JWT implementation.
 
 // =================================================================================================
 // Building and running the application

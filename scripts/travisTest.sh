@@ -26,4 +26,4 @@ mvn -q clean package liberty:create liberty:install-feature liberty:deploy
 #       failsafe:verify           - Verifies that the integration tests of an application passed.
 mvn liberty:start
 mvn failsafe:integration-test liberty:stop
-mvn failsafe:verify 
+mvn failsafe:verify

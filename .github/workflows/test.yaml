@@ -5,9 +5,9 @@ name: Test Application
 
 on:
   push:
-    branches: [ vertx-jwt-build ]
+    branches: [ master, qa ]
   pull_request:
-    branches: [ vertx-jwt-build ]
+    branches: [ master, qa ]
 
 jobs:
   build:

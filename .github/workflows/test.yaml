@@ -1,17 +1,15 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+# This workflow will test the guide application.
+# For more information about building and testing Java,
+# see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Test Application
+name: Test application
 
 on:
-  push:
-    branches: [ master, qa ]
   pull_request:
-    branches: [ master, qa ]
+    branches: [ qa ]
 
 jobs:
-  build:
-
+  java8build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,5 +22,19 @@ jobs:
       with:
         java-version: 1.8
     - run: unset _JAVA_OPTIONS
+      
     - name: Run tests
-      run: ../scripts/travisTest.sh
+      run: chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh
+      
+    - name: Post tests
+      if: always()
+      run: |
+          logsPath=$(sudo find . -name "console.log");
+          sudo cat $logsPath | sudo grep Launching
+          
+    - name: Archive server logs if failed
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: server-logs
+        path: finish/target/liberty/wlp/usr/servers/defaultServer/logs/

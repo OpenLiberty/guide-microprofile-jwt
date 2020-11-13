@@ -65,7 +65,7 @@ at which point a JWT is created. The `frontend` service then makes
 requests, with the JWT included, to the backend `system` service. The secure
 `system` service verifies the JWT to ensure that the request came
 from the authorized `frontend` service. After the JWT is validated, the information
-in the claims, such as the user's role, can be trusted and is used to
+in the claims, such as the user's role, can be trusted and used to
 determine which system properties the user has access to.
 
 To learn more about JSON Web Tokens, check out the
@@ -236,7 +236,7 @@ file=0]`roles` JSON array. The roles that are parsed from the `groups` claim of 
 JWT are then exposed back to the front end at the [hotspot=rolesEndpoint
 file=0]`/jwtroles` endpoint. To read more about different claims and ways to
 access them, check out the
-https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT
+https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT
 documentation^].
 
 // =================================================================================================
@@ -422,7 +422,7 @@ The token reader also shows you the payload, which contains the claims informati
 }
 ----
 
-You can learn more about these claims in the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MP-JWT documentation^].
+You can learn more about these claims in the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT documentation^].
 
 // =================================================================================================
 // Testing the application

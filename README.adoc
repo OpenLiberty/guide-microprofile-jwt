@@ -357,7 +357,7 @@ the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the system server configuration file.#
+#Replace the system server configuration file.#
 `system/src/main/liberty/config/server.xml`
 ----
 

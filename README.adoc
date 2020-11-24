@@ -47,7 +47,7 @@ across different services. JSON Web Token is becoming the most common
 token format because it follows well-defined and known standards.
 
 MicroProfile JWT standards define the required format of JWT for authentication
-and authorization. The standards also map JWT claims to various Java EE
+and authorization. The standards also map JWT claims to various Jakarta EE
 container APIs and make the set of claims available through getter methods.
 
 In this guide, the application uses JWTs to authenticate a user,
@@ -505,6 +505,6 @@ mvn -pl frontend liberty:stop
 
 == Great work! You're done!
 
-You learned how to use MicroProfile JWT to validate JWTs and authorize users to secure your microservices in Open Liberty.
+You learned how to use MicroProfile JWT to validate JWTs, authenticate and authorize users to secure your microservices in Open Liberty.
 
 include::{common-includes}/attribution.adoc[subs="attributes"]

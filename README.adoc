@@ -452,16 +452,18 @@ The [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username
 file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
 tests test the `/os`, `/username`, and `/roles` endpoints.
 
-Each test makes three requests to its associated endpoint. The first request
-has a JWT with the [hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
-file=0]`admin` role. The second request has a JWT with the [hotspot=userRequest1
-hotspot=userRequest2 hotspot=userRequest3 file=0]`user` role. The third request has
-[hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3 file=0]`no
-JWT` at all. The responses to these requests are checked based
-on the role-based access rules for the endpoints. The `admin` requests should be
-successful on all endpoints. The `user` requests should be denied by the `/os`
-endpoint but successfully access the `/username` and `/jwtroles` endpoints. The
-requests that don't include a JWT should be denied access to all endpoints.
+Each test makes three requests to its associated endpoint. The first
+[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
+file=0]`makeRequest()` call has a JWT with the `admin` role. The second
+[hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3
+file=0]`makeRequest()` call has a JWT with the `user` role. The third
+[hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3
+file=0]`makeRequest()` call has `no JWT` at all. The responses to these
+requests are checked based on the role-based access rules for the endpoints. The
+`admin` requests should be successful on all endpoints. The `user` requests
+should be denied by the `/os` endpoint but successfully access the `/username`
+and `/jwtroles` endpoints. The requests that don't include a JWT should be
+denied access to all endpoints.
 
 === Running the tests
 

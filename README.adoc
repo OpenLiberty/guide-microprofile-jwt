@@ -53,8 +53,8 @@ container APIs and make the set of claims available through getter methods.
 In this guide, the application uses JWTs to authenticate a user,
 allowing them to make authorized requests to a secure backend service.
 
-You will be working with two services, a `frontend` service and a secure backend
-`system` service. The `frontend` service logs a user in, builds a JWT, and makes
+You will be working with two services, a `frontend` service and a secure 
+`system` backend service. The `frontend` service logs a user in, builds a JWT, and makes
 authorized requests to the secure `system` service for JVM system properties.
 The following diagram depicts the application that is used in this guide:
 
@@ -62,7 +62,7 @@ image::JWT_Diagram.png[JWT frontend and system services, width=490, height=654, 
 
 The user signs in to the `frontend` service with a username and a password,
 at which point a JWT is created. The `frontend` service then makes
-requests, with the JWT included, to the backend `system` service. The secure
+requests, with the JWT included, to the `system` backend service. The secure
 `system` service verifies the JWT to ensure that the request came
 from the authorized `frontend` service. After the JWT is validated, the information
 in the claims, such as the user's role, can be trusted and used to

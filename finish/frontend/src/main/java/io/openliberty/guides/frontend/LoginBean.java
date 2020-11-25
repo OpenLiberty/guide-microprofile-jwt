@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018 IBM Corporation and others.
+ * Copyright (c) 2018, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ public class LoginBean {
     // tag::doLogin[]
     public String doLogin() throws Exception {
         HttpServletRequest request = SessionUtils.getRequest();
-        
+
         try {
             request.logout();
             request.login(this.username, this.password);
@@ -67,20 +67,20 @@ public class LoginBean {
             String jwt = buildJwt(username, roles);
             HttpSession ses = request.getSession();
             if (ses == null) {
-                System.out.println("Session is timeout.");
+                System.out.println("Session timed out.");
             } else {
                 // tag::setAttribute[]
                 ses.setAttribute("jwt", jwt);
                 // end::setAttribute[]
             }
         } else {
-            System.out.println("Update Sessional JWT Failed.");
+            System.out.println("Failed to update JWT in session.");
         }
         return "application.jsf?faces-redirect=true";
     }
     // end::doLogin[]
     // tag::buildJwt[]
-    
+
   private String buildJwt(String userName, Set<String> roles) throws Exception {
         // tag::jwtBuilder[]
         return JwtBuilder.create("jwtFrontEndBuilder")
@@ -88,11 +88,11 @@ public class LoginBean {
                          .claim(Claims.SUBJECT, userName)
                          .claim("upn", userName)
                          // tag::groups[]
-                         .claim("groups", roles.toArray(new String[roles.size()])) 
+                         .claim("groups", roles.toArray(new String[roles.size()]))
                          // end::groups[]
                          .buildJwt()
                          .compact();
-        
+
     }
     // end::buildJwt[]
 

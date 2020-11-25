@@ -458,7 +458,7 @@ file=0]`makeRequest()` call has a JWT with the `admin` role. The second
 [hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3
 file=0]`makeRequest()` call has a JWT with the `user` role. The third
 [hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3
-file=0]`makeRequest()` call has `no JWT` at all. The responses to these
+file=0]`makeRequest()` call has no JWT at all. The responses to these
 requests are checked based on the role-based access rules for the endpoints. The
 `admin` requests should be successful on all endpoints. The `user` requests
 should be denied by the `/os` endpoint but successfully access the `/username`

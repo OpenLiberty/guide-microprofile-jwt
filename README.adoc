@@ -188,7 +188,8 @@ After you see the following message, your application server in dev mode is read
 
 [source, role="no_copy"]
 ----
-Press the Enter key to run tests on demand.
+************************************************************************
+*    Liberty is running in dev mode.
 ----
 
 The `system` service provides endpoints for the `frontend` service to use to

@@ -110,6 +110,19 @@
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
+                <configuration>
+                    <serverName>${server.name}</serverName>
+                    <appArchive>${project.build.directory}/${warfile.name}.war</appArchive>
+                    <configFile>src/main/liberty/config/server.xml</configFile>
+                    <bootstrapProperties>
+                        <server.http.port>${frontend.http.port}</server.http.port>
+                        <server.https.port>${frontend.https.port}</server.https.port>
+                        <backend.https.port>${backend.https.port}</backend.https.port>
+                        <backend.hostname>${backend.hostname}</backend.hostname>
+                        <application.name>${warfile.name}.war</application.name>
+                        <jwt.issuer>${jwt.issuer}</jwt.issuer>
+                    </bootstrapProperties>
+                </configuration>
                 <executions>
                     <execution>
                         <id>install-liberty</id>
@@ -153,19 +166,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <serverName>${server.name}</serverName>
-                    <appArchive>${project.build.directory}/${warfile.name}.war</appArchive>
-                    <configFile>src/main/liberty/config/server.xml</configFile>
-                    <bootstrapProperties>
-                        <server.http.port>${frontend.http.port}</server.http.port>
-                        <server.https.port>${frontend.https.port}</server.https.port>
-                        <backend.https.port>${backend.https.port}</backend.https.port>
-                        <backend.hostname>${backend.hostname}</backend.hostname>
-                        <application.name>${warfile.name}.war</application.name>
-                        <jwt.issuer>${jwt.issuer}</jwt.issuer>
-                    </bootstrapProperties>
-                </configuration>
             </plugin>
         </plugins>
     </build>

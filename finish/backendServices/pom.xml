@@ -171,17 +171,6 @@
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-apps</id>
-                        <configuration>
-                            <appsDirectory>apps</appsDirectory>
-                            <stripVersion>true</stripVersion>
-                            <installAppPackages>project</installAppPackages>
-                            <looseApplication>true</looseApplication>
-                        </configuration>
-                    </execution>
-                </executions>
                 <configuration>
                     <serverName>${server.name}</serverName>
                     <appArchive>${project.build.directory}/${warfile.name}.war</appArchive>
@@ -195,6 +184,17 @@
                         <jwt.issuer>${jwt.issuer}</jwt.issuer>
                     </bootstrapProperties>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>install-apps</id>
+                        <configuration>
+                            <appsDirectory>apps</appsDirectory>
+                            <stripVersion>true</stripVersion>
+                            <installAppPackages>project</installAppPackages>
+                            <looseApplication>true</looseApplication>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Integration test execution setup. -->

@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [needTest]
     if: "!contains(needs.needTest.outputs.canSkip, 'true')"
+    defaults:
       run:
         working-directory: finish
 

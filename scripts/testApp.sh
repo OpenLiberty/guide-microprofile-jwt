@@ -8,9 +8,7 @@ set -euxo pipefail
 #       liberty:create            - Create a Liberty server.
 #       liberty:install-feature   - Install a feature packaged as a Subsystem Archive (esa) to the Liberty runtime.
 #       liberty:deploy            - Copy applications to the Liberty server's dropins or apps directory.
-mvn -q clean install liberty:start-server
-sleep 30
-mvn liberty:stop-server
+mvn -pl system -q clean package liberty:create liberty:install-feature liberty:deploy
 
 ## Run the tests
 # These commands are separated because if one of the commands fail, the test script will fail and exit.
@@ -19,4 +17,7 @@ mvn liberty:stop-server
 #       failsafe:integration-test - Runs the integration tests of an application.
 #       liberty:stop              - Stop a Liberty server.
 #       failsafe:verify           - Verifies that the integration tests of an application passed.
-mvn verify
+mvn -pl system liberty:start
+mvn -pl system failsafe:integration-test
+mvn -pl system liberty:stop
+mvn -pl system failsafe:verify

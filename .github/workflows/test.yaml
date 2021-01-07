@@ -23,7 +23,7 @@ jobs:
              echo "Need to run test"           
              echo "::set-output name=canSkip::false"
            fi
-  build:
+  java8build:
     runs-on: ubuntu-latest
     needs: [ needTest ]
     if: "!contains(needs.needTest.outputs.canSkip, 'true')"

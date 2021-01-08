@@ -1,12 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
 
-##############################################################################
-##
-##  Travis CI test script
-##
-##############################################################################
-
 # LMP 3.0+ goals are listed here: https://github.com/OpenLiberty/ci.maven#goals
 
 ## Rebuild the application
@@ -15,7 +9,6 @@ set -euxo pipefail
 #       liberty:install-feature   - Install a feature packaged as a Subsystem Archive (esa) to the Liberty runtime.
 #       liberty:deploy            - Copy applications to the Liberty server's dropins or apps directory.
 mvn -pl system -q clean package liberty:create liberty:install-feature liberty:deploy
-
 
 ## Run the tests
 # These commands are separated because if one of the commands fail, the test script will fail and exit.

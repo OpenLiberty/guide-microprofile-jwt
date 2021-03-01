@@ -24,7 +24,7 @@
 = Securing microservices with JSON Web Tokens
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
 You'll explore how to control user and role access to microservices with MicroProfile JSON Web Token (MicroProfile JWT).
 
@@ -69,10 +69,9 @@ in the claims, such as the user's role, can be trusted and used to
 determine which system properties the user has access to.
 
 To learn more about JSON Web Tokens, check out the
-https://jwt.io/introduction/[jwt.io website]. If you want to learn more about how JWTs
+https://jwt.io/introduction/[jwt.io website^]. If you want to learn more about how JWTs
 can be used for user authentication and authorization, check out the Open Liberty
-https://openliberty.io/docs/latest/single-sign-on.html[Single
-Sign-on documentation].
+https://openliberty.io/docs/latest/single-sign-on.html[Single Sign-on documentation^].
 
 // =================================================================================================
 // Getting started
@@ -136,7 +135,7 @@ Additionally, the `groups` claim of the JWT is read by the `system` service and
 requested by the front end to be displayed.
 
 You can try accessing these services without a JWT by going to the
-https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser. You get a blank screen and aren't given
 access because you didn't supply a valid JWT with the request. The following
 error also appears in the command-line session of the `system` service:
@@ -237,8 +236,7 @@ file=0]`roles` JSON array. The roles that are parsed from the `groups` claim of 
 JWT are then exposed back to the front end at the [hotspot=rolesEndpoint
 file=0]`/jwtroles` endpoint. To read more about different claims and ways to
 access them, check out the
-https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT
-documentation^].
+https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT documentation^].
 
 // =================================================================================================
 // Creating a client to access the secure system service
@@ -391,7 +389,7 @@ These roles are read from the JWT and sent back to the front end to
 be displayed.
 
 You can check that the `system` service is secured against unauthenticated
-requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser.
 
 In the front end, you see your JWT displayed in the row with the `JSON Web Token` label.

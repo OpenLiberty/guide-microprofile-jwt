@@ -15,7 +15,7 @@
 :page-tags: ["MicroProfile", "Security"]
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-related-guides: ['social-login', 'rest-intro', 'cdi-intro']
+:page-related-guides: ['social-media-login', 'rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Securing Java microservices with Eclipse MicroProfile JSON Web Token (MicroProfile JWT)

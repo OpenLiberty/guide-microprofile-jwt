@@ -1,4 +1,4 @@
-// Copyright (c) 2020 IBM Corporation and others.
+// Copyright (c) 2020, 2021 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -15,7 +15,7 @@
 :page-tags: ["MicroProfile", "Security"]
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-related-guides: ['social-login', 'rest-intro', 'cdi-intro']
+:page-related-guides: ['social-media-login', 'rest-intro', 'cdi-intro']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Securing Java microservices with Eclipse MicroProfile JSON Web Token (MicroProfile JWT)
@@ -24,7 +24,7 @@
 = Securing microservices with JSON Web Tokens
 
 [.hidden]
-NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
 You'll explore how to control user and role access to microservices with MicroProfile JSON Web Token (MicroProfile JWT).
 
@@ -69,10 +69,9 @@ in the claims, such as the user's role, can be trusted and used to
 determine which system properties the user has access to.
 
 To learn more about JSON Web Tokens, check out the
-https://jwt.io/introduction/[jwt.io website]. If you want to learn more about how JWTs
+https://jwt.io/introduction/[jwt.io website^]. If you want to learn more about how JWTs
 can be used for user authentication and authorization, check out the Open Liberty
-https://openliberty.io/docs/latest/single-sign-on.html[Single
-Sign-on documentation].
+https://openliberty.io/docs/latest/single-sign-on.html[Single Sign-on documentation^].
 
 // =================================================================================================
 // Getting started
@@ -136,7 +135,7 @@ Additionally, the `groups` claim of the JWT is read by the `system` service and
 requested by the front end to be displayed.
 
 You can try accessing these services without a JWT by going to the
-https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser. You get a blank screen and aren't given
 access because you didn't supply a valid JWT with the request. The following
 error also appears in the command-line session of the `system` service:
@@ -213,8 +212,7 @@ include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource
 ----
 
 This class has role-based access control. The role names that are used in the
-[hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2
-hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotations are mapped to group
+[hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotations are mapped to group
 names in the `groups` claim of the JWT, which results in an authorization
 decision wherever the security constraint is applied.
 
@@ -228,17 +226,14 @@ the [hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation is limited to
 `admin`, meaning that only authenticated users with the role of `admin` are able to
 access the endpoint.
 
-While the [hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2
-hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation automatically reads from the `groups` claim
+While the [hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation automatically reads from the `groups` claim
 of the JWT to make an authorization decision, you can also manually access the
 claims of the JWT by using the [hotspot=claim file=0]`@Claim` annotation. In this
-case, the `groups` claim is injected into the [hotspot=rolesArray
-file=0]`roles` JSON array. The roles that are parsed from the `groups` claim of the
-JWT are then exposed back to the front end at the [hotspot=rolesEndpoint
-file=0]`/jwtroles` endpoint. To read more about different claims and ways to
-access them, check out the
-https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT
-documentation^].
+case, the `groups` claim is injected into the [hotspot=rolesArray file=0]`roles` JSON array.
+The roles that are parsed from the `groups` claim of the
+JWT are then exposed back to the front end at the [hotspot=rolesEndpoint file=0]`/jwtroles` endpoint.
+To read more about different claims and ways to
+access them, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT documentation^].
 
 // =================================================================================================
 // Creating a client to access the secure system service
@@ -283,8 +278,7 @@ implementation based on what is defined in the [hotspot=systemClient file=0]`Sys
 don't need to set up the client and connect with the remote service.
 
 As discussed, the `system` service is secured and requests made to it must
-include a valid JWT in the `Authorization` header. The [hotspot=headerParam1
-hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotations
+include a valid JWT in the `Authorization` header. The [hotspot=headerParam1 hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotations
 include the JWT by specifying that the value of the `String authHeader`
 parameter, which contains the JWT, be used as the value for the `Authorization`
 header. This header is included in all of the requests that are made to the
@@ -301,11 +295,9 @@ Create the application bean that the front-end UI uses to request data.
 The application bean is used to populate the table in the front end by making
 requests for data through the [hotspot=restClient file=1]`defaultRestClient`, which
 is an injected instance of the [hotspot=systemClient file=0]`SystemClient` class
-that you created. The [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername
-file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` methods call
+that you created. The [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` methods call
 their associated methods of the `SystemClient` class
-with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3
-file=1]`authHeader` passed in as a parameter. The `authHeader` is a string that
+with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` passed in as a parameter. The `authHeader` is a string that
 consists of the JWT with `Bearer` prefixed to it. The `authHeader` is included in the
 `Authorization` header of the subsequent requests that are made by the
 `defaultRestClient` instance.
@@ -316,9 +308,8 @@ attributes by the provided [hotspot file=2]`LoginBean` class. When the
 user logs in to the front end, the [hotspot=doLogin file=2]`doLogin()` method is
 called and builds the JWT. Then, the [hotspot=setAttribute file=2]`setAttribute()`
 method stores it as an `HttpSession` attribute. The JWT is built by using the
-[hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt
-file=2]`buildJwt()` method. You can see that the [hotspot=groups
-file=2]`claim()` method is being used to set the `groups` claim of the token.
+[hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt file=2]`buildJwt()` method.
+You can see that the [hotspot=groups file=2]`claim()` method is being used to set the `groups` claim of the token.
 This claim is used to provide the role-based access that you implemented.
 
 // =================================================================================================
@@ -391,7 +382,7 @@ These roles are read from the JWT and sent back to the front end to
 be displayed.
 
 You can check that the `system` service is secured against unauthenticated
-requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os]
+requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser.
 
 In the front end, you see your JWT displayed in the row with the `JSON Web Token` label.
@@ -449,17 +440,13 @@ breaking change is introduced.
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java`
 ----
 
-The [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username
-file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
+The [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
 tests test the `/os`, `/username`, and `/roles` endpoints.
 
 Each test makes three requests to its associated endpoint. The first
-[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3
-file=0]`makeRequest()` call has a JWT with the `admin` role. The second
-[hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3
-file=0]`makeRequest()` call has a JWT with the `user` role. The third
-[hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3
-file=0]`makeRequest()` call has no JWT at all. The responses to these
+[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3 file=0]`makeRequest()` call has a JWT with the `admin` role. The second
+[hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3 file=0]`makeRequest()` call has a JWT with the `user` role. The third
+[hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3 file=0]`makeRequest()` call has no JWT at all. The responses to these
 requests are checked based on the role-based access rules for the endpoints. The
 `admin` requests should be successful on all endpoints. The `user` requests
 should be denied by the `/os` endpoint but successfully access the `/username`

@@ -402,7 +402,6 @@ endif::[]
 
 // Following context for the cloud-hosted guide:
 ifdef::cloud-hosted[]
-In your browser, go to the front-end web application endpoint at http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 To launch the front-end web application, 
 select **Launch Application** from the menu of the IDE, provide the port number **9090**, 
 and click the **OK** button. You’re redirected to the **https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/** URL. 

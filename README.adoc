@@ -196,7 +196,19 @@ mvn -pl frontend liberty:stop
 
 == Creating the secure system service
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+To begin, run the following command to navigate to the **start** directory:
+```
+cd /home/project/guide-microprofile-jwt/start
+```
+{: codeblock}
+endif::[]
 
 When you run Open Liberty in development mode, known as dev mode, the server
 listens for file changes and automatically recompiles and deploys your updates

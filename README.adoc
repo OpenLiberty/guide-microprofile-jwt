@@ -110,9 +110,25 @@ After you see the following message in both command-line sessions, both of your 
 The defaultServer server is ready to run a smarter planet.
 ----
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 In your browser, go to the front-end web application endpoint at
 http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
 you can log in to the application with the form-based login.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+To launch the front-end web application, 
+select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
+and click the **OK** button. You’re redirected to the **https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/** URL, 
+where **yourname** is your user name.
+
+In your browser, go to the front-end web application endpoint at the
+**https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/login.jsf** URL. 
+From here, you can log in to the application with the form-based login.
+endif::[]
+
 
 Log in with one of the following usernames and its corresponding password:
 
@@ -134,11 +150,29 @@ have sufficient privileges to view current OS information.
 Additionally, the `groups` claim of the JWT is read by the `system` service and
 requested by the front end to be displayed.
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 You can try accessing these services without a JWT by going to the
 https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser. You get a blank screen and aren't given
 access because you didn't supply a valid JWT with the request. The following
 error also appears in the command-line session of the `system` service:
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can try accessing these services without a JWT by going to the **system** endpoint. 
+Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE.
+Run the following curl command from the terminal in the IDE:
+```
+curl -k https://localhost:8443/system/properties/os
+```
+{: codeblock}
+
+You get a blank screen and aren't given
+access because you didn't supply a valid JWT with the request. The following
+error also appears in the command-line session of the **system** service:
+endif::[]
 
 [source, role="no_copy"]
 ----
@@ -162,7 +196,19 @@ mvn -pl frontend liberty:stop
 
 == Creating the secure system service
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+To begin, run the following command to navigate to the **start** directory:
+```
+cd /home/project/guide-microprofile-jwt/start
+```
+{: codeblock}
+endif::[]
 
 When you run Open Liberty in development mode, known as dev mode, the server
 listens for file changes and automatically recompiles and deploys your updates
@@ -363,7 +409,22 @@ The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required f
 
 Because you are running the `frontend` and `system` services in dev mode, the changes that you made were automatically picked up. You're now ready to check out your application in your browser.
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 In your browser, go to the front-end web application endpoint at http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+To launch the front-end web application, 
+select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
+and click the **OK** button. You’re redirected to the **https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/** URL, 
+where **yourname** is your user name.
+
+In your browser, go to the front-end web application endpoint at the
+**https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/login.jsf** URL. 
+Log in with one of the following usernames and its corresponding password:
+endif::[]
 
 [cols="<35, ^200, ^200"]
 |===
@@ -381,9 +442,23 @@ You can also see the value of the `groups` claim in the row with the `Roles:` la
 These roles are read from the JWT and sent back to the front end to
 be displayed.
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 You can check that the `system` service is secured against unauthenticated
 requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can check that the **system** service is secured against unauthenticated
+requests by going to the **system** endpoint. 
+Run the following curl command from the terminal in the IDE:
+```
+curl -k https://localhost:8443/system/properties/os
+```
+{: codeblock}
+endif::[]
 
 In the front end, you see your JWT displayed in the row with the `JSON Web Token` label.
 

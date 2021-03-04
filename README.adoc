@@ -203,7 +203,7 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-Run the following command to navigate to the **start** directory to begin:
+To begin, run the following command to navigate to the **start** directory:
 ```
 cd /home/project/guide-microprofile-jwt/start
 ```

@@ -110,14 +110,14 @@ After you see the following message in both command-line sessions, both of your 
 The defaultServer server is ready to run a smarter planet.
 ----
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 In your browser, go to the front-end web application endpoint at
 http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
 you can log in to the application with the form-based login.
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, 
 select **Launch Application** from the menu of the IDE, provide the port number **9090**, 
@@ -150,7 +150,7 @@ have sufficient privileges to view current OS information.
 Additionally, the `groups` claim of the JWT is read by the `system` service and
 requested by the front end to be displayed.
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 You can try accessing these services without a JWT by going to the
 https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
@@ -159,7 +159,7 @@ access because you didn't supply a valid JWT with the request. The following
 error also appears in the command-line session of the `system` service:
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 You can try accessing these services without a JWT by going to the **system** endpoint. 
 Run the following curl command at a terminal:
@@ -396,12 +396,12 @@ The [hotspot=mpJwt file=1]`mpJwt` feature adds the libraries that are required f
 
 Because you are running the `frontend` and `system` services in dev mode, the changes that you made were automatically picked up. You're now ready to check out your application in your browser.
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 In your browser, go to the front-end web application endpoint at http://localhost:9090/login.jsf. Log in with one of the following usernames and its corresponding password:
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, 
 select **Launch Application** from the menu of the IDE, provide the port number **9090**, 
@@ -429,14 +429,14 @@ You can also see the value of the `groups` claim in the row with the `Roles:` la
 These roles are read from the JWT and sent back to the front end to
 be displayed.
 
-// Following context for the static guide:
+// static guide instructions:
 ifndef::cloud-hosted[]
 You can check that the `system` service is secured against unauthenticated
 requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
 `system` endpoint in your browser.
 endif::[]
 
-// Following context for the cloud-hosted guide:
+// cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 You can check that the **system** service is secured against unauthenticated
 requests by going to the **system** endpoint. 

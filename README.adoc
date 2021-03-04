@@ -162,6 +162,7 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 You can try accessing these services without a JWT by going to the **system** endpoint. 
+Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE.
 Run the following curl command from the terminal in the IDE:
 ```
 curl -k https://localhost:8443/system/properties/os

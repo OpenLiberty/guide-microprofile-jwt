@@ -120,7 +120,7 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, 
-select **Launch Application** from the menu of the IDE, provide the port number **9090**, 
+select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
 and click the **OK** button. You’re redirected to the **https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/** URL, 
 where **yourname** is your user name.
 
@@ -404,7 +404,7 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, 
-select **Launch Application** from the menu of the IDE, provide the port number **9090**, 
+select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
 and click the **OK** button. You’re redirected to the **https://yourname-9090.theiadocker-4.proxy.cognitiveclass.ai/** URL, 
 where **yourname** is your user name.
 

@@ -122,11 +122,8 @@ ifdef::cloud-hosted[]
 To launch the front-end web application, 
 select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
 and click the **OK** button. You’re redirected to the **`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai`** URL, 
-where **accountname** is your account name.
-
-In your browser, go to the front-end web application endpoint at the
-**`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai/login.jsf`** URL. 
-From here, you can log in to the application with the form-based login.
+where **accountname** is your account name. Click the **login** link at the welcome page. From here, 
+you can log in to the application with the form-based login.
 endif::[]
 
 

@@ -530,18 +530,18 @@ following output:
 
 [source, role="no_copy"]
 ----
-[INFO] -------------------------------------------------------
-[INFO]  T E S T S
-[INFO] -------------------------------------------------------
-[INFO] Running it.io.openliberty.guides.system.SystemEndpointIT
-[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
-[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
-[INFO] [ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.648 s - in it.io.openliberty.guides.system.SystemEndpointIT
-[INFO]
-[INFO] Results:
-[INFO]
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+-------------------------------------------------------
+  T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.system.SystemEndpointIT
+[ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+[ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+[ERROR   ] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.648 s - in it.io.openliberty.guides.system.SystemEndpointIT
+
+Results:
+
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 The three errors in the output are expected and result from the `system` service successfully

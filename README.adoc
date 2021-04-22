@@ -166,7 +166,7 @@ curl -k https://localhost:8443/system/properties/os
 ```
 {: codeblock}
 
-There response is empty because you don't have access.
+The response is empty because you don't have access.
 Access is granted if a valid JWT is sent with the request.
 The following error also appears in the command-line session of the **system** service:
 endif::[]

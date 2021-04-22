@@ -446,12 +446,14 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 You can check that the **system** service is secured against unauthenticated
-requests by going to the **system** endpoint. 
+requests by going to the **system** endpoint.
 Run the following curl command from the terminal in the IDE:
 ```
 curl -k https://localhost:8443/system/properties/os
 ```
 {: codeblock}
+
+You'll see an empty response because you didn't authenticate with a valid JWT. 
 endif::[]
 
 In the front end, you see your JWT displayed in the row with the `JSON Web Token` label.

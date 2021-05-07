@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
 package it.io.openliberty.guides.system.util;
@@ -38,14 +38,14 @@ public class JwtBuilder {
 
     private Vertx vertx = Vertx.vertx();
 
-    public String createUserJwt(String username) 
+    public String createUserJwt(String username)
     throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("user");
         return createJwt(username, groups);
     }
 
-    public String createAdminJwt(String username) 
+    public String createAdminJwt(String username)
     throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("admin");
@@ -70,7 +70,7 @@ public class JwtBuilder {
             .put("iss", "http://openliberty.io")
             .put("groups", getGroupArray(groups));
 
-        String token = provider.generateToken(claimsObj, 
+        String token = provider.generateToken(claimsObj,
                                               new JWTOptions().setAlgorithm("RS256"));
 
         return token;

@@ -82,7 +82,10 @@ public class JwtBuilder {
             char[] password = new String("secret").toCharArray();
             keystore.load(new FileInputStream(keystorePath), password);
             Key key = keystore.getKey("default", password);
-            return Base64Utility.encode(key.getEncoded(), true);
+            String output = "-----BEGIN PRIVATE KEY----\n" 
+                          + Base64Utility.encode(key.getEncoded(), true) + "\n"
+                          + " -----END PRIVATE KEY---";
+            return output;
         } catch (Exception e) {
             e.printStackTrace();
         }

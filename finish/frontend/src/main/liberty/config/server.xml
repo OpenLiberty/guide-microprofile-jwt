@@ -9,9 +9,9 @@
         <!-- FOR SECURITY -->
         <feature>appSecurity-3.0</feature>
         <feature>servlet-4.0</feature>
-        <feature>mpJwt-1.1</feature>
-        <feature>mpConfig-1.4</feature>
-        <feature>mpRestClient-1.4</feature>
+        <feature>mpJwt-1.2</feature>
+        <feature>mpConfig-2.0</feature>
+        <feature>mpRestClient-2.0</feature>
 
     </featureManager>
 

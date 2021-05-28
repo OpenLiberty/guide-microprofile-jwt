@@ -1,14 +1,14 @@
-//tag::copyright[]
+// tag::copyright[]
 /*******************************************************************************
-* Copyright (c) 2020 IBM Corporation and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*     IBM Corporation - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2020, 2021 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Initial implementation
+ *******************************************************************************/
 // end::copyright[]
 package it.io.openliberty.guides.system.util;
 
@@ -25,26 +25,28 @@ import org.apache.cxf.common.util.Base64Utility;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.PubSecKeyOptions;
+import io.vertx.ext.auth.JWTOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
-import io.vertx.ext.auth.jwt.JWTOptions;
 import io.vertx.core.json.JsonArray;
 
 public class JwtBuilder {
 
-    private final String keystorePath = System.getProperty("user.dir") 
+    private final String keystorePath = System.getProperty("user.dir")
                                         + "/target/liberty/wlp/usr/servers/"
                                         + "defaultServer/resources/security/key.p12";
 
     private Vertx vertx = Vertx.vertx();
 
-    public String createUserJwt(String username) throws GeneralSecurityException, IOException {
+    public String createUserJwt(String username)
+    throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("user");
         return createJwt(username, groups);
     }
 
-    public String createAdminJwt(String username) throws GeneralSecurityException, IOException {
+    public String createAdminJwt(String username)
+    throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
         groups.add("admin");
         groups.add("user");
@@ -55,10 +57,10 @@ public class JwtBuilder {
         JWTAuthOptions config = new JWTAuthOptions()
             .addPubSecKey(new PubSecKeyOptions()
             .setAlgorithm("RS256")
-            .setSecretKey(getPrivateKey()));
+            .setBuffer(getPrivateKey()));
 
         JWTAuth provider = JWTAuth.create(vertx, config);
-        
+
         io.vertx.core.json.JsonObject claimsObj = new JsonObject()
             .put("exp", (System.currentTimeMillis() / 1000) + 300)  // Expire time
             .put("iat", (System.currentTimeMillis() / 1000))        // Issued time
@@ -66,20 +68,24 @@ public class JwtBuilder {
             .put("sub", username)                                   // Subject
             .put("upn", username)                                   // Subject again
             .put("iss", "http://openliberty.io")
-            .put("groups", getGroupArray(groups)); 
+            .put("groups", getGroupArray(groups));
 
-        String token = provider.generateToken(claimsObj, new JWTOptions().setAlgorithm("RS256"));
+        String token = provider.generateToken(claimsObj,
+                                              new JWTOptions().setAlgorithm("RS256"));
 
         return token;
     }
-    
+
     private String getPrivateKey() throws IOException {
         try {
             KeyStore keystore = KeyStore.getInstance("PKCS12");
             char[] password = new String("secret").toCharArray();
             keystore.load(new FileInputStream(keystorePath), password);
             Key key = keystore.getKey("default", password);
-            return Base64Utility.encode(key.getEncoded(), true);
+            String output = "-----BEGIN PRIVATE KEY-----\n"
+                          + Base64Utility.encode(key.getEncoded(), true) + "\n"
+                          + "-----END PRIVATE KEY-----";
+            return output;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +93,7 @@ public class JwtBuilder {
     }
 
     private JsonArray getGroupArray(Set<String> groups) {
-        JsonArray arr = new JsonArray(); 
+        JsonArray arr = new JsonArray();
         if (groups != null) {
             for (String group : groups) {
                 arr.add(group);
@@ -95,5 +101,5 @@ public class JwtBuilder {
         }
         return arr;
     }
-    
+
 }

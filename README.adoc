@@ -16,7 +16,7 @@
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
 :page-related-guides: ['social-media-login', 'rest-intro', 'cdi-intro']
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :source-highlighter: prettify
 :page-seo-title: Securing Java microservices with Eclipse MicroProfile JSON Web Token (MicroProfile JWT)
 :page-seo-description: A getting started tutorial and an example on how to secure Java microservices to authenticate users and authorize access by validating JSON Web Tokens (JWT) using Eclipse MicroProfile JWT.

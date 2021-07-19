@@ -387,6 +387,16 @@ The [hotspot=issuer file=0]`mp.jwt.verify.issuer` config property specifies the 
 the issuer claim on an incoming JWT. Incoming JWTs with an issuer
 claim that's different from this expected value aren't considered valid.
 
+The [hotspot=header file=0]`mp.jwt.token.header` config property allows you to control the HTTP request header which is expected to contain a JWT token. You can specify either Authorization (default) or Cookie values.
+
+The [hotspot=cookie file=0]`mp.jwt.token.cookie` config property allows you to specify the name of the cookie which is expected to contain a JWT token. The default value is Bearer if not specified.
+
+The [hotspot=audiences file=0]`mp.jwt.verify.audiences` config property allows you to create list of allowable audience (aud) values. At least one of these must be found in the claim. Previously, this had to be configured in the server.xml file.
+
+The [hotspot=location file=0]`mp.jwt.decrypt.key.location` config property allows you to specify the location of the Key Management Key. It is a Private key used to decrypt the Content Encryption Key, which is then used to decrypt the JWE ciphertext. This private key must correspond to the public key that is used to encrypt the Content Encryption Key.
+
+The [hotspot=algorithm file=0]`mp.jwt.verify.publickey.algorithm` config property allows you to control the Public Key Signature Algorithm that is supported by the MicroProfile JWT endpoint. The default value is RSA256 if not specified. Previously, this had to be configured in the server.xml file.
+
 Next, add the MicroProfile JSON Web Token feature to the server configuration file for
 the `system` service.
 

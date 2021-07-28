@@ -68,6 +68,7 @@ public class JwtBuilder {
             .put("sub", username)                                   // Subject
             .put("upn", username)                                   // Subject again
             .put("iss", "http://openliberty.io")
+            .put("aud", "conferenceService")
             .put("groups", getGroupArray(groups));
 
         String token = provider.generateToken(claimsObj,

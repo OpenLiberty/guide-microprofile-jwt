@@ -63,7 +63,7 @@ public class LoginBean {
 
         String remoteUser = request.getRemoteUser();
         Set<String> roles = getRoles(request);
-        if (remoteUser != null && remoteUser.equals(username)){
+        if (remoteUser != null && remoteUser.equals(username)) {
             String jwt = buildJwt(username, roles);
             HttpSession ses = request.getSession();
             if (ses == null) {
@@ -101,8 +101,12 @@ public class LoginBean {
         Set<String> roles = new HashSet<String>();
         boolean isAdmin = request.isUserInRole("admin");
         boolean isUser = request.isUserInRole("user");
-        if (isAdmin) { roles.add("admin");}
-        if (isUser) { roles.add("user");}
+        if (isAdmin) {
+            roles.add("admin");
+        }
+        if (isUser) {
+            roles.add("user");
+        }
         return roles;
     }
 }

@@ -89,7 +89,7 @@ public class LoginBean {
                          // tag::groups[]
                          .claim("groups", roles.toArray(new String[roles.size()]))
                          // end::groups[]
-                         .claim("aud", "conferenceService")
+                         .claim("aud", "systemService")
                          .buildJwt()
                          .compact();
 

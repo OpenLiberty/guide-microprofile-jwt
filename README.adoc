@@ -383,6 +383,8 @@ Configure the `mpJwt` feature in the `microprofile-config.properties` file for t
 `system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
+The following table breaks down the new annotations:
+
 [cols="35, 200", options="header"]
 |===
 | *Annotation*    | *Description*

@@ -385,7 +385,7 @@ Configure the `mpJwt` feature in the `microprofile-config.properties` file for t
 
 The following table breaks down the new properties:
 
-[cols="1, 4", options="header"]
+[cols="4, 6", options="header"]
 |===
 | *Property* |   *Description*
 | [hotspot=issuer file=0]`mp.jwt.verify.issuer` | Specifies the expected value of the issuer claim on an incoming JWT. Incoming JWTs with an issuer claim that's different from this expected value aren't considered valid.

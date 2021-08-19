@@ -383,11 +383,11 @@ Configure the `mpJwt` feature in the `microprofile-config.properties` file for t
 `system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
-The following table breaks down the new annotations:
+The following table breaks down the new properties:
 
-[cols="35, 200", options="header"]
+[cols="1, 4", options="header"]
 |===
-| *Annotation* |   *Description*
+| *Property* |   *Description*
 | [hotspot=issuer file=0]`mp.jwt.verify.issuer` | Specifies the expected value of the issuer claim on an incoming JWT. Incoming JWTs with an issuer claim that's different from this expected value aren't considered valid.
 | [hotspot=header file=0]`mp.jwt.token.header`  | Allows you to control the HTTP request header which is expected to contain a JWT token. You can specify either Authorization (default) or Cookie values.
 | [hotspot=cookie file=0]`mp.jwt.token.cookie` | Allows you to specify the name of the cookie which is expected to contain a JWT token. The default value is Bearer if not specified.

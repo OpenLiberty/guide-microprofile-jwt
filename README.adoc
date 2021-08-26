@@ -140,7 +140,7 @@ Log in with one of the following usernames and its corresponding password:
 You're redirected to a page that displays information that the
 front end requested from the `system` service, such as the system username.
 If you log in as an `admin` user, the current OS is also shown. 
-Click the `Log out` button to try another user. If you log in as
+Click the `Log out` button and try another user. If you log in as
 a `user`, you instead see the `You are not authorized to access
 this system property` message. You see this message because the `user` role doesn't
 have sufficient privileges to view current OS information. 
@@ -430,7 +430,7 @@ endif::[]
 |===
 
 After you log in as an `admin` user, you can see the information that's retrieved from the `system`
-service. Click the `Log out` button to try another user. 
+service. Click the `Log out` button and try another user. 
 With successfully implemented role-based access in the application, if
 you log in as a `user` role, you don't have access to the OS property.
 

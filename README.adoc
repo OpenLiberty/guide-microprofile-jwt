@@ -429,8 +429,9 @@ endif::[]
 | carl | carlpwd | user
 |===
 
-After you log in, you can see the information that's retrieved from the `system`
-service. With successfully implemented role-based access in the application, if
+After you log in as an `admin` user, you can see the information that's retrieved from the `system`
+service. Click the `Log out` button to try another user. 
+With successfully implemented role-based access in the application, if
 you log in as a `user` role, you don't have access to the OS property.
 
 You can also see the value of the `groups` claim in the row with the `Roles:` label.

@@ -139,10 +139,11 @@ Log in with one of the following usernames and its corresponding password:
 
 You're redirected to a page that displays information that the
 front end requested from the `system` service, such as the system username.
-If you log in as an `admin` user, the current OS is also shown. If you log in as
+If you log in as an `admin` user, the current OS is also shown. 
+Click the **Log out** button to try another user. If you log in as
 a `user`, you instead see the `You are not authorized to access
 this system property` message. You see this message because the `user` role doesn't
-have sufficient privileges to view current OS information.
+have sufficient privileges to view current OS information. 
 
 Additionally, the `groups` claim of the JWT is read by the `system` service and
 requested by the front end to be displayed.

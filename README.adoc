@@ -352,9 +352,9 @@ user logs in to the front end, the [hotspot=doLogin file=2]`doLogin()` method is
 called and builds the JWT. Then, the [hotspot=setAttribute file=2]`setAttribute()`
 method stores it as an `HttpSession` attribute. The JWT is built by using the
 [hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt file=2]`buildJwt()` method.
-You can see that the [hotspot=groups file=2]`claim()` method is being used to set the `groups` claim of the token.
-This claim is used to provide the role-based access that you implemented.
-
+You can see that the [hotspot=claim file=2]`claim()` method is being used to set the `groups` and the `aud` claims of the token.
+The `groups` claim is used to provide the role-based access that you implemented.
+The `aud` claim is used to specify the audience that the JWT is intended for.
 // =================================================================================================
 // Configuring MicroProfile JWT
 // =================================================================================================
@@ -383,9 +383,18 @@ Configure the `mpJwt` feature in the `microprofile-config.properties` file for t
 `system/src/main/webapp/META-INF/microprofile-config.properties`
 ----
 
-The [hotspot=issuer file=0]`mp.jwt.verify.issuer` config property specifies the expected value of
-the issuer claim on an incoming JWT. Incoming JWTs with an issuer
-claim that's different from this expected value aren't considered valid.
+The following table breaks down the new properties:
+
+[cols="<30%,<70%", options="header"]
+|===
+| *Property* |   *Description*
+| [hotspot=issuer file=0]`mp.jwt.verify.issuer` | Specifies the expected value of the issuer claim on an incoming JWT. Incoming JWTs with an issuer claim that's different from this expected value aren't considered valid.
+| [hotspot=header file=0]`mp.jwt.token.header`  | With this property, you can control the HTTP request header, which is expected to contain a JWT. You can either specify Authorization, by default, or the Cookie values.
+| [hotspot=cookie file=0]`mp.jwt.token.cookie` | Specifies the name of the cookie, which is expected to contain a JWT token. The default value is Bearer.
+| [hotspot=audiences file=0]`mp.jwt.verify.audiences` |  With this property, you can create a list of allowable audience (aud) values. At least one of these values must be found in the claim. Previously, this configuration was included in the `server.xml` file.
+| [hotspot=location file=0]`mp.jwt.decrypt.key.location` | With this property, you can specify the location of the Key Management key. It is a Private key that is used to decrypt the Content Encryption key, which is then used to decrypt the JWE ciphertext. This private key must correspond to the public key that is used to encrypt the Content Encryption key.
+| [hotspot=algorithm file=0]`mp.jwt.verify.publickey.algorithm` | With this property, you can control the Public Key Signature Algorithm that is supported by the MicroProfile JWT endpoint. The default value is RS256. Previously, this configuration was included in the `server.xml` file.
+|===
 
 Next, add the MicroProfile JSON Web Token feature to the server configuration file for
 the `system` service.

@@ -24,7 +24,7 @@ import io.openliberty.guides.frontend.util.SessionUtils;
 
 @ApplicationScoped
 @Named
-public class ApplicationBean { 
+public class ApplicationBean {
 
     // tag::restClient[]
     @Inject
@@ -39,7 +39,7 @@ public class ApplicationBean {
         return authHeader;
     }
     // end::getJwt[]
-    
+
     // tag::getOs[]
     public String getOs() {
         String authHeader = getJwt();
@@ -48,7 +48,7 @@ public class ApplicationBean {
             // tag::authHeader1[]
             os = defaultRestClient.getOS(authHeader);
             // end::authHeader1[]
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "You are not authorized to access this system property";
         }
         return os;

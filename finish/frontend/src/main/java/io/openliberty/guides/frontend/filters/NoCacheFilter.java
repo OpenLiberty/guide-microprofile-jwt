@@ -1,14 +1,14 @@
 // tag::copyright[]
 /*******************************************************************************
-* Copyright (c) 2020, 2022 IBM Corporation and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*     IBM Corporation - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.frontend.filters;
 
@@ -26,13 +26,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class NoCacheFilter implements Filter {
 
     @Override
-	public void doFilter(ServletRequest request,
+    public void doFilter(ServletRequest request,
                         ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
                 HttpServletResponse httpServletResponse =
                                     (HttpServletResponse) response;
                 httpServletResponse.setHeader("Cache-Control",
-                                             "no-store, no-cache, must-revalidate, max-age=0");
+                "no-store, no-cache, must-revalidate, max-age=0");
                 httpServletResponse.setDateHeader("Expires", 0);
                 httpServletResponse.setHeader("Pragma", "no-cache");
                 chain.doFilter(request, response);

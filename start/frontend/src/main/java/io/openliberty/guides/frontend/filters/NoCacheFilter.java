@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.frontend.filters;
@@ -28,11 +28,11 @@ public class NoCacheFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request,
                         ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-                HttpServletResponse httpServletResponse = 
+            throws IOException, ServletException {
+                HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
                 httpServletResponse.setHeader("Cache-Control",
-                                              "no-store, no-cache, must-revalidate, max-age=0");
+                "no-store, no-cache, must-revalidate, max-age=0");
                 httpServletResponse.setDateHeader("Expires", 0);
                 httpServletResponse.setHeader("Pragma", "no-cache");
                 chain.doFilter(request, response);

@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2021 IBM Corporation and others.
+// Copyright (c) 2018, 2022 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -34,44 +34,23 @@ You'll explore how to control user and role access to microservices with MicroPr
 
 == What you'll learn
 
-You will add token-based authentication mechanisms to authenticate, authorize,
-and verify users by implementing MicroProfile JWT in the `system` microservice.
+You will add token-based authentication mechanisms to authenticate, authorize, and verify users by implementing MicroProfile JWT in the `system` microservice.
 
-A JSON Web Token (JWT) is a self-contained token that is designed to securely transmit
-information as a JSON object. The information in this JSON object is digitally
-signed and can be trusted and verified by the recipient.
+A JSON Web Token (JWT) is a self-contained token that is designed to securely transmit information as a JSON object. The information in this JSON object is digitally signed and can be trusted and verified by the recipient.
 
-For microservices, a token-based authentication mechanism offers a lightweight
-way for security controls and security tokens to propagate user identities
-across different services. JSON Web Token is becoming the most common
-token format because it follows well-defined and known standards.
+For microservices, a token-based authentication mechanism offers a lightweight way for security controls and security tokens to propagate user identities across different services. JSON Web Token is becoming the most common token format because it follows well-defined and known standards.
 
-MicroProfile JWT standards define the required format of JWT for authentication
-and authorization. The standards also map JWT claims to various Jakarta EE
-container APIs and make the set of claims available through getter methods.
+MicroProfile JWT standards define the required format of JWT for authentication and authorization. The standards also map JWT claims to various Jakarta EE container APIs and make the set of claims available through getter methods.
 
-In this guide, the application uses JWTs to authenticate a user,
-allowing them to make authorized requests to a secure backend service.
+In this guide, the application uses JWTs to authenticate a user, allowing them to make authorized requests to a secure backend service.
 
-You will be working with two services, a `frontend` service and a secure 
-`system` backend service. The `frontend` service logs a user in, builds a JWT, and makes
-authorized requests to the secure `system` service for JVM system properties.
-The following diagram depicts the application that is used in this guide:
+You will be working with two services, a `frontend` service and a secure `system` backend service. The `frontend` service logs a user in, builds a JWT, and makes authorized requests to the secure `system` service for JVM system properties. The following diagram depicts the application that is used in this guide:
 
 image::JWT_Diagram.png[JWT frontend and system services, width=490, height=654, align="center"]
 
-The user signs in to the `frontend` service with a username and a password,
-at which point a JWT is created. The `frontend` service then makes
-requests, with the JWT included, to the `system` backend service. The secure
-`system` service verifies the JWT to ensure that the request came
-from the authorized `frontend` service. After the JWT is validated, the information
-in the claims, such as the user's role, can be trusted and used to
-determine which system properties the user has access to.
+The user signs in to the `frontend` service with a username and a password, at which point a JWT is created. The `frontend` service then makes requests, with the JWT included, to the `system` backend service. The secure `system` service verifies the JWT to ensure that the request came from the authorized `frontend` service. After the JWT is validated, the information in the claims, such as the user's role, can be trusted and used to determine which system properties the user has access to.
 
-To learn more about JSON Web Tokens, check out the
-https://jwt.io/introduction/[jwt.io website^]. If you want to learn more about how JWTs
-can be used for user authentication and authorization, check out the Open Liberty
-https://openliberty.io/docs/latest/single-sign-on.html[Single Sign-on documentation^].
+To learn more about JSON Web Tokens, check out the https://jwt.io/introduction/[jwt.io website^]. If you want to learn more about how JWTs can be used for user authentication and authorization, check out the Open Liberty https://openliberty.io/docs/latest/single-sign-on.html[Single Sign-on documentation^].
 
 // =================================================================================================
 // Getting started
@@ -81,12 +60,9 @@ include::{common-includes}/gitclone.adoc[]
 
 === Try what you'll build
 
-The `finish` directory contains the finished JWT security implementation for the
-services in the application. Try the finished application before you
-build your own.
+The `finish` directory contains the finished JWT security implementation for the services in the application. Try the finished application before you build your own.
 
-To try out the application, run the following commands to navigate to the `finish/frontend` directory and
-deploy the `frontend` service to Open Liberty:
+To try out the application, run the following commands to navigate to the `finish/frontend` directory and deploy the `frontend` service to Open Liberty:
 
 [role='command']
 ```
@@ -94,8 +70,7 @@ cd finish/frontend
 mvn liberty:run
 ```
 
-Open another command-line session and run the following commands to navigate to the `finish/system` directory and
-deploy the `system` service to Open Liberty:
+Open another command-line session and run the following commands to navigate to the `finish/system` directory and deploy the `system` service to Open Liberty:
 
 [role='command']
 ```
@@ -112,19 +87,12 @@ The defaultServer server is ready to run a smarter planet.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-In your browser, go to the front-end web application endpoint at
-http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here,
-you can log in to the application with the form-based login.
+In your browser, go to the front-end web application endpoint at http://localhost:9090/login.jsf[http://localhost:9090/login.jsf^]. From here, you can log in to the application with the form-based login.
 endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-To launch the front-end web application, 
-select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
-and click the **OK** button. 
-You’re redirected to a URL similar to **`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai`**, 
-where **accountname** is your account name. Click the **Log in** link on the welcome page. From here, 
-you can log in to the application with the form-based login.
+To launch the front-end web application, select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, and click the **OK** button. You’re redirected to a URL similar to ***https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai***, where **accountname** is your account name. Click the **Log in** link on the welcome page. From here, you can log in to the application with the form-based login.
 endif::[]
 
 Log in with one of the following usernames and its corresponding password:
@@ -137,38 +105,24 @@ Log in with one of the following usernames and its corresponding password:
 | carl | carlpwd | user
 |===
 
-You're redirected to a page that displays information that the
-front end requested from the `system` service, such as the system username.
-If you log in as an `admin`, you can also see the current OS.
-Click `Log Out` and log in as a `user`.
-You'll see the message `You are not authorized to access this system property`
-because the `user` role doesn't have sufficient privileges to view current OS information. 
+You're redirected to a page that displays information that the front end requested from the `system` service, such as the system username. If you log in as an `admin`, you can also see the current OS. Click `Log Out` and log in as a `user`. You'll see the message `You are not authorized to access this system property` because the `user` role doesn't have sufficient privileges to view current OS information. 
 
-Additionally, the `groups` claim of the JWT is read by the `system` service and
-requested by the front end to be displayed.
+Additionally, the `groups` claim of the JWT is read by the `system` service and requested by the front end to be displayed.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-You can try accessing these services without a JWT by going to the
-https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
-`system` endpoint in your browser. You get a blank screen and aren't given
-access because you didn't supply a valid JWT with the request. The following
-error also appears in the command-line session of the `system` service:
+You can try accessing these services without a JWT by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^] `system` endpoint in your browser. You get a blank screen and aren't given access because you didn't supply a valid JWT with the request. The following error also appears in the command-line session of the `system` service:
 endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can try accessing these services without a JWT by going to the **system** endpoint. 
-Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE.
-Run the following curl command from the terminal in the IDE:
+You can try accessing these services without a JWT by going to the **system** endpoint. Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE. Run the following curl command from the terminal in the IDE:
 ```
 curl -k https://localhost:8443/system/properties/os
 ```
 {: codeblock}
 
-The response is empty because you don't have access.
-Access is granted if a valid JWT is sent with the request.
-The following error also appears in the command-line session of the **system** service:
+The response is empty because you don't have access. Access is granted if a valid JWT is sent with the request. The following error also appears in the command-line session of the **system** service:
 endif::[]
 
 [source, role="no_copy"]
@@ -176,10 +130,7 @@ endif::[]
 [ERROR] CWWKS5522E: The MicroProfile JWT feature cannot perform authentication because a MicroProfile JWT cannot be found in the request.
 ----
 
-When you are done with the application, stop both the `frontend` and `system`
-services by pressing `CTRL+C` in the command-line sessions where you ran them.
-Alternatively, you can run the following goals from the `finish` directory in
-another command-line session:
+When you are done with the application, stop both the `frontend` and `system` services by pressing `CTRL+C` in the command-line sessions where you ran them. Alternatively, you can run the following goals from the `finish` directory in another command-line session:
 
 [role='command']
 ```
@@ -207,10 +158,7 @@ cd /home/project/guide-microprofile-jwt/start
 {: codeblock}
 endif::[]
 
-When you run Open Liberty in development mode, known as dev mode, the server
-listens for file changes and automatically recompiles and deploys your updates
-whenever you save a new change. Run the following commands to navigate to the
-`frontend` directory and start the `frontend` service in dev mode:
+When you run Open Liberty in development mode, known as dev mode, the server listens for file changes and automatically recompiles and deploys your updates whenever you save a new change. Run the following commands to navigate to the `frontend` directory and start the `frontend` service in dev mode:
 
 [role='command']
 ```
@@ -218,8 +166,7 @@ cd frontend
 mvn liberty:dev
 ```
 
-Open another command-line session and run the following commands to navigate to the
-`system` directory and start the `system` service in dev mode:
+Open another command-line session and run the following commands to navigate to the `system` directory and start the `system` service in dev mode:
 [role='command']
 ```
 cd system
@@ -234,10 +181,7 @@ After you see the following message, your application server in dev mode is read
 *    Liberty is running in dev mode.
 ----
 
-The `system` service provides endpoints for the `frontend` service to use to
-request system properties. This service is secure and requires a valid JWT to be
-included in requests that are made to it. The claims in the JWT are used to determine
-what properties the user has access to.
+The `system` service provides endpoints for the `frontend` service to use to request system properties. This service is secure and requires a valid JWT to be included in requests that are made to it. The claims in the JWT are used to determine what properties the user has access to.
 
 Create the secure `system` service.
 
@@ -254,29 +198,13 @@ include::finish/system/src/main/java/io/openliberty/guides/system/SystemResource
 `system/src/main/java/io/openliberty/guides/system/SystemResource.java`
 ----
 
-This class has role-based access control. The role names that are used in the
-[hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotations are mapped to group
-names in the `groups` claim of the JWT, which results in an authorization
-decision wherever the security constraint is applied.
+This class has role-based access control. The role names that are used in the [hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotations are mapped to group names in the `groups` claim of the JWT, which results in an authorization decision wherever the security constraint is applied.
 
-The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annotated with the
-[hotspot=rolesAllowedAdminUser1 file=0]`@RolesAllowed({"admin, "user"})`
-annotation. Only authenticated users with the role of `admin` or `user`
-can access this endpoint.
+The [hotspot=usernameEndpoint file=0]`/username` endpoint returns the system's username and is annotated with the [hotspot=rolesAllowedAdminUser1 file=0]`@RolesAllowed({"admin, "user"})` annotation. Only authenticated users with the role of `admin` or `user` can access this endpoint.
 
-The [hotspot=osEndpoint file=0]`/os` endpoint returns the system's current OS. Here,
-the [hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation is limited to
-`admin`, meaning that only authenticated users with the role of `admin` are able to
-access the endpoint.
+The [hotspot=osEndpoint file=0]`/os` endpoint returns the system's current OS. Here, the [hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation is limited to `admin`, meaning that only authenticated users with the role of `admin` are able to access the endpoint.
 
-While the [hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation automatically reads from the `groups` claim
-of the JWT to make an authorization decision, you can also manually access the
-claims of the JWT by using the [hotspot=claim file=0]`@Claim` annotation. In this
-case, the `groups` claim is injected into the [hotspot=rolesArray file=0]`roles` JSON array.
-The roles that are parsed from the `groups` claim of the
-JWT are then exposed back to the front end at the [hotspot=rolesEndpoint file=0]`/jwtroles` endpoint.
-To read more about different claims and ways to
-access them, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT documentation^].
+While the [hotspot=rolesAllowedAdminUser1 hotspot=rolesAllowedAdminUser2 hotspot=rolesAllowedAdmin file=0]`@RolesAllowed` annotation automatically reads from the `groups` claim of the JWT to make an authorization decision, you can also manually access the claims of the JWT by using the [hotspot=claim file=0]`@Claim` annotation. In this case, the `groups` claim is injected into the [hotspot=rolesArray file=0]`roles` JSON array. The roles that are parsed from the `groups` claim of the JWT are then exposed back to the front end at the [hotspot=rolesEndpoint file=0]`/jwtroles` endpoint. To read more about different claims and ways to access them, check out the https://github.com/eclipse/microprofile-jwt-auth/blob/master/spec/src/main/asciidoc/interoperability.asciidoc[MicroProfile JWT documentation^].
 
 // =================================================================================================
 // Creating a client to access the secure system service
@@ -316,16 +244,9 @@ Create a RESTful client interface for the `frontend` service.
 This interface declares methods for accessing each of the endpoints that were
 previously set up in the `system` service.
 
-The MicroProfile Rest Client feature automatically builds and generates a client
-implementation based on what is defined in the [hotspot=systemClient file=0]`SystemClient` interface. You
-don't need to set up the client and connect with the remote service.
+The MicroProfile Rest Client feature automatically builds and generates a client implementation based on what is defined in the [hotspot=systemClient file=0]`SystemClient` interface. You don't need to set up the client and connect with the remote service.
 
-As discussed, the `system` service is secured and requests made to it must
-include a valid JWT in the `Authorization` header. The [hotspot=headerParam1 hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotations
-include the JWT by specifying that the value of the `String authHeader`
-parameter, which contains the JWT, be used as the value for the `Authorization`
-header. This header is included in all of the requests that are made to the
-`system` service through this client.
+As discussed, the `system` service is secured and requests made to it must include a valid JWT in the `Authorization` header. The [hotspot=headerParam1 hotspot=headerParam2 hotspot=headerParam3 file=0]`@HeaderParam` annotations include the JWT by specifying that the value of the `String authHeader` parameter, which contains the JWT, be used as the value for the `Authorization` header. This header is included in all of the requests that are made to the `system` service through this client.
 
 Create the application bean that the front-end UI uses to request data.
 
@@ -335,26 +256,9 @@ Create the application bean that the front-end UI uses to request data.
 `frontend/src/main/java/io/openliberty/guides/frontend/ApplicationBean.java`
 ----
 
-The application bean is used to populate the table in the front end by making
-requests for data through the [hotspot=restClient file=1]`defaultRestClient`, which
-is an injected instance of the [hotspot=systemClient file=0]`SystemClient` class
-that you created. The [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` methods call
-their associated methods of the `SystemClient` class
-with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` passed in as a parameter. The `authHeader` is a string that
-consists of the JWT with `Bearer` prefixed to it. The `authHeader` is included in the
-`Authorization` header of the subsequent requests that are made by the
-`defaultRestClient` instance.
+The application bean is used to populate the table in the front end by making requests for data through the [hotspot=restClient file=1]`defaultRestClient`, which is an injected instance of the [hotspot=systemClient file=0]`SystemClient` class that you created. The [hotspot=getOs file=1]`getOs()`, [hotspot=getUsername file=1]`getUsername()`, and [hotspot=getJwtRoles file=1]`getJwtRoles()` methods call their associated methods of the `SystemClient` class with the [hotspot=authHeader1 hotspot=authHeader2 hotspot=authHeader3 file=1]`authHeader` passed in as a parameter. The `authHeader` is a string that consists of the JWT with `Bearer` prefixed to it. The `authHeader` is included in the `Authorization` header of the subsequent requests that are made by the `defaultRestClient` instance.
 
-The JWT for these requests is retrieved from the session attributes with the
-[hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session
-attributes by the provided [hotspot file=2]`LoginBean` class. When the
-user logs in to the front end, the [hotspot=doLogin file=2]`doLogin()` method is
-called and builds the JWT. Then, the [hotspot=setAttribute file=2]`setAttribute()`
-method stores it as an `HttpSession` attribute. The JWT is built by using the
-[hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt file=2]`buildJwt()` method.
-You can see that the [hotspot=claim file=2]`claim()` method is being used to set the `groups` and the `aud` claims of the token.
-The `groups` claim is used to provide the role-based access that you implemented.
-The `aud` claim is used to specify the audience that the JWT is intended for.
+The JWT for these requests is retrieved from the session attributes with the [hotspot=getJwt file=1]`getJwt()` method. The JWT is stored in the session attributes by the provided [hotspot file=2]`LoginBean` class. When the user logs in to the front end, the [hotspot=doLogin file=2]`doLogin()` method is called and builds the JWT. Then, the [hotspot=setAttribute file=2]`setAttribute()` method stores it as an `HttpSession` attribute. The JWT is built by using the [hotspot=jwtBuilder file=2]`JwtBuilder` APIs in the [hotspot=buildJwt file=2]`buildJwt()` method. You can see that the [hotspot=claim file=2]`claim()` method is being used to set the `groups` and the `aud` claims of the token. The `groups` claim is used to provide the role-based access that you implemented. The `aud` claim is used to specify the audience that the JWT is intended for.
 // =================================================================================================
 // Configuring MicroProfile JWT
 // =================================================================================================
@@ -396,8 +300,7 @@ The following table breaks down the new properties:
 | [hotspot=algorithm file=0]`mp.jwt.verify.publickey.algorithm` | With this property, you can control the Public Key Signature Algorithm that is supported by the MicroProfile JWT endpoint. The default value is RS256. Previously, this configuration was included in the `server.xml` file.
 |===
 
-Next, add the MicroProfile JSON Web Token feature to the server configuration file for
-the `system` service.
+Next, add the MicroProfile JSON Web Token feature to the server configuration file for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -422,11 +325,7 @@ endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-To launch the front-end web application, 
-select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, 
-and click the **OK** button. You’re redirected to the **`https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai`** URL, 
-where **accountname** is your account name. Click the **Log in** link on the welcome page. 
-Log in with one of the following usernames and its corresponding password:
+To launch the front-end web application, select **Launch Application** from the menu of the IDE, type in **9090** to specify the port number for the front-end web application, and click the **OK** button. You’re redirected to the ***https://accountname-9090.theiadocker-4.proxy.cognitiveclass.ai*** URL, where **accountname** is your account name. Click the **Log in** link on the welcome page. Log in with one of the following usernames and its corresponding password:
 endif::[]
 
 [cols="<35, ^200, ^200"]
@@ -437,27 +336,18 @@ endif::[]
 | carl | carlpwd | user
 |===
 
-After you log in as an `admin`, you can see the information that's retrieved from the `system`
-service. Click `Log Out` and log in as a `user`. 
-With successfully implemented role-based access in the application, if
-you log in as a `user` role, you don't have access to the OS property.
+After you log in as an `admin`, you can see the information that's retrieved from the `system` service. Click `Log Out` and log in as a `user`. With successfully implemented role-based access in the application, if you log in as a `user` role, you don't have access to the OS property.
 
-You can also see the value of the `groups` claim in the row with the `Roles:` label.
-These roles are read from the JWT and sent back to the front end to
-be displayed.
+You can also see the value of the `groups` claim in the row with the `Roles:` label. These roles are read from the JWT and sent back to the front end to be displayed.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-You can check that the `system` service is secured against unauthenticated
-requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^]
-`system` endpoint in your browser.
+You can check that the `system` service is secured against unauthenticated requests by going to the https://localhost:8443/system/properties/os[https://localhost:8443/system/properties/os^] `system` endpoint in your browser.
 endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can check that the **system** service is secured against unauthenticated
-requests by going to the **system** endpoint.
-Run the following curl command from the terminal in the IDE:
+You can check that the **system** service is secured against unauthenticated requests by going to the **system** endpoint. Run the following curl command from the terminal in the IDE:
 ```
 curl -k https://localhost:8443/system/properties/os
 ```
@@ -468,8 +358,7 @@ endif::[]
 
 In the front end, you see your JWT displayed in the row with the `JSON Web Token` label.
 
-To see the specific information that this JWT holds, you can enter it into the token reader on the https://JWT.io[JWT.io website^].
-The token reader shows you the header, which contains information about the JWT, as shown in the following example:
+To see the specific information that this JWT holds, you can enter it into the token reader on the https://JWT.io[JWT.io website^]. The token reader shows you the header, which contains information about the JWT, as shown in the following example:
 
 [source, role="no_copy"]
 ----
@@ -510,10 +399,7 @@ SystemEndpointIT.java
 include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java[]
 ----
 
-You can manually check that the `system` service is secure by making requests to
-each of the endpoints with and without valid JWTs. However, automated tests are a
-much better approach because they are more reliable and trigger a failure if a
-breaking change is introduced.
+You can manually check that the `system` service is secure by making requests to each of the endpoints with and without valid JWTs. However, automated tests are a much better approach because they are more reliable and trigger a failure if a breaking change is introduced.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -521,24 +407,13 @@ breaking change is introduced.
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointIT.java`
 ----
 
-The [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()`
-tests test the `/os`, `/username`, and `/roles` endpoints.
+The [hotspot=os file=0]`testOSEndpoint()`, [hotspot=username file=0]`testUsernameEndpoint()`, and [hotspot=roles file=0]`testRolesEndpoint()` tests test the `/os`, `/username`, and `/roles` endpoints.
 
-Each test makes three requests to its associated endpoint. The first
-[hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3 file=0]`makeRequest()` call has a JWT with the `admin` role. The second
-[hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3 file=0]`makeRequest()` call has a JWT with the `user` role. The third
-[hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3 file=0]`makeRequest()` call has no JWT at all. The responses to these
-requests are checked based on the role-based access rules for the endpoints. The
-`admin` requests should be successful on all endpoints. The `user` requests
-should be denied by the `/os` endpoint but successfully access the `/username`
-and `/jwtroles` endpoints. The requests that don't include a JWT should be
-denied access to all endpoints.
+Each test makes three requests to its associated endpoint. The first [hotspot=adminRequest1 hotspot=adminRequest2 hotspot=adminRequest3 file=0]`makeRequest()` call has a JWT with the `admin` role. The second [hotspot=userRequest1 hotspot=userRequest2 hotspot=userRequest3 file=0]`makeRequest()` call has a JWT with the `user` role. The third [hotspot=nojwtRequest1 hotspot=nojwtRequest2 hotspot=nojwtRequest3 file=0]`makeRequest()` call has no JWT at all. The responses to these requests are checked based on the role-based access rules for the endpoints. The `admin` requests should be successful on all endpoints. The `user` requests should be denied by the `/os` endpoint but successfully access the `/username` and `/jwtroles` endpoints. The requests that don't include a JWT should be denied access to all endpoints.
 
 === Running the tests
 
-Because you started Open Liberty in dev mode, press the `enter/return` key from the
-command-line session of the `system` service to run the tests. You see the
-following output:
+Because you started Open Liberty in dev mode, press the `enter/return` key from the command-line session of the `system` service to run the tests. You see the following output:
 
 [source, role="no_copy"]
 ----
@@ -556,13 +431,9 @@ Results:
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-The three errors in the output are expected and result from the `system` service successfully
-rejecting the requests that didn't include a JWT.
+The three errors in the output are expected and result from the `system` service successfully rejecting the requests that didn't include a JWT.
 
-When you are finished testing the application, stop both the `frontend` and `system`
-services by pressing `CTRL+C` in the command-line sessions where you ran them.
-Alternatively, you can run the following goals from the `start` directory in
-another command-line session:
+When you are finished testing the application, stop both the `frontend` and `system` services by pressing `CTRL+C` in the command-line sessions where you ran them. Alternatively, you can run the following goals from the `start` directory in another command-line session:
 
 [role='command']
 ```

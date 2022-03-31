@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020, 2021 IBM Corporation and others.
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.KeyStore;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.cxf.common.util.Base64Utility;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -84,7 +83,7 @@ public class JwtBuilder {
             keystore.load(new FileInputStream(keystorePath), password);
             Key key = keystore.getKey("default", password);
             String output = "-----BEGIN PRIVATE KEY-----\n"
-                          + Base64Utility.encode(key.getEncoded(), true) + "\n"
+                          + Base64.getEncoder().encodeToString(key.getEncoded()) + "\n"
                           + "-----END PRIVATE KEY-----";
             return output;
         } catch (Exception e) {

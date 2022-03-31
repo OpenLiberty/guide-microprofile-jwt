@@ -2,16 +2,17 @@
 <server description="Sample Liberty server">
 
     <featureManager>
-        <feature>jaxrs-2.1</feature>
-        <feature>jsonp-1.1</feature>
-        <feature>jsf-2.3</feature>
-        <feature>cdi-2.0</feature>
+        <feature>restfulWS-3.0</feature>
+        <feature>jsonb-2.0</feature>
+        <feature>jsonp-2.0</feature>
+        <feature>faces-3.0</feature>
+        <feature>cdi-3.0</feature>
         <!-- FOR SECURITY -->
-        <feature>appSecurity-3.0</feature>
-        <feature>servlet-4.0</feature>
-        <feature>mpJwt-1.2</feature>
-        <feature>mpConfig-2.0</feature>
-        <feature>mpRestClient-2.0</feature>
+        <feature>appSecurity-4.0</feature>
+        <feature>servlet-5.0</feature>
+        <feature>mpJwt-2.0</feature>
+        <feature>mpConfig-3.0</feature>
+        <feature>mpRestClient-3.0</feature>
 
     </featureManager>
 

@@ -1,23 +1,23 @@
-//tag::copyright[]
+// tag::copyright[]
 /*******************************************************************************
-* Copyright (c) 2020 IBM Corporation and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*     IBM Corporation - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Initial implementation
+ *******************************************************************************/
 // end::copyright[]
 package it.io.openliberty.guides.system;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Invocation.Builder;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +34,7 @@ public class SystemEndpointIT {
     static String urlRoles;
 
     @BeforeAll
-    private static void setup() throws Exception{
+    private static void setup() throws Exception {
         String urlBase = "http://" + System.getProperty("hostname")
                  + ":" + System.getProperty("http.port")
                  + "/system/properties";
@@ -52,19 +52,22 @@ public class SystemEndpointIT {
         // tag::adminRequest1[]
         Response response = makeRequest(urlOS, authHeaderAdmin);
         // end::adminRequest1[]
-        assertEquals(200, response.getStatus(), "Incorrect response code from " + urlOS);
+        assertEquals(200, response.getStatus(),
+                    "Incorrect response code from " + urlOS);
         assertEquals(System.getProperty("os.name"), response.readEntity(String.class),
                 "The system property for the local and remote JVM should match");
 
         // tag::userRequest1[]
         response = makeRequest(urlOS, authHeaderUser);
         // end::userRequest1[]
-        assertEquals(403, response.getStatus(), "Incorrect response code from " + urlOS);
+        assertEquals(403, response.getStatus(),
+                    "Incorrect response code from " + urlOS);
 
         // tag::nojwtRequest1[]
         response = makeRequest(urlOS, null);
         // end::nojwtRequest1[]
-        assertEquals(401, response.getStatus(), "Incorrect response code from " + urlOS);
+        assertEquals(401, response.getStatus(),
+                    "Incorrect response code from " + urlOS);
 
         response.close();
     }
@@ -109,7 +112,7 @@ public class SystemEndpointIT {
         // tag::userRequest3[]
         response = makeRequest(urlRoles, authHeaderUser);
         // end::userRequest3[]
-        assertEquals(200, response.getStatus(), 
+        assertEquals(200, response.getStatus(),
                 "Incorrect response code from " + urlRoles);
         assertEquals("[\"user\"]", response.readEntity(String.class),
                 "Incorrect groups claim in token " + urlRoles);

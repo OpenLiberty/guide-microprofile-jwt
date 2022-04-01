@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020 IBM Corporation and others.
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,9 @@
 // end::copyright[]
 package io.openliberty.guides.frontend;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -24,7 +24,7 @@ import io.openliberty.guides.frontend.util.SessionUtils;
 
 @ApplicationScoped
 @Named
-public class ApplicationBean { 
+public class ApplicationBean {
 
     // tag::restClient[]
     @Inject
@@ -39,7 +39,7 @@ public class ApplicationBean {
         return authHeader;
     }
     // end::getJwt[]
-    
+
     // tag::getOs[]
     public String getOs() {
         String authHeader = getJwt();
@@ -48,7 +48,7 @@ public class ApplicationBean {
             // tag::authHeader1[]
             os = defaultRestClient.getOS(authHeader);
             // end::authHeader1[]
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "You are not authorized to access this system property";
         }
         return os;

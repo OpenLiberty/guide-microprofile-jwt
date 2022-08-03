@@ -12,7 +12,7 @@ A good bug report makes it easy for everyone to understand what you were trying 
 
 ## Contributions
 
-Contributing to an Open Liberty guide is simple. All you need to do is create your own branch to include your contribution and open a pull request to the `staging` (quality assurance) branch.
+Contributing to an Open Liberty guide is simple. All you need to do is create your branch to include your contribution and open a pull request to the `staging` (quality assurance) branch.
 
 ### Text or content contributions
 

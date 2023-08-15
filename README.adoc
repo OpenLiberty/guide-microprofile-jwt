@@ -294,11 +294,11 @@ The following table breaks down some of the properties:
 
 For more information about these and other JWT properties, see the https://openliberty.io/docs/latest/microprofile-config-properties.html#jwt[MicroProfile Config properties for MicroProfile JSON Web Token documentation^].
 
-Next, add the MicroProfile JSON Web Token feature to the Liberty's `server.xml` configuration file for the `system` service.
+Next, add the MicroProfile JSON Web Token feature to the Liberty `server.xml` configuration file for the `system` service.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
-#Replace the system server.xml configuration file.#
+#Replace the system `server.xml` configuration file.#
 `system/src/main/liberty/config/server.xml`
 ----
 

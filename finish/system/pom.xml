@@ -55,13 +55,13 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
              <artifactId>resteasy-client</artifactId>
-             <version>6.2.7.Final</version>
+             <version>6.2.8.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
              <artifactId>resteasy-json-binding-provider</artifactId>
-             <version>6.2.7.Final</version>
+             <version>6.2.8.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -73,13 +73,13 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-jwt</artifactId>
-            <version>4.5.5</version>
+            <version>4.5.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <version>4.1.107.Final</version>
+            <version>4.1.108.Final</version>
             <classifier>osx-x86_64</classifier>
             <scope>test</scope>
         </dependency>

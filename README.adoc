@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2023 IBM Corporation and others.
+// Copyright (c) 2018, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -12,7 +12,7 @@
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to control user and role access to microservices by using MicroProfile JWT.
-:page-tags: ["MicroProfile", "Security"]
+:page-tags: ["microprofile", "security"]
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
 :page-related-guides: ['social-media-login', 'rest-intro', 'cdi-intro']
@@ -269,14 +269,14 @@ Configure the `mpJwt` feature in the `microprofile-config.properties` file for t
 [role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the microprofile-config.properties file.#
-`system/src/main/webapp/META-INF/microprofile-config.properties`
+`system/src/main/resources/META-INF/microprofile-config.properties`
 ----
 
 // File 0
 microprofile-config.properties
 [source, text, linenums, role="code_column hide_tags=propagateHeaders"]
 ----
-include::finish/system/src/main/webapp/META-INF/microprofile-config.properties[]
+include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
 The following table breaks down some of the properties:

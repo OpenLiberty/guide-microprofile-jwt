@@ -20,7 +20,7 @@
     <variable name="https.port" defaultValue="9091"/>
 
     <httpEndpoint httpPort="${http.port}" httpsPort="${https.port}" 
-                  id="defaultHttpEndpoint" />
+                  id="defaultHttpEndpoint" host="*" />
 
     <keyStore id="defaultKeyStore" password="secret" />
 

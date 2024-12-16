@@ -292,7 +292,7 @@ The following table breaks down some of the properties:
 | [hotspot=algorithm file=0]`mp.jwt.verify.publickey.algorithm` | With this property, you can control the Public Key Signature Algorithm that is supported by the MicroProfile JWT endpoint. The default value is RS256. Previously, this configuration was included in the `server.xml` file.
 |===
 
-For more information about these and other JWT properties, see the https://openliberty.io/docs/latest/microprofile-config-properties.html#jwt[MicroProfile Config properties for MicroProfile JSON Web Token documentation^].
+For more information about these and other JWT properties, see the https://openliberty.io/docs/latest/reference/microprofile-config-properties.html#jwt[MicroProfile Config properties for MicroProfile JSON Web Token documentation^].
 
 Next, add the MicroProfile JSON Web Token feature to the Liberty `server.xml` configuration file for the `system` service.
 

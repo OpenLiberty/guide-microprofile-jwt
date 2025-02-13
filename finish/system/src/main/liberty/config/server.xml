@@ -1,16 +1,18 @@
 <server description="Sample Liberty server">
 
   <featureManager>
-    <feature>restfulWS-3.1</feature>
-    <feature>jsonb-3.0</feature>
-    <feature>jsonp-2.1</feature>
-    <feature>cdi-4.0</feature>
-    <feature>mpConfig-3.1</feature>
-    <feature>mpRestClient-3.0</feature>
-    <feature>appSecurity-5.0</feature>
-    <feature>servlet-6.0</feature>
+    <platform>jakartaee-10.0</platform>
+    <platform>microprofile-7.0</platform>
+    <feature>restfulWS</feature>
+    <feature>jsonb</feature>
+    <feature>jsonp</feature>
+    <feature>cdi</feature>
+    <feature>mpConfig</feature>
+    <feature>mpRestClient</feature>
+    <feature>appSecurity</feature>
+    <feature>servlet</feature>
     <!-- tag::mpJwt[] -->
-    <feature>mpJwt-2.1</feature>
+    <feature>mpJwt</feature>
     <!-- end::mpJwt[] -->
   </featureManager>
 

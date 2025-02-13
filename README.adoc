@@ -1,4 +1,4 @@
-// Copyright (c) 2018, 2024 IBM Corporation and others.
+// Copyright (c) 2018, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -93,7 +93,7 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, click the following button. From here, you can log in to the application with the form-based login.
-::startApplication{port="9090" display="external" name="Launch Application" route="/"}
+::startApplication{port="9090" display="external" name="Launch Application" route="/login.jsf"}
 endif::[]
 
 Log in with one of the following usernames and its corresponding password:
@@ -292,7 +292,7 @@ The following table breaks down some of the properties:
 | [hotspot=algorithm file=0]`mp.jwt.verify.publickey.algorithm` | With this property, you can control the Public Key Signature Algorithm that is supported by the MicroProfile JWT endpoint. The default value is RS256. Previously, this configuration was included in the `server.xml` file.
 |===
 
-For more information about these and other JWT properties, see the https://openliberty.io/docs/latest/microprofile-config-properties.html#jwt[MicroProfile Config properties for MicroProfile JSON Web Token documentation^].
+For more information about these and other JWT properties, see the https://openliberty.io/docs/latest/reference/microprofile-config-properties.html#jwt[MicroProfile Config properties for MicroProfile JSON Web Token documentation^].
 
 Next, add the MicroProfile JSON Web Token feature to the Liberty `server.xml` configuration file for the `system` service.
 
@@ -327,7 +327,7 @@ endif::[]
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
 To launch the front-end web application, click the following button:
-::startApplication{port="9090" display="external" name="Launch Application" route="/"}
+::startApplication{port="9090" display="external" name="Launch Application" route="/login.jsf"}
 
 Log in with one of the following usernames and its corresponding password:
 endif::[]

@@ -62,21 +62,67 @@ include::{common-includes}/gitclone.adoc[]
 
 The `finish` directory contains the finished JWT security implementation for the services in the application. Try the finished application before you build your own.
 
-To try out the application, run the following commands to navigate to the `finish/frontend` directory and deploy the `frontend` service to Open Liberty:
+To try out the application, run the following commands to navigate to the `finish` directory and deploy the `frontend` service to Open Liberty:
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-cd finish/frontend
-mvn liberty:run
+cd finish
+mvnw.cmd -pl frontend liberty:run
 ```
+--
 
-Open another command-line session and run the following commands to navigate to the `finish/system` directory and deploy the `system` service to Open Liberty:
-
+[.tab_content.mac_section]
+--
 [role='command']
 ```
-cd finish/system
-mvn liberty:run
+cd finish
+./mvnw -pl frontend liberty:run
 ```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+cd finish
+./mvnw -pl frontend liberty:run
+```
+--
+
+Open another command-line session and run the following commands to navigate to the `finish` directory and deploy the `system` service to Open Liberty:
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
+```
+cd finish
+mvnw.cmd -pl system liberty:run
+```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+cd finish
+./mvnw -pl system liberty:run
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+cd finish
+./mvnw -pl system liberty:run
+```
+--
 
 After you see the following message in both command-line sessions, both of your services are ready:
 
@@ -132,11 +178,34 @@ endif::[]
 
 When you are done with the application, stop both the `frontend` and `system` services by pressing `CTRL+C` in the command-line sessions where you ran them. Alternatively, you can run the following goals from the `finish` directory in another command-line session:
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-mvn -pl system liberty:stop
-mvn -pl frontend liberty:stop
+mvnw.cmd -pl system liberty:stop
+mvnw.cmd -pl frontend liberty:stop
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw -pl system liberty:stop
+./mvnw -pl frontend liberty:stop
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw -pl system liberty:stop
+./mvnw -pl frontend liberty:stop
+```
+--
 
 // =================================================================================================
 // Creating the secure system service
@@ -157,20 +226,61 @@ cd /home/project/guide-microprofile-jwt/start
 ```
 endif::[]
 
-When you run Open Liberty in https://openliberty.io/docs/latest/development-mode.html[dev mode^], dev mode listens for file changes and automatically recompiles and deploys your updates whenever you save a new change. Run the following commands to navigate to the `frontend` directory and start the `frontend` service in dev mode:
+When you run Open Liberty in https://openliberty.io/docs/latest/development-mode.html[dev mode^], dev mode listens for file changes and automatically recompiles and deploys your updates whenever you save a new change. Run the following command to start the `frontend` service in dev mode:
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-cd frontend
-mvn liberty:dev
+mvnw.cmd -pl frontend liberty:dev
 ```
+--
 
-Open another command-line session and run the following commands to navigate to the `system` directory and start the `system` service in dev mode:
+[.tab_content.mac_section]
+--
 [role='command']
 ```
-cd system
-mvn liberty:dev
+./mvnw -pl frontend liberty:dev
 ```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw -pl frontend liberty:dev
+```
+--
+
+Open another command-line session and run the following command to start the `system` service in dev mode:
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
+```
+mvnw.cmd -pl system liberty:dev
+```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw -pl system liberty:dev
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw -pl system liberty:dev
+```
+--
 
 After you see the following message, your Liberty instance is ready in dev mode:
 

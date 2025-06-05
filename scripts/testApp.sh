@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
+./mvnw -version
 
 # LMP 3.0+ goals are listed here: https://github.com/OpenLiberty/ci.maven#goals
 
@@ -8,7 +9,7 @@ set -euxo pipefail
 #       liberty:create            - Create a Liberty server.
 #       liberty:install-feature   - Install a feature packaged as a Subsystem Archive (esa) to the Liberty runtime.
 #       liberty:deploy            - Copy applications to the Liberty server's dropins or apps directory.
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -pl system -q clean package liberty:create liberty:install-feature liberty:deploy
@@ -20,10 +21,10 @@ mvn -ntp -Dhttp.keepAlive=false \
 #       failsafe:integration-test - Runs the integration tests of an application.
 #       liberty:stop              - Stop a Liberty server.
 #       failsafe:verify           - Verifies that the integration tests of an application passed.
-mvn -ntp -pl system liberty:start
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -ntp -pl system liberty:start
+./mvnw -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -pl system failsafe:integration-test
-mvn -ntp -pl system liberty:stop
-mvn -ntp -pl system failsafe:verify
+./mvnw -ntp -pl system liberty:stop
+./mvnw -ntp -pl system failsafe:verify

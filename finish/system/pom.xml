@@ -35,7 +35,7 @@
             <!-- tag::microprofile[] -->
             <artifactId>microprofile</artifactId>
             <!-- end::microprofile[] -->
-            <version>7.0</version>
+            <version>7.1</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>

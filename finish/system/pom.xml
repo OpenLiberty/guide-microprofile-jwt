@@ -73,13 +73,13 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-jwt</artifactId>
-            <version>5.0.1</version>
+            <version>5.0.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <version>4.1.119.Final</version>
+            <version>4.2.4.Final</version>
             <classifier>osx-x86_64</classifier>
             <scope>test</scope>
         </dependency>
@@ -103,7 +103,7 @@
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.11.4</version>
+                <version>3.11.5</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>

@@ -14,4 +14,7 @@
         <module>frontend</module>
         <module>system</module>
     </modules>
+  <properties>
+    <maven.compiler.release>25</maven.compiler.release>
+  </properties>
 </project>
